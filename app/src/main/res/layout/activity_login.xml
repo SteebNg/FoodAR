@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:clipToPadding="false"
+    android:background="@color/bg_dark">
+
+    <FrameLayout
+        android:id="@+id/logoLogin"
+        android:layout_width="@dimen/_110sdp"
+        android:layout_height="@dimen/_110sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_100sdp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/logo_bg" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="24dp"
+            android:src="@drawable/logo" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/logoLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Login to FoodAR"
+        android:fontFamily="@font/alata"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:textSize="@dimen/_20ssp"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textLoginSecondaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/textLoginTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textLoginTitle"
+        android:text="Welcome Back!"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:id="@+id/textLoginEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:fontFamily="@font/alata"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintTop_toBottomOf="@+id/textLoginSecondaryTitle"
+        app:layout_constraintStart_toStartOf="@+id/textLoginSecondaryTitle"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:textColor="@color/primary_text" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etLoginEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textLoginEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/et_border_bg"
+        android:fontFamily="@font/alata"
+        android:hint="Example@gmail.com"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/_12ssp"
+        android:inputType="textEmailAddress"
+        android:textCursorDrawable="@null"/>
+
+    <TextView
+        android:id="@+id/textLoginPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:fontFamily="@font/alata"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginEmail"
+        app:layout_constraintStart_toStartOf="@+id/etLoginEmail"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:textColor="@color/primary_text" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etLoginPassword"
+        app:layout_constraintTop_toBottomOf="@+id/textLoginPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/et_border_bg"
+        android:fontFamily="@font/alata"
+        android:hint="Your Password"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/hintColor"
+        android:textSize="@dimen/_12ssp"
+        android:inputType="textPassword"
+        android:textCursorDrawable="@null"/>
+
+    <ImageView
+        android:id="@+id/buttonLoginShowPassword"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="@+id/etLoginPassword"
+        app:layout_constraintTop_toTopOf="@+id/etLoginPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/etLoginPassword"
+        android:src="@drawable/eyehide"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:tint="@color/black"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/buttonLoginHidePassword"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        app:layout_constraintEnd_toEndOf="@+id/etLoginPassword"
+        app:layout_constraintTop_toTopOf="@+id/etLoginPassword"
+        app:layout_constraintBottom_toBottomOf="@+id/etLoginPassword"
+        android:src="@drawable/eyeshow"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:tint="@color/black"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textLoginForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot Password?"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPassword"
+        app:layout_constraintStart_toStartOf="@+id/etLoginPassword"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:textColor="@color/secondary_text"
+        android:fontFamily="@font/alata" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:background="@drawable/bg_rectangle_white"
+        android:fontFamily="@font/alata"
+        android:text="Login"
+        android:textColor="@color/primary_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLoginForgetPassword" />
+
+    <ProgressBar
+        android:id="@+id/progressBarLogin"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        app:layout_constraintTop_toTopOf="@+id/buttonLogin"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonLogin"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textLoginError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogin"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
+        android:text="TEST"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/warningRed"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textSize="@dimen/_12ssp"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/textLoginSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:fontFamily="@font/alata"
+        android:text="@string/new_to_foodar_sign_up_now"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintTop_toBottomOf="@+id/textLoginError"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/primary_text"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

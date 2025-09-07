@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VerificationActivity"
+    android:background="@color/bg_dark">
+
+    <ImageView
+        android:id="@+id/imageVerification"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/email"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_140sdp" />
+
+    <TextView
+        android:id="@+id/textVerificationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageVerification"
+        app:layout_constraintStart_toStartOf="@+id/imageVerification"
+        app:layout_constraintEnd_toEndOf="@+id/imageVerification"
+        android:text="Verification Email Sent"
+        android:textSize="@dimen/_16ssp"
+        android:layout_marginTop="@dimen/_36sdp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"/>
+
+    <TextView
+        android:id="@+id/textVerificationSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textVerificationTitle"
+        app:layout_constraintStart_toStartOf="@+id/textVerificationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textVerificationTitle"
+        android:text="A verification email has been sent. Please check your email."
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonVerification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textVerificationSubtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Back"
+        android:background="@drawable/bg_rectangle_white"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

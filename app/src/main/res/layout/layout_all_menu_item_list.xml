@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_home_all_menu_item"
+    android:layout_marginStart="@dimen/_16sdp"
+    android:layout_marginEnd="@dimen/_16sdp"
+    android:layout_marginTop="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:paddingBottom="@dimen/_4sdp">
+
+    <ImageView
+        android:id="@+id/imageAllMenuItem"
+        android:layout_width="@dimen/_84sdp"
+        android:layout_height="@dimen/_84sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/burbur_2"
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/bg"
+        android:padding="@dimen/_8sdp"
+        android:layout_margin="@dimen/_8sdp"/>
+
+    <TextView
+        android:id="@+id/textAllMenuFoodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageAllMenuItem"
+        android:text="Combo Deluxe"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:maxLines="2"
+        android:maxWidth="@dimen/_80sdp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/textAllMenuFoodPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/textAllMenuFoodName"
+        app:layout_constraintTop_toBottomOf="@+id/textAllMenuFoodName"
+        android:text="RM16.99"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:maxLines="2"
+        android:maxWidth="@dimen/_80sdp"
+        android:textStyle="bold"/>
+
+    <RatingBar
+        android:id="@+id/ratingAllMenuFood"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_12sdp"
+        style="@style/CustomRatingBar"
+        android:rating="3.5"
+        app:layout_constraintTop_toTopOf="@+id/textAllMenuFoodPrice"
+        app:layout_constraintStart_toEndOf="@+id/textAllMenuFoodPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/textAllMenuFoodPrice"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:scaleX="0.7"
+        android:scaleY="0.7" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FoodDetailsActivity"
+    android:background="@color/bg_dark">
+
+    <TextView
+        android:id="@+id/textFoodDetailsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="DETAIL"
+        android:fontFamily="@font/alata"
+        android:textSize="@dimen/_16ssp"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_12sdp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="@+id/cardFoodDetailsFoodImage"
+                app:layout_constraintEnd_toEndOf="@+id/cardFoodDetailsFoodImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/cardFoodDetailsFoodImage"
+                android:background="@drawable/bg_rectangle_with_top_rounded_corners"
+                android:backgroundTint="@color/bg_darker"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardFoodDetailsFoodImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardBackgroundColor="@color/bg_darker"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="@dimen/_16sdp">
+
+                <ImageView
+                    android:id="@+id/imageFoodDetails"
+                    android:layout_width="@dimen/_152sdp"
+                    android:layout_height="@dimen/_152sdp"
+                    android:src="@drawable/burbur_2"
+                    android:padding="@dimen/_20sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_20sdp"/>
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                app:layout_constraintEnd_toEndOf="@+id/cardFoodDetailsOthers"
+                app:layout_constraintBottom_toBottomOf="@+id/cardFoodDetailsOthers"
+                app:layout_constraintStart_toStartOf="@+id/cardFoodDetailsOthers"
+                android:background="@drawable/bg_rectangle_with_top_rounded_corners"
+                android:backgroundTint="@color/bg"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardFoodDetailsOthers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/cardFoodDetailsFoodImage"
+                app:cardBackgroundColor="@color/bg"
+                app:cardCornerRadius="@dimen/_16sdp"
+                app:cardElevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginEnd="@dimen/_12sdp">
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="Combo Deluxe"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_16ssp"
+                        android:textColor="@color/primary_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textFoodDetailsName"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsName"
+                        android:text="Combo Deluxe"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/secondary_text" />
+
+                    <View
+                        android:id="@+id/dividerFoodDetails1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderStroke"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsDesc"
+                        android:layout_marginTop="@dimen/_8sdp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerFoodDetailFoodOption"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textFoodDetailsName"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails1"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/layout_food_details_options_item_list"
+                        tools:itemCount="1"/>
+
+                    <View
+                        android:id="@+id/dividerFoodDetails2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderStroke"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerFoodDetailFoodOption"
+                        android:layout_marginTop="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsReviewTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textFoodDetailsName"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails2"
+                        android:text="Reviews"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/primary_text"
+                        android:layout_marginTop="@dimen/_8sdp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerFoodDetailsReviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsReviewTitle"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/layout_food_details_review_item_list"/>
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsReviewMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/recyclerFoodDetailsReviews"
+                        app:layout_constraintEnd_toEndOf="@+id/recyclerFoodDetailsReviews"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerFoodDetailsReviews"
+                        android:text="More Reviews ->"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/blueText"
+                        android:layout_marginTop="@dimen/_8sdp"/>
+
+                    <View
+                        android:id="@+id/dividerFoodDetails3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderStroke"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsReviewMore"
+                        android:layout_marginTop="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsRemarksTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/recyclerFoodDetailsReviews"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails3"
+                        android:text="Remarks (Optional)"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/primary_text"
+                        android:layout_marginTop="@dimen/_8sdp"/>
+
+                    <EditText
+                        android:id="@+id/etFoodDetailsRemark"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsRemarksTitle"
+                        android:hint="Remarks here......"
+                        android:background="@drawable/bg_rectangle_white"
+                        android:backgroundTint="@color/bg_light"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:paddingStart="@dimen/_8sdp"/>
+
+                    <View
+                        android:id="@+id/dividerFoodDetails4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderStroke"
+                        app:layout_constraintTop_toBottomOf="@+id/etFoodDetailsRemark"
+                        android:layout_marginTop="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails4"
+                        android:text="1"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textSize="@dimen/_28ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text"
+                        android:layout_marginTop="@dimen/_8sdp"/>
+
+                    <ImageView
+                        android:id="@+id/buttonFoodDetailMinusQuantity"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/minus"
+                        app:layout_constraintTop_toTopOf="@+id/textFoodDetailsQuantity"
+                        app:layout_constraintBottom_toBottomOf="@+id/textFoodDetailsQuantity"
+                        app:layout_constraintEnd_toStartOf="@+id/textFoodDetailsQuantity"
+                        android:layout_marginEnd="@dimen/_16sdp" />
+
+                    <ImageView
+                        android:id="@+id/buttonFoodDetailPlusQuantity"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
+                        android:src="@drawable/plus"
+                        app:layout_constraintTop_toTopOf="@+id/textFoodDetailsQuantity"
+                        app:layout_constraintBottom_toBottomOf="@+id/textFoodDetailsQuantity"
+                        app:layout_constraintStart_toEndOf="@+id/textFoodDetailsQuantity"
+                        android:layout_marginStart="@dimen/_16sdp" />
+
+                    <View
+                        android:id="@+id/dividerFoodDetails5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderStroke"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsQuantity"
+                        android:layout_marginTop="@dimen/_8sdp" />
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsPriceAmountTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails5"
+                        android:text="Total Amount"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/hintColor"
+                        android:layout_marginTop="@dimen/_8sdp"/>
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsPriceAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textFoodDetailsPriceAmountTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsPriceAmountTitle"
+                        android:text="RM 1.99"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_16ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/buttonFoodDetailAddToCart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:background="@drawable/bg_chip"
+                        android:backgroundTint="@color/warningRed"
+                        android:fontFamily="@font/alata"
+                        android:paddingStart="@dimen/_8sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="Add To Cart"
+                        android:textColor="@color/bg_light"
+                        app:layout_constraintBottom_toBottomOf="@+id/textFoodDetailsPriceAmount"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textFoodDetailsPriceAmountTitle" />
+
+                    <View
+                        android:id="@+id/dividerFoodDetails6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderStroke"
+                        app:layout_constraintTop_toBottomOf="@+id/buttonFoodDetailAddToCart"
+                        android:layout_marginTop="@dimen/_8sdp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
