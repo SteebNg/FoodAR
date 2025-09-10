@@ -6,7 +6,7 @@ import com.google.firebase.Timestamp;
 
 public class Review {
     public Uri profileImage;
-    public String comment;
-    public int rating;
+    public String comment, userId;
+    public double rating;
     public Timestamp timestamp;
 }

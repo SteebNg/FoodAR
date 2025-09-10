@@ -10,7 +10,7 @@
     android:layout_marginBottom="@dimen/_8sdp"
     android:paddingBottom="@dimen/_4sdp">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/imageAllMenuItem"
         android:layout_width="@dimen/_84sdp"
         android:layout_height="@dimen/_84sdp"
@@ -21,7 +21,7 @@
         android:background="@drawable/bg_rectangle_white"
         android:backgroundTint="@color/bg"
         android:padding="@dimen/_8sdp"
-        android:layout_margin="@dimen/_8sdp"/>
+        android:layout_margin="@dimen/_8sdp" />
 
     <TextView
         android:id="@+id/textAllMenuFoodName"

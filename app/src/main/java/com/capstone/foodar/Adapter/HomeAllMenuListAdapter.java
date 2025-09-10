@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.capstone.foodar.Model.Food;
 import com.capstone.foodar.R;
 
@@ -43,7 +44,7 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
         holder.foodName.setText(food.foodName);
         holder.foodPrice.setText(String.valueOf(food.foodPrice));
         holder.foodRating.setRating((float) food.foodRating);
-        holder.foodImage.setImageURI(food.foodImage);
+        Glide.with(context).load(food.foodImage).into(holder.foodImage);
         holder.itemView.setOnClickListener(v -> onItemClickListener.onClick(foods.get(position)));
     }
 

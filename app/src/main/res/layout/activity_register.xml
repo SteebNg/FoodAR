@@ -138,6 +138,28 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/primary_text" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etRegisterPassword"
+            app:layout_constraintTop_toBottomOf="@+id/textRegisterPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/et_border_bg"
+            android:fontFamily="@font/alata"
+            android:hint="Your Password"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/_12ssp"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null"/>
+
         <ImageView
             android:id="@+id/buttonRegisterShowPassword"
             android:layout_width="@dimen/_20sdp"
@@ -161,28 +183,6 @@
             app:tint="@color/black"
             android:visibility="gone"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etRegisterPassword"
-            app:layout_constraintTop_toBottomOf="@+id/textRegisterPassword"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/et_border_bg"
-            android:fontFamily="@font/alata"
-            android:hint="Your Password"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingTop="@dimen/_8sdp"
-            android:paddingBottom="@dimen/_8sdp"
-            android:textColor="@color/primary_text"
-            android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/_12ssp"
-            android:inputType="textPassword"
-            android:textCursorDrawable="@null"/>
-
         <TextView
             android:id="@+id/textRegisterConfirmPassword"
             android:layout_width="wrap_content"
@@ -194,6 +194,28 @@
             app:layout_constraintStart_toStartOf="@+id/etRegisterPassword"
             android:layout_marginTop="@dimen/_8sdp"
             android:textColor="@color/primary_text" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etRegisterConfirmPassword"
+            app:layout_constraintTop_toBottomOf="@+id/textRegisterConfirmPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/et_border_bg"
+            android:fontFamily="@font/alata"
+            android:hint="Confirm Password"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:textColor="@color/primary_text"
+            android:textColorHint="@color/hintColor"
+            android:textSize="@dimen/_12ssp"
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null"/>
 
         <ImageView
             android:id="@+id/buttonRegisterShowConfirmPassword"
@@ -218,27 +240,6 @@
             app:tint="@color/black"
             android:visibility="gone"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etRegisterConfirmPassword"
-            app:layout_constraintTop_toBottomOf="@+id/textRegisterConfirmPassword"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/et_border_bg"
-            android:fontFamily="@font/alata"
-            android:hint="Confirm Password"
-            android:paddingStart="@dimen/_8sdp"
-            android:paddingTop="@dimen/_8sdp"
-            android:paddingBottom="@dimen/_8sdp"
-            android:textColor="@color/primary_text"
-            android:textColorHint="@color/hintColor"
-            android:textSize="@dimen/_12ssp"
-            android:inputType="textPassword"
-            android:textCursorDrawable="@null"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonRegister"
@@ -263,7 +264,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/buttonRegister"
             app:layout_constraintStart_toStartOf="@+id/buttonRegister"
             app:layout_constraintEnd_toEndOf="@+id/buttonRegister"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:progressTint="@color/black"/>
 
         <TextView
             android:id="@+id/textRegisterError"

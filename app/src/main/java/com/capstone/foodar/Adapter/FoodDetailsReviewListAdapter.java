@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.capstone.foodar.Model.Review;
 import com.capstone.foodar.R;
 
@@ -41,13 +42,13 @@ public class FoodDetailsReviewListAdapter extends RecyclerView.Adapter<FoodDetai
         Review review = reviews.get(position);
 
         holder.comment.setText(review.comment);
-        holder.profileImage.setImageURI(review.profileImage);
-        holder.ratingBar.setRating(review.rating);
+        Glide.with(context).load(review.profileImage).into(holder.profileImage);
+        holder.ratingBar.setRating((float) review.rating);
     }
 
     @Override
     public int getItemCount() {
-        return 2; // Max reviews
+        return reviews.size(); // Max reviews
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

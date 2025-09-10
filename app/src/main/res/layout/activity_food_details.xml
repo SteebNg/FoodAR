@@ -133,12 +133,25 @@
                         tools:listitem="@layout/layout_food_details_options_item_list"
                         tools:itemCount="1"/>
 
+                    <TextView
+                        android:id="@+id/textFoodDetailsNoOptions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="@id/textFoodDetailsName"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails1"
+                        android:text="Enjoy your meal!"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/primary_text"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:visibility="invisible"/>
+
                     <View
                         android:id="@+id/dividerFoodDetails2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/borderStroke"
-                        app:layout_constraintTop_toBottomOf="@+id/recyclerFoodDetailFoodOption"
+                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsNoOptions"
                         android:layout_marginTop="@dimen/_8sdp" />
 
                     <TextView
@@ -162,6 +175,22 @@
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="2"
                         tools:listitem="@layout/layout_food_details_review_item_list"/>
+
+                    <TextView
+                        android:id="@+id/textFoodDetailsNoReviews"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@+id/recyclerFoodDetailsReviews"
+                        app:layout_constraintStart_toStartOf="@+id/recyclerFoodDetailsReviews"
+                        app:layout_constraintEnd_toEndOf="@+id/recyclerFoodDetailsReviews"
+                        app:layout_constraintBottom_toBottomOf="@+id/recyclerFoodDetailsReviews"
+                        android:text="No Reviews"
+                        android:fontFamily="@font/alata"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/secondary_text"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:visibility="invisible"
+                        android:gravity="center"/>
 
                     <TextView
                         android:id="@+id/textFoodDetailsReviewMore"

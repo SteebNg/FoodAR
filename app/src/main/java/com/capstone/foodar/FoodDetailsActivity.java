@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,17 +14,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.capstone.foodar.Adapter.FoodDetailsOptionListAdapter;
 import com.capstone.foodar.Adapter.FoodDetailsReviewListAdapter;
 import com.capstone.foodar.Model.Food;
+import com.capstone.foodar.Model.FoodOption;
 import com.capstone.foodar.Model.Review;
 import com.capstone.foodar.PreferenceManager.Constants;
+import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.databinding.ActivityFoodDetailsBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,6 +37,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FoodDetailsActivity extends AppCompatActivity {
 
@@ -40,7 +51,10 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private String foodId;
     private Food food;
     private ArrayList<Review> reviews;
+    private ArrayList<FoodOption> foodOptions;
     private FoodDetailsReviewListAdapter reviewListAdapter;
+    private FoodDetailsOptionListAdapter optionListAdapter;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +69,93 @@ public class FoodDetailsActivity extends AppCompatActivity {
         });
 
         init();
-        setFoodDetails();
         setListeners();
+        setFoodDetails();
         setReviews();
+        setOptions();
+    }
+
+    private void setOptions() {
+        db.collection(Constants.KEY_FOOD_OPTIONS)
+                .document(foodId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                putOptionsInRecycler(document);
+                            } else {
+                                binding.recyclerFoodDetailFoodOption.setVisibility(View.GONE);
+                                binding.textFoodDetailsNoOptions.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void putOptionsInRecycler(DocumentSnapshot document) {
+        Map<String, Object> fields = document.getData();
+
+        if (!fields.isEmpty()) {
+            for (Map.Entry<String, Object> entry : fields.entrySet()) {
+                FoodOption foodOption = new FoodOption();
+                Map<String, Object> option = (Map<String, Object>) entry.getValue();
+
+                foodOption.optionTitle = entry.getKey();
+
+                Object individualOptionsObject = option.get(Constants.KEY_FOOD_INDIVIDUAL_OPTIONS);
+                if (individualOptionsObject instanceof Map) {
+                    foodOption.individualOptions = getDoubleMap((Map<?, ?>) individualOptionsObject);
+                }
+
+                foodOption.isCompulsory = (boolean) option.get(Constants.KEY_IS_COMPULSORY);
+
+                foodOptions.add(foodOption);
+            }
+            setFoodOptionRecycler();
+        }
+    }
+
+    private static @NonNull Map<String, Double> getDoubleMap(Map<?, ?> individualOptionsObject) {
+        Map<?, ?> rawMap = individualOptionsObject;
+        Map<String, Double> convertedMap = new HashMap<>();
+
+        for (Map.Entry<?, ?> mapEntry : rawMap.entrySet()) {
+            if (mapEntry.getKey() instanceof String) {
+                String key = (String) mapEntry.getKey();
+                Object value = mapEntry.getValue();
+
+                if (value instanceof Long) {
+                    convertedMap.put(key, ((Long) value).doubleValue());
+                } else if (value instanceof Double) {
+                    convertedMap.put(key, (Double) value);
+                }
+            }
+        }
+        return convertedMap;
+    }
+
+    private void setFoodOptionRecycler() {
+        optionListAdapter = getOptionListAdapter();
+        binding.recyclerFoodDetailFoodOption.setAdapter(optionListAdapter);
+        int i = foodOptions.size();
+        optionListAdapter.notifyDataSetChanged();
+        calculateTotalPrice();
+    }
+
+    private FoodDetailsOptionListAdapter getOptionListAdapter() {
+        FoodDetailsOptionListAdapter adapter = new FoodDetailsOptionListAdapter(foodOptions, getApplicationContext());
+
+        adapter.setOnSelectedChangeListener(new FoodDetailsOptionListAdapter.OnSelectedChangeListener() {
+            @Override
+            public void onChange(String optionName) {
+                calculateTotalPrice();
+            }
+        });
+
+        return adapter;
     }
 
     private void setReviews() {
@@ -73,7 +171,10 @@ public class FoodDetailsActivity extends AppCompatActivity {
                             if (!document.isEmpty()) {
                                 putReviewsInRecycler(document);
                             } else {
-                                // TODO
+                                binding.recyclerFoodDetailsReviews.setVisibility(View.INVISIBLE);
+                                binding.textFoodDetailsNoReviews.setVisibility(View.VISIBLE);
+                                binding.textFoodDetailsReviewMore.setVisibility(View.INVISIBLE);
+                                binding.textFoodDetailsReviewMore.setEnabled(false);
                             }
                         }
                     }
@@ -81,18 +182,19 @@ public class FoodDetailsActivity extends AppCompatActivity {
     }
 
     private void putReviewsInRecycler(QuerySnapshot documentSnapshots) {
+        final int[] reviewWentThrough = {0};
         for (QueryDocumentSnapshot document : documentSnapshots) {
             Review review = new Review();
             review.comment = document.getString(Constants.KEY_COMMENT);
-            review.rating = Integer.parseInt(document.getString(Constants.KEY_FOODS_RATING));
+            review.rating = document.getDouble(Constants.KEY_FOODS_RATING);
             review.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+            review.userId = document.getString(Constants.KEY_USER_ID);
 
-            final int[] reviewWentThrough = {0};
             storageRef.child(Constants.KEY_USERS_LIST
                     + "/"
-                    + document.getString(Constants.KEY_USER_ID)
+                    + review.userId
                     + "/"
-                    + Constants.KEY_PROFILE_IMAGE)
+                    + Constants.KEY_PROFILE_IMAGE + ".jpeg")
                     .getDownloadUrl()
                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
@@ -120,7 +222,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
         return new FoodDetailsReviewListAdapter(reviews, getApplicationContext());
     }
 
-
     private void setListeners() {
         binding.buttonFoodDetailMinusQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,11 +238,63 @@ public class FoodDetailsActivity extends AppCompatActivity {
         binding.textFoodDetailsReviewMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FoodDetailsActivity.this, );
-                intent.putExtra(Constants.KEY_FOOD_ID, foodId);
-                startActivity(intent);
+//                Intent intent = new Intent(FoodDetailsActivity.this, );
+//                intent.putExtra(Constants.KEY_FOOD_ID, foodId);
+//                startActivity(intent);
             }
         });
+        binding.buttonFoodDetailAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> individualFoodOrder = new HashMap<>();
+                individualFoodOrder.put(Constants.KEY_FOOD_ID, foodId);
+                individualFoodOrder.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
+                individualFoodOrder.put(Constants.KEY_REMARKS, binding.etFoodDetailsRemark.getText().toString().trim());
+                individualFoodOrder.put(Constants.KEY_FOOD_OPTIONS, getFoodOptions());
+                individualFoodOrder.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+
+                String sTotalPrice = binding.textFoodDetailsPriceAmount.getText().toString();
+                String sExtractedPrice = sTotalPrice.replaceAll("[^\\d.-]", "");
+
+                individualFoodOrder.put(Constants.KEY_ORDER_PRICE, Double.parseDouble(sExtractedPrice));
+
+                db.collection(Constants.KEY_CARTS)
+                        .add(individualFoodOrder)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Toast.makeText(FoodDetailsActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        });
+            }
+        });
+    }
+
+    private ArrayList<String> getFoodOptions() {
+        ArrayList<String> options = new ArrayList<>();
+        if (foodOptions != null && !foodOptions.isEmpty()) {
+            RecyclerView recyclerView = binding.recyclerFoodDetailFoodOption;
+
+            for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                View view = recyclerView.getChildAt(i);
+                RadioGroup radioGroup = view.findViewById(R.id.radioGroupFoodOptionItem);
+
+                int checkedId = radioGroup.getCheckedRadioButtonId();
+
+                if (checkedId != -1) {
+                    RadioButton selectedRadioButton = view.findViewById(checkedId);
+                    String radioButtonText = extractOptionName(selectedRadioButton.getText().toString());
+                    options.add(radioButtonText);
+                }
+            }
+        }
+        return options;
+    }
+
+    private String extractOptionName(String optionName) {
+        String[] parts = optionName.split("\\s*[+-]\\s*RM");
+        return parts[0].trim();
     }
 
     private void setQuantity(int changes) {
@@ -149,10 +302,61 @@ public class FoodDetailsActivity extends AppCompatActivity {
         int currentQuantity = Integer.parseInt(sCurrentQuantity);
         currentQuantity += changes;
 
-        if (changes < 1) {
+        if (currentQuantity < 1) {
             Toast.makeText(this, "Please enter a valid quantity.", Toast.LENGTH_SHORT).show();
         } else {
             binding.textFoodDetailsQuantity.setText(String.valueOf(currentQuantity));
+        }
+
+        calculateTotalPrice();
+    }
+
+    private void calculateTotalPrice() {
+        double totalPrice = food.foodPrice;
+
+        if (foodOptions != null && !foodOptions.isEmpty()) {
+            ArrayList<Double> prices = new ArrayList<>();
+            RecyclerView recyclerView = binding.recyclerFoodDetailFoodOption;
+
+            for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                View view = recyclerView.getChildAt(i);
+                RadioGroup radioGroup = view.findViewById(R.id.radioGroupFoodOptionItem);
+
+                int checkedId = radioGroup.getCheckedRadioButtonId();
+
+                if (checkedId != -1) {
+                    RadioButton selectedRadioButton = view.findViewById(checkedId);
+                    double radioButtonPrice = extractCost(selectedRadioButton.getText().toString());
+                    prices.add(radioButtonPrice);
+                }
+            }
+
+            for (double price : prices) {
+                totalPrice += price;
+            }
+        }
+
+        // calculate quantity
+        totalPrice *= Integer.parseInt(binding.textFoodDetailsQuantity.getText().toString());
+        String formattedPrice = String.format(Locale.getDefault(),"%.2f", Math.abs(totalPrice));
+
+        binding.textFoodDetailsPriceAmount.setText("RM " + formattedPrice);
+    }
+
+    private double extractCost(String optionName) {
+        Pattern pattern = Pattern.compile("[+-]\\s*RM\\s*(\\d+(\\.\\d+)?)");
+        Matcher matcher = pattern.matcher(optionName);
+
+        if (matcher.find()) {
+            String numberAsString = matcher.group(1);
+            double cost = Double.parseDouble(numberAsString);
+            if (optionName.contains("-RM")) {
+                return -cost;
+            } else {
+                return cost;
+            }
+        } else {
+            return 0;
         }
     }
 
@@ -173,7 +377,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
                                 binding.textFoodDetailsName.setText(food.foodName);
                                 binding.textFoodDetailsDesc.setText(food.foodDesc);
-                                binding.textFoodDetailsPriceAmount.setText(String.valueOf(food.foodPrice));
+                                binding.textFoodDetailsPriceAmount.setText("RM " + food.foodPrice);
 
                                 setFoodImage();
                             }
@@ -187,7 +391,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 + "/"
                 + foodId
                 + "/"
-                + Constants.KEY_FOOD_IMAGE)
+                + Constants.KEY_FOOD_IMAGE + ".jpeg")
                 .getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -202,5 +406,8 @@ public class FoodDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         foodId = getIntent().getStringExtra(Constants.KEY_FOOD_ID);
         reviews = new ArrayList<>();
+        food = new Food();
+        foodOptions = new ArrayList<>();
+        preferenceManager = new PreferenceManager(getApplicationContext());
     }
 }

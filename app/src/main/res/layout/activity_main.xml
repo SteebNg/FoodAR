@@ -22,7 +22,7 @@
         android:paddingTop="@dimen/_8sdp"
         android:paddingBottom="@dimen/_8sdp"
         android:gravity="center_vertical|start"
-        android:background="@color/background">
+        android:background="@color/bg_darker">
 
         <ImageView
             android:layout_width="@dimen/_36sdp"

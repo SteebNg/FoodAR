@@ -28,6 +28,14 @@ public class Constants {
     public static final String KEY_ORDER_ID = "OrderId";
     public static final String KEY_FOOD_IMAGE = "FoodImage";
     public static final String KEY_FOOD_DESC = "FoodDesc";
+    public static final String KEY_FOOD_OPTIONS = "FoodOptions";
+    public static final String KEY_FOOD_INDIVIDUAL_OPTIONS = "FoodIndividualOptions";
+    public static final String KEY_IS_COMPULSORY = "IsCompulsory";
+    public static final String KEY_FOOD_OPTION_TITLE = "FoodOptionTitle";
+    public static final String KEY_CURRENT_ORDERS = "CurrentOrders";
+    public static final String KEY_REMARKS = "Remarks";
+    public static final String KEY_ORDER_PRICE = "OrderPrice";
+    public static final String KEY_CARTS = "Carts";
 
     // food categories
     public static final String KEY_ALL_MENU = "All menu";

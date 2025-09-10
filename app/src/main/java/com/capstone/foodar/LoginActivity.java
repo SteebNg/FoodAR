@@ -105,15 +105,23 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     currentUser = firebaseAuth.getCurrentUser();
 
-                    if (currentUser.isEmailVerified()) {
-                        preferenceManager.putString(Constants.KEY_EMAIL, email);
-                        preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
-                        preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
+//                    if (currentUser.isEmailVerified()) {
+//                        preferenceManager.putString(Constants.KEY_EMAIL, email);
+//                        preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
+//                        preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
+//
+//                        finish();
+//                    } else {
+//                        showError("Please verify your email first.");
+//                    }
 
-                        finish();
-                    } else {
-                        showError("Please verify your email first.");
-                    }
+                    preferenceManager.putString(Constants.KEY_EMAIL, email);
+                    preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
+                    preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
+
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
                     isLoginButtonLoading(false);
                 }

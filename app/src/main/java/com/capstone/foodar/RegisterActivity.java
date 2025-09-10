@@ -132,7 +132,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setDefaultProfilePic() {
-        storageReference.child(currentUser.getUid() + "/" + Constants.KEY_PROFILE_IMAGE)
+        storageReference.child(Constants.KEY_USERS_LIST + "/" + currentUser.getUid() + "/" + Constants.KEY_PROFILE_IMAGE)
                 .putFile(getRandomProfileImage())
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -241,7 +241,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (password.length() < 6) {
             showErrorMessage("Your password must contain at least 6 characters.");
             return false;
-        } else if (password.equals(binding.etRegisterConfirmPassword.getText().toString())) {
+        } else if (!password.equals(binding.etRegisterConfirmPassword.getText().toString())) {
             showErrorMessage("The password and confirmed password is not the same");
             return false;
         } else {

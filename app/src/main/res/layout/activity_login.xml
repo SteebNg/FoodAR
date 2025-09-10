@@ -181,7 +181,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/buttonLogin"
         app:layout_constraintStart_toStartOf="@+id/buttonLogin"
         app:layout_constraintEnd_toEndOf="@+id/buttonLogin"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:progressTint="@color/black"/>
 
     <TextView
         android:id="@+id/textLoginError"

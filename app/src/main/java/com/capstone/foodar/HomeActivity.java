@@ -1,6 +1,5 @@
 package com.capstone.foodar;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -72,9 +71,8 @@ public class HomeActivity extends AppCompatActivity {
         init();
         // cause for some reason (searched the internet but no answers), google doesnt allow direct
         // edit to the hint fonts in the XML file. I dont know. Ask them.
-        changeSearchHintFont();
+        // changeSearchHintFont();
         setListeners();
-        setFoodCategoryPopupMenu();
         if (isLoggedIn) {
             loadOrderAgain();
         } else {
@@ -122,16 +120,29 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadAllMenuList(DocumentSnapshot document) {
         Food food = new Food();
-        food.foodId = document.getString(Constants.KEY_FOOD_ID);
+        food.foodId = document.getId();
         food.foodPrice = document.getDouble(Constants.KEY_FOOD_PRICE);
         food.foodName = document.getString(Constants.KEY_FOOD_NAME);
         food.foodRating = document.getDouble(Constants.KEY_FOODS_RATING);
         food.foodCategory = document.getString(Constants.KEY_FOOD_CATEGORY);
-        food.foodImage = getFoodImage(food);
+        getFoodAllMenuImage(food);
+    }
 
-        allMenuFoods.add(food);
-
-        loadAllMenuRecycler();
+    private void getFoodAllMenuImage(Food food) {
+        storageRef.child(Constants.KEY_FOODS
+                        + "/"
+                        + food.foodId
+                        + "/"
+                        + Constants.KEY_FOOD_IMAGE + ".jpeg")
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        food.foodImage = uri;
+                        allMenuFoods.add(food);
+                        loadAllMenuRecycler();
+                    }
+                });
     }
 
     private void loadAllMenuRecycler() {
@@ -142,6 +153,7 @@ public class HomeActivity extends AppCompatActivity {
         allMenuAdapter = getAllMenuAdapter(allMenuFoods);
         binding.recyclerHomeMenu.setAdapter(allMenuAdapter);
         allMenuAdapter.notifyDataSetChanged();
+        setFoodCategoryPopupMenu();
     }
 
     private HomeAllMenuListAdapter getAllMenuAdapter(ArrayList<Food> foods) {
@@ -150,10 +162,13 @@ public class HomeActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new HomeAllMenuListAdapter.OnItemClickListener() {
             @Override
             public void onClick(Food food) {
-                Intent intent = new Intent(HomeActivity.this, FoodDetailsActivity.class);
-                // TODO: pass food ID to the intent
-                intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
-                startActivity(intent);
+                if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
+                    Intent intent = new Intent(HomeActivity.this, FoodDetailsActivity.class);
+                    intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
+                    startActivity(intent);
+                } else {
+                    // TODO: Direct to location activity
+                }
             }
         });
 
@@ -185,10 +200,10 @@ public class HomeActivity extends AppCompatActivity {
         food.foodName = document.getString(Constants.KEY_FOOD_NAME);
         food.foodPrice = document.getDouble(Constants.KEY_FOOD_PRICE);
         food.foodRating = document.getDouble(Constants.KEY_FOODS_RATING);
-        getFoodImage(food);
+        getFoodOrderAgainImage(food);
     }
 
-    private void getFoodImage(Food food) {
+    private void getFoodOrderAgainImage(Food food) {
         storageRef.child(Constants.KEY_FOODS
                         + "/"
                         + food.foodId
@@ -217,10 +232,13 @@ public class HomeActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new HomeOrderAgainListAdapter.OnItemClickListener() {
             @Override
             public void onClick(Food food) {
-                int pos = foods.indexOf(food);
-                // TODO: Navigate to the activity
-                Intent intent = new Intent(HomeActivity.this, );
-                startActivity(intent);
+                if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
+                    Intent intent = new Intent(HomeActivity.this, FoodDetailsActivity.class);
+                    intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
+                    startActivity(intent);
+                } else {
+                    // TODO: Direct to location activity
+                }
             }
         });
 
@@ -262,9 +280,9 @@ public class HomeActivity extends AppCompatActivity {
         binding.buttonHomeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 if (isLoggedIn) {
-                    intent = new Intent(HomeActivity.this, ProfilePageActivity.class);
+                    // intent = new Intent(HomeActivity.this, ProfilePageActivity.class); // TODO: To Profile Activity
                 } else {
                     intent = new Intent(HomeActivity.this, LoginActivity.class);
                 }
@@ -274,8 +292,8 @@ public class HomeActivity extends AppCompatActivity {
         binding.searchBarHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, ); // search activity
-                startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this, ); // TODO: search activity
+                //startActivity(intent);
             }
         });
         binding.buttonHomeFoodCategory.setOnClickListener(new View.OnClickListener() {
@@ -289,8 +307,8 @@ public class HomeActivity extends AppCompatActivity {
         binding.buttonHomeShoppingCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, );
-                startActivity(intent);
+                //Intent intent = new Intent(HomeActivity.this, ); // TODO: Shopping Activity
+                //startActivity(intent);
             }
         });
     }
@@ -326,13 +344,16 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         HomeAllMenuListAdapter filteredAllMenuListAdapter = new HomeAllMenuListAdapter(foodFiltered, HomeActivity.this);
-        filteredAllMenuListAdapter.setOnItemClickListener(new HomeOrderAgainListAdapter.OnItemClickListener() {
+        filteredAllMenuListAdapter.setOnItemClickListener(new HomeAllMenuListAdapter.OnItemClickListener() {
             @Override
             public void onClick(Food food) {
-                int pos = foods.indexOf(food);
-                // TODO: Navigate to the activity
-                Intent intent = new Intent(HomeActivity.this, );
-                startActivity(intent);
+                if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
+                    Intent intent = new Intent(HomeActivity.this, FoodDetailsActivity.class);
+                    intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
+                    startActivity(intent);
+                } else {
+                    // TODO: Direct to location activity
+                }
             }
         });
 
@@ -351,11 +372,11 @@ public class HomeActivity extends AppCompatActivity {
         return new ArrayList<>(uniqueCategories);
     }
 
-    private void changeSearchHintFont() {
-        SearchView searchView = binding.searchBarHome;
-        int id = searchView.getId();
-        TextView textView = searchView.findViewById(id);
-        Typeface face = Typeface.createFromAsset(getAssets(), "font/alata.ttf");
-        textView.setTypeface(face);
-    }
+//    private void changeSearchHintFont() {
+//        SearchView searchView = binding.searchBarHome;
+//        int id = searchView.getId();
+//        TextView textView = searchView.se
+//        Typeface face = Typeface.createFromAsset(getAssets(), "font/alata.ttf");
+//        textView.setTypeface(face);
+//    }
 }
