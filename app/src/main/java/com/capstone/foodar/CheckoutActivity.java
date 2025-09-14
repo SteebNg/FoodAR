@@ -65,8 +65,15 @@ public class CheckoutActivity extends AppCompatActivity {
         });
 
         init();
+        checkForDeepLinkData();
         setListeners();
         getFoodList();
+    }
+
+    private void checkForDeepLinkData() {
+        if (preferenceManager.contains(Constants.KEY_TABLE_NUM)) {
+            binding.etCheckoutTableNum.setText(preferenceManager.getString(Constants.KEY_TABLE_NUM));
+        }
     }
 
     private void getFoodList() {
@@ -260,6 +267,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         startActivityForResult(intent, DESTINATION_RESULT);
                     }
                 }
+                preferenceManager.clearString(Constants.KEY_TABLE_NUM);
             }
         });
         binding.imageCheckoutDestinationChange.setOnClickListener(new View.OnClickListener() {
@@ -290,8 +298,9 @@ public class CheckoutActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             foodsInCartProcessed[0]++;
                             if (foodsInCartProcessed[0] == foodsInCart.size()) {
-//                                Intent intent = new Intent(CheckoutActivity.this, );
+//                                Intent intent = new Intent(CheckoutActivity.this, ); TODO
 //                                startActivity(intent);
+                                preferenceManager.putBoolean(Constants.KEY_ORDERING, true);
                                 finish();
                             }
                         }
@@ -305,8 +314,15 @@ public class CheckoutActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         foodsInCart = new ArrayList<>();
 
-        // TODO: Check the scanned QR data
-        servingMode = Constants.KEY_DELIVERY_MODE;
+        if (preferenceManager.contains(Constants.KEY_TABLE_NUM)) {
+            servingMode = Constants.KEY_DINE_IN_MODE;
+            binding.layoutCheckoutDineInMode.setVisibility(View.VISIBLE);
+            binding.layoutCheckoutDeliveryMode.setVisibility(View.GONE);
+        } else {
+            servingMode = Constants.KEY_DELIVERY_MODE;
+            binding.layoutCheckoutDineInMode.setVisibility(View.GONE);
+            binding.layoutCheckoutDeliveryMode.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
