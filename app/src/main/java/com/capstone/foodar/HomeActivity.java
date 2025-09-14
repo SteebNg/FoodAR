@@ -41,6 +41,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class HomeActivity extends AppCompatActivity {
@@ -73,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         init();
+//        getDeepLinkData();
         // cause for some reason (searched the internet but no answers), google doesnt allow direct
         // edit to the hint fonts in the XML file. I dont know. Ask them.
         // changeSearchHintFont();
@@ -85,6 +87,18 @@ public class HomeActivity extends AppCompatActivity {
         loadAllMenu();
         loadLocation();
     }
+
+//    private void getDeepLinkData() {
+//        Uri uri = getIntent().getData();
+//
+//        if (uri != null) {
+//            List<String> params = uri.getPathSegments();
+//            preferenceManager.putString(Constants.KEY_LOCATION_ID, params.get(0));
+//            if (params.size() == 2) {
+//                preferenceManager.putString(Constants.KEY_TABLE_NUM, params.get(1));
+//            }
+//        }
+//    }
 
     private void loadLocation() {
         if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
