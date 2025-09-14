@@ -129,7 +129,7 @@ public class LocationSelectActivity extends AppCompatActivity {
 
                 Intent intent = new Intent();
                 intent.putExtra(LOCATION_ID_FOR_RESULT, location.locationName);
-                setResult(RESULT_OK);
+                setResult(RESULT_OK, intent);
                 finish();
             }
         });

@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
     private PopupMenu popupMenu;
     private String currentFoodCategory;
     private final int LOCATION_ACTIVITY_RESULT = 1;
+    private final int QR_CODE_ACTIVITY_RESULT = 5;
     private ArrayList<Food> filteredAllMenu;
 
     @Override
@@ -406,6 +407,13 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(intent, LOCATION_ACTIVITY_RESULT);
             }
         });
+        binding.buttonHomeScanQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, QrCodeScanActivity.class);
+                startActivityForResult(intent, QR_CODE_ACTIVITY_RESULT);
+            }
+        });
     }
 
     private void filterAllMenu(String query) {
@@ -488,6 +496,8 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
+        } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
+            loadLocation();
         }
     }
 }
