@@ -68,6 +68,11 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
         }
     }
 
+    public void filterAllMenuList(ArrayList<Food> filteredFoodList) {
+        foods = filteredFoodList;
+        notifyDataSetChanged();
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReviewsActivity"
+    android:background="@color/bg_dark">
+
+    <ImageView
+        android:id="@+id/imageReviewBack"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:src="@drawable/arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/textReviewFoodName"
+        app:layout_constraintTop_toTopOf="@+id/imageReviewBack"
+        app:layout_constraintStart_toEndOf="@+id/imageReviewBack"
+        app:layout_constraintBottom_toBottomOf="@+id/imageReviewBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Combo Deluxe"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center" 
+        android:paddingBottom="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_8sdp"/>
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshReview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/textReviewFoodName"
+        tools:layout_editor_absoluteX="0dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutReviewsRatingStats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:background="@drawable/bg_rectangle_white"
+                    android:backgroundTint="@color/bg_darker"
+                    android:padding="@dimen/_8sdp"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textReviewFood5StarRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="5"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageReview5Star"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:src="@drawable/iconstarfilled"
+                        app:layout_constraintBottom_toBottomOf="@+id/textReviewFood5StarRating"
+                        app:layout_constraintStart_toEndOf="@+id/textReviewFood5StarRating"
+                        app:layout_constraintTop_toTopOf="@+id/textReviewFood5StarRating" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarReview5Star"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:progress="45"
+                        android:progressTint="@color/secondary_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageReview5Star"
+                        app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
+                        app:layout_constraintStart_toEndOf="@+id/imageReview5Star"
+                        app:layout_constraintTop_toTopOf="@+id/imageReview5Star" />
+
+                    <TextView
+                        android:id="@+id/textReviewFood4StarRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="4"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textReviewFood5StarRating" />
+
+                    <ImageView
+                        android:id="@+id/imageReview4Star"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/iconstarfilled"
+                        app:layout_constraintBottom_toBottomOf="@+id/textReviewFood4StarRating"
+                        app:layout_constraintEnd_toEndOf="@+id/imageReview5Star"
+                        app:layout_constraintStart_toStartOf="@+id/imageReview5Star"
+                        app:layout_constraintTop_toTopOf="@+id/textReviewFood4StarRating" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarReview4Star"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:progress="45"
+                        android:progressTint="@color/secondary_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageReview4Star"
+                        app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
+                        app:layout_constraintStart_toEndOf="@+id/imageReview4Star"
+                        app:layout_constraintTop_toTopOf="@+id/imageReview4Star" />
+
+                    <TextView
+                        android:id="@+id/textReviewFood3StarRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="3"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textReviewFood4StarRating" />
+
+                    <ImageView
+                        android:id="@+id/imageReview3Star"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/iconstarfilled"
+                        app:layout_constraintBottom_toBottomOf="@+id/textReviewFood3StarRating"
+                        app:layout_constraintEnd_toEndOf="@+id/imageReview4Star"
+                        app:layout_constraintStart_toStartOf="@+id/imageReview4Star"
+                        app:layout_constraintTop_toTopOf="@+id/textReviewFood3StarRating" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarReview3Star"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:progress="45"
+                        android:progressTint="@color/secondary_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageReview3Star"
+                        app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
+                        app:layout_constraintStart_toEndOf="@+id/imageReview3Star"
+                        app:layout_constraintTop_toTopOf="@+id/imageReview3Star" />
+
+                    <TextView
+                        android:id="@+id/textReviewFood2StarRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="2"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textReviewFood3StarRating" />
+
+                    <ImageView
+                        android:id="@+id/imageReview2Star"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/iconstarfilled"
+                        app:layout_constraintBottom_toBottomOf="@+id/textReviewFood2StarRating"
+                        app:layout_constraintEnd_toEndOf="@+id/imageReview3Star"
+                        app:layout_constraintStart_toStartOf="@+id/imageReview3Star"
+                        app:layout_constraintTop_toTopOf="@+id/textReviewFood2StarRating" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarReview2Star"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:progress="45"
+                        android:progressTint="@color/secondary_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageReview2Star"
+                        app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
+                        app:layout_constraintStart_toEndOf="@+id/imageReview2Star"
+                        app:layout_constraintTop_toTopOf="@+id/imageReview2Star" />
+
+                    <TextView
+                        android:id="@+id/textReviewFood1StarRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/alata"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="1"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintEnd_toEndOf="@+id/textReviewFood2StarRating"
+                        app:layout_constraintStart_toStartOf="@+id/textReviewFood2StarRating"
+                        app:layout_constraintTop_toBottomOf="@+id/textReviewFood2StarRating" />
+
+                    <ImageView
+                        android:id="@+id/imageReview1Star"
+                        android:layout_width="@dimen/_10sdp"
+                        android:layout_height="@dimen/_10sdp"
+                        android:src="@drawable/iconstarfilled"
+                        app:layout_constraintBottom_toBottomOf="@+id/textReviewFood1StarRating"
+                        app:layout_constraintEnd_toEndOf="@+id/imageReview2Star"
+                        app:layout_constraintStart_toStartOf="@+id/imageReview2Star"
+                        app:layout_constraintTop_toTopOf="@+id/textReviewFood1StarRating" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBarReview1Star"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:progress="45"
+                        android:progressTint="@color/secondary_text"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageReview1Star"
+                        app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
+                        app:layout_constraintStart_toEndOf="@+id/imageReview1Star"
+                        app:layout_constraintTop_toTopOf="@+id/imageReview1Star" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutReviewOverallRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textReviewFoodOverallRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:fontFamily="@font/alata"
+                            android:gravity="end"
+                            android:paddingBottom="@dimen/_2sdp"
+                            android:text="4.0"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/_28ssp"
+                            android:textStyle="bold" />
+
+                        <RatingBar
+                            android:id="@+id/ratingReviewOverallRating"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:rating="3.5"
+                            android:theme="@style/GoldenRatingBar" />
+
+                        <TextView
+                            android:id="@+id/textReviewFoodOverallNumberOfReviews"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:fontFamily="@font/alata"
+                            android:gravity="end"
+                            android:paddingBottom="@dimen/_2sdp"
+                            android:text="52 Reviews"
+                            android:textColor="@color/primary_text"
+                            android:textSize="@dimen/_10ssp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerReview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutReviewsRatingStats"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/layout_review_item_list" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutReviewButtonWriteReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/bg_dark">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonReviewWriteReview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Write Review"
+            android:fontFamily="@font/alata"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/lightGreen"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginEnd="@dimen/_16sdp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

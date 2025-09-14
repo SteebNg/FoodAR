@@ -36,6 +36,17 @@ public class Constants {
     public static final String KEY_REMARKS = "Remarks";
     public static final String KEY_ORDER_PRICE = "OrderPrice";
     public static final String KEY_CARTS = "Carts";
+    public static final String KEY_LOCATION_ADDRESS = "LocationAddress";
+    public static final String KEY_FOOD_AMOUNT = "FoodAmount";
+    public static final String KEY_CART_ID = "CartId";
+    public static final String KEY_DELIVERY_MODE = "DeliveryMode";
+    public static final String KEY_DINE_IN_MODE = "DineInMode";
+    public static final String KEY_PAYMENT_METHOD = "PaymentMethod";
+    public static final String KEY_SERVING_METHOD = "ServingMethod";
+    public static final String KEY_TABLE_NUM = "TableNum";
+    public static final String KEY_DESTINATION = "Destination";
+
+    public static final String KEY_POSITION = "Position";
 
     // food categories
     public static final String KEY_ALL_MENU = "All menu";

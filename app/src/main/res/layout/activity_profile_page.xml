@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfilePageActivity"
+    android:background="@color/bg_darker">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageProfileUserPicture"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/account_circle_24"
+        android:layout_marginTop="@dimen/_100sdp"
+        app:riv_corner_radius="@dimen/_100sdp"/>
+
+    <ImageView
+        android:id="@+id/imageProfileBack"
+        android:layout_width="@dimen/_28sdp"
+        android:layout_height="@dimen/_28sdp"
+        android:src="@drawable/arrow_back_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/_16sdp"/>
+
+    <TextView
+        android:id="@+id/textProfileUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:paddingTop="@dimen/_1sdp"
+        android:textColor="@color/primary_text"
+        android:fontFamily="@font/alata"
+        app:layout_constraintTop_toBottomOf="@+id/imageProfileUserPicture"
+        app:layout_constraintStart_toStartOf="@+id/imageProfileUserPicture"
+        app:layout_constraintEnd_toEndOf="@+id/imageProfileUserPicture"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:textSize="@dimen/_16ssp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonProfileLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textProfileUserName"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:backgroundTint="@color/warningRed"
+        android:text="Logout"
+        android:background="@drawable/bg_rectangle_rounded_corner"
+        android:paddingTop="@dimen/_1sdp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/alata" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -131,27 +131,15 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/layout_food_details_options_item_list"
-                        tools:itemCount="1"/>
-
-                    <TextView
-                        android:id="@+id/textFoodDetailsNoOptions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="@id/textFoodDetailsName"
-                        app:layout_constraintTop_toBottomOf="@+id/dividerFoodDetails1"
-                        android:text="Enjoy your meal!"
-                        android:fontFamily="@font/alata"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/primary_text"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:visibility="invisible"/>
+                        tools:itemCount="1"
+                        android:overScrollMode="never"/>
 
                     <View
                         android:id="@+id/dividerFoodDetails2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/borderStroke"
-                        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsNoOptions"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerFoodDetailFoodOption"
                         android:layout_marginTop="@dimen/_8sdp" />
 
                     <TextView
@@ -174,7 +162,8 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="2"
-                        tools:listitem="@layout/layout_food_details_review_item_list"/>
+                        tools:listitem="@layout/layout_food_details_review_item_list"
+                        android:overScrollMode="never"/>
 
                     <TextView
                         android:id="@+id/textFoodDetailsNoReviews"
@@ -233,8 +222,11 @@
                         android:hint="Remarks here......"
                         android:background="@drawable/bg_rectangle_white"
                         android:backgroundTint="@color/bg_light"
+                        android:lines="4"
+                        android:gravity="start|top"
                         android:layout_marginTop="@dimen/_8sdp"
-                        android:paddingStart="@dimen/_8sdp"/>
+                        android:paddingStart="@dimen/_8sdp"
+                        android:fontFamily="@font/alata"/>
 
                     <View
                         android:id="@+id/dividerFoodDetails4"

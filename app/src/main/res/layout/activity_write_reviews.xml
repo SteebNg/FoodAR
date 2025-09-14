@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WriteReviewsActivity"
+    android:background="@color/bg_dark">
+
+    <ImageView
+        android:id="@+id/imageWriteReviewBack"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:src="@drawable/arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp" />
+
+    <TextView
+        android:id="@+id/textWriteReviewTitle"
+        app:layout_constraintTop_toTopOf="@+id/imageWriteReviewBack"
+        app:layout_constraintStart_toEndOf="@+id/imageWriteReviewBack"
+        app:layout_constraintBottom_toBottomOf="@+id/imageWriteReviewBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Leave a review"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_8sdp"/>
+
+    <ImageView
+        android:id="@+id/imageWriteReviewFoodImage"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/burbur_2"
+        app:layout_constraintTop_toBottomOf="@+id/textWriteReviewTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_40sdp" />
+
+    <RatingBar
+        android:id="@+id/ratingWriteReview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageWriteReviewFoodImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:theme="@style/GoldenRatingBar"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:rating="1"/>
+
+    <EditText
+        android:id="@+id/etWriteReviewComment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_120sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ratingWriteReview"
+        android:hint="Optional..."
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/bg_light"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:paddingStart="@dimen/_8sdp"
+        android:paddingTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:lines="4"
+        android:gravity="top|start"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonWriteReviewSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etWriteReviewComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Submit"
+        android:fontFamily="@font/alata"
+        android:textAllCaps="false"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:background="@drawable/bg_chip"
+        android:backgroundTint="@color/lightGreen" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

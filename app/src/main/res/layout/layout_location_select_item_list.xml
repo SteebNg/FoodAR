@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/_4sdp">
+
+    <TextView
+        android:id="@+id/textLayoutLocationItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Location Name"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/alata"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:maxLines="3"
+        android:textStyle="bold"
+        android:gravity="start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"/>
+
+    <TextView
+        android:id="@+id/textLayoutLocationItemAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Location Address"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="4"
+        android:gravity="start"
+        app:layout_constraintStart_toStartOf="@+id/textLayoutLocationItemName"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutLocationItemName"
+        android:layout_marginEnd="@dimen/_16sdp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutLocationItemAddress"
+        android:background="@color/grey"
+        android:layout_marginTop="@dimen/_4sdp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,6 +56,10 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private FoodDetailsOptionListAdapter optionListAdapter;
     private PreferenceManager preferenceManager;
 
+    // for checkout activity
+    private String cartId;
+    private int pos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,8 +91,8 @@ public class FoodDetailsActivity extends AppCompatActivity {
                             if (document.exists()) {
                                 putOptionsInRecycler(document);
                             } else {
-                                binding.recyclerFoodDetailFoodOption.setVisibility(View.GONE);
-                                binding.textFoodDetailsNoOptions.setVisibility(View.VISIBLE);
+                                binding.recyclerFoodDetailFoodOption.setVisibility(View.INVISIBLE);
+                                binding.dividerFoodDetails2.setVisibility(View.INVISIBLE);
                             }
                         }
                     }
@@ -140,7 +144,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private void setFoodOptionRecycler() {
         optionListAdapter = getOptionListAdapter();
         binding.recyclerFoodDetailFoodOption.setAdapter(optionListAdapter);
-        int i = foodOptions.size();
         optionListAdapter.notifyDataSetChanged();
         calculateTotalPrice();
     }
@@ -238,9 +241,9 @@ public class FoodDetailsActivity extends AppCompatActivity {
         binding.textFoodDetailsReviewMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(FoodDetailsActivity.this, );
-//                intent.putExtra(Constants.KEY_FOOD_ID, foodId);
-//                startActivity(intent);
+                Intent intent = new Intent(FoodDetailsActivity.this, ReviewsActivity.class);
+                intent.putExtra(Constants.KEY_FOOD_ID, foodId);
+                startActivity(intent);
             }
         });
         binding.buttonFoodDetailAddToCart.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +255,8 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 individualFoodOrder.put(Constants.KEY_REMARKS, binding.etFoodDetailsRemark.getText().toString().trim());
                 individualFoodOrder.put(Constants.KEY_FOOD_OPTIONS, getFoodOptions());
                 individualFoodOrder.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                individualFoodOrder.put(Constants.KEY_FOOD_AMOUNT, Integer.parseInt(binding.textFoodDetailsQuantity.getText().toString()));
+                individualFoodOrder.put(Constants.KEY_FOOD_NAME, food.foodName);
 
                 String sTotalPrice = binding.textFoodDetailsPriceAmount.getText().toString();
                 String sExtractedPrice = sTotalPrice.replaceAll("[^\\d.-]", "");
@@ -264,6 +269,12 @@ public class FoodDetailsActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
                                 Toast.makeText(FoodDetailsActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                                if (cartId != null) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra(Constants.KEY_CART_ID, cartId);
+                                    intent.putExtra(Constants.KEY_POSITION, pos);
+                                    setResult(RESULT_OK, intent);
+                                }
                                 finish();
                             }
                         });
@@ -405,6 +416,8 @@ public class FoodDetailsActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         db = FirebaseFirestore.getInstance();
         foodId = getIntent().getStringExtra(Constants.KEY_FOOD_ID);
+        cartId = getIntent().getStringExtra(Constants.KEY_CART_ID);
+        pos = getIntent().getIntExtra(Constants.KEY_POSITION, -1);
         reviews = new ArrayList<>();
         food = new Food();
         foodOptions = new ArrayList<>();

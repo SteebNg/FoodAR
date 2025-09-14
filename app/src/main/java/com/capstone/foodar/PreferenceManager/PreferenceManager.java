@@ -37,6 +37,12 @@ public class PreferenceManager {
         editor.apply();
     }
 
+    public void clearString(String string) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(string);
+        editor.apply();
+    }
+
     public boolean contains(String key) {
         return sharedPreferences.contains(key);
     }

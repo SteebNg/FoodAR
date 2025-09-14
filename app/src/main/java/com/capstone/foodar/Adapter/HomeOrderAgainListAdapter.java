@@ -52,7 +52,7 @@ public class HomeOrderAgainListAdapter extends RecyclerView.Adapter<HomeOrderAga
         holder.foodPrice.setText(String.valueOf(food.foodPrice));
         holder.foodImage.setImageURI(food.foodImage);
         holder.ratingBar.setRating((float) food.foodRating);
-        holder.itemView.setOnClickListener(v -> onItemClickListener.onClick(foods.get(position)));
+        holder.itemView.setOnClickListener(v -> onItemClickListener.onClick(food));
     }
 
     @Override

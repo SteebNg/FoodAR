@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DestinationSelectActivity"
+    android:background="@color/bg_dark">
+
+    <TextView
+        android:id="@+id/textDestinationTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose Destination"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <ImageView
+        android:id="@+id/imageDestinationBack"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        app:layout_constraintTop_toTopOf="@+id/textDestinationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textDestinationTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/arrow_back_24"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:paddingTop="@dimen/_2sdp"/>
+
+    <TextView
+        android:id="@+id/textDestinationAddressCity"
+        app:layout_constraintTop_toBottomOf="@+id/textDestinationTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City: "
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_16sdp"/>
+
+    <EditText
+        android:id="@+id/etDestinationAddressCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textDestinationAddressCity"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:hint="Example: Bayan Lepas"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/bg"
+        android:textColorHint="@color/hintColor"/>
+
+    <TextView
+        android:id="@+id/textDestinationAddressTitle"
+        app:layout_constraintTop_toBottomOf="@+id/etDestinationAddressCity"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address: "
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_16sdp"/>
+
+    <EditText
+        android:id="@+id/etDestinationAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textDestinationAddressTitle"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:hint="Example: 1-Z, Lebuh Bukit Jambul, Bukit Jambul, 11900 Bayan Lepas, Pulau Pinang, Malaysia"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/bg"
+        android:lines="3"
+        android:textColorHint="@color/hintColor"/>
+
+    <TextView
+        android:id="@+id/textDestinationRemarks"
+        app:layout_constraintTop_toBottomOf="@+id/etDestinationAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remarks: "
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_16sdp"/>
+
+    <EditText
+        android:id="@+id/etDestinationRemarks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textDestinationRemarks"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:hint="Example: Floor 16, Put it in front of the door"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/bg"
+        android:lines="3"
+        android:textColorHint="@color/hintColor"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etDestinationRemarks"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_12sdp">
+
+        <Button
+            android:id="@+id/buttonDestinationAutoDetect"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Auto-Detect"
+            android:backgroundTint="@color/grey"
+            android:textColor="@color/white"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/buttonDestinationConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:backgroundTint="@color/secondary_text"
+            android:textColor="@color/white"
+            android:layout_weight="1"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_16sdp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/imageLayoutReviewUserImage"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:riv_corner_radius="@dimen/_100sdp"
+        android:src="@drawable/account_circle_24" />
+
+    <LinearLayout
+        android:id="@+id/layoutReviewUserDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/imageLayoutReviewUserImage"
+        app:layout_constraintTop_toTopOf="@+id/imageLayoutReviewUserImage"
+        app:layout_constraintBottom_toBottomOf="@+id/imageLayoutReviewUserImage"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_2sdp">
+
+        <TextView
+            android:id="@+id/textLayoutReviewUsername"
+            app:layout_constraintStart_toEndOf="@+id/imageLayoutReviewUserImage"
+            app:layout_constraintTop_toTopOf="@+id/imageLayoutReviewUserImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Combo Deluxe"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/_8ssp"
+            android:fontFamily="@font/alata"
+            android:gravity="start"
+            android:paddingBottom="@dimen/_2sdp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <RatingBar
+                android:id="@+id/ratingLayoutReviewUserRating"
+                app:layout_constraintTop_toBottomOf="@+id/textLayoutReviewUsername"
+                app:layout_constraintStart_toStartOf="@+id/textLayoutReviewUsername"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rating="3.5"
+                android:theme="@style/GoldenRatingBar" />
+
+            <TextView
+                android:id="@+id/textLayoutReviewReviewTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13 September 2025 13:45"
+                android:textColor="@color/secondary_text"
+                android:textSize="@dimen/_6ssp"
+                android:fontFamily="@font/alata"
+                android:gravity="start"
+                android:paddingBottom="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_4sdp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textLayoutReviewComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/layoutReviewUserDetails"
+        app:layout_constraintStart_toStartOf="@+id/imageLayoutReviewUserImage"
+        android:text="Consequat velit qui adipisicing sunt do rependerit ad laborum tempor ullamco exercitation. Ullamco tempor adipisicing et voluptate duis sit esse aliqua"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_8ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="start"
+        android:paddingBottom="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_8sdp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

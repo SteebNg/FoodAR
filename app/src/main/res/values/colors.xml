@@ -16,4 +16,6 @@
     <color name="warningRed">#cc0202</color>
     <color name="grey">#88888888</color>
     <color name="blueText">#007AFF</color>
+    <color name="darkOverlap">#505050</color>
+    <color name="duskYellow">#E4A70A</color>
 </resources>
