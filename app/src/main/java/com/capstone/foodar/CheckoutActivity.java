@@ -27,6 +27,7 @@ import com.capstone.foodar.databinding.ActivityCheckoutBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -243,6 +244,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
                         order.put(Constants.KEY_SERVING_METHOD, servingMode);
                         order.put(Constants.KEY_TABLE_NUM, tableNum);
+                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                         registerOrderToDb(order);
                     }
                 } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
@@ -261,6 +263,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
                         order.put(Constants.KEY_SERVING_METHOD, servingMode);
                         order.put(Constants.KEY_DESTINATION, destination);
+                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                         registerOrderToDb(order);
                     } else {
                         Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
