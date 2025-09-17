@@ -54,4 +54,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
 }
