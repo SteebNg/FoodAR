@@ -1,5 +1,6 @@
 package com.capstone.foodar;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -50,6 +51,7 @@ public class ProfilePageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 preferenceManager.clearString(Constants.KEY_USER_ID);
                 preferenceManager.clearString(Constants.KEY_EMAIL);
+                auth.signOut();
                 finish();
             }
         });
@@ -57,6 +59,13 @@ public class ProfilePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        binding.buttonProfileHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfilePageActivity.this, OrderHistoryActivity.class);
+                startActivity(intent);
             }
         });
     }

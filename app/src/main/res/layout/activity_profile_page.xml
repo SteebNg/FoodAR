@@ -42,12 +42,31 @@
         android:layout_marginTop="@dimen/_4sdp"
         android:textSize="@dimen/_16ssp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonProfileLogout"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonProfileHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/textProfileUserName"
         android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:backgroundTint="@color/lightGreen"
+        app:icon="@drawable/history_24"
+        app:iconGravity="textStart"
+        app:iconTint="@color/black"
+        android:text="History"
+        android:paddingTop="@dimen/_1sdp"
+        android:textColor="@color/primary_text"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/afacad_medium" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonProfileLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/buttonProfileHistory"
+        android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
         android:backgroundTint="@color/warningRed"
