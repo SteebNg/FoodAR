@@ -360,28 +360,13 @@ public class HomeActivity extends AppCompatActivity {
         binding.buttonHomeShoppingCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent;
-                if (isLoggedIn) {
-                    if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
-                        intent = new Intent(HomeActivity.this, CheckoutActivity.class);
-                        startActivity(intent);
-                    } else {
-                        intent = new Intent(HomeActivity.this, LocationSelectActivity.class);
-                        startActivityForResult(intent, LOCATION_ACTIVITY_RESULT);
-                    }
-                } else {
-                    intent = new Intent(HomeActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
+                checkIfCurrentOrderExists();
             }
         });
         binding.refreshHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 init();
-                // cause for some reason (searched the internet but no answers), google doesnt allow direct
-                // edit to the hint fonts in the XML file. I dont know. Ask them.
-                // changeSearchHintFont();
                 setListeners();
                 if (isLoggedIn) {
                     loadOrderAgain();
@@ -414,6 +399,37 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(intent, QR_CODE_ACTIVITY_RESULT);
             }
         });
+    }
+
+    private void checkIfCurrentOrderExists() {
+        db.collection(Constants.KEY_CURRENT_ORDERS)
+                .whereEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Intent intent;
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                if (isLoggedIn) {
+                                    if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
+                                        intent = new Intent(HomeActivity.this, CheckoutActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        intent = new Intent(HomeActivity.this, LocationSelectActivity.class);
+                                        startActivityForResult(intent, LOCATION_ACTIVITY_RESULT);
+                                    }
+                                } else {
+                                    intent = new Intent(HomeActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                }
+                            } else {
+                                intent = new Intent(HomeActivity.this, OrderStatusClientActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+                });
     }
 
     private void filterAllMenu(String query) {
