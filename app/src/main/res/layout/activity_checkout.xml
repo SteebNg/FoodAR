@@ -92,47 +92,57 @@
                 android:gravity="start"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_8sdp"/>
-            
-            <FrameLayout
+
+            <LinearLayout
                 android:id="@+id/layoutCheckoutMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@+id/textCheckoutPaymentTitle"
                 app:layout_constraintStart_toStartOf="@+id/textCheckoutPaymentTitle"
-                android:layout_marginTop="@dimen/_4sdp">
-                
-                <View
-                    android:layout_width="@dimen/_44sdp"
-                    android:layout_height="@dimen/_44sdp"
-                    android:background="@drawable/rectangle_food_container_bg" />
+                android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center">
 
-                <ImageView
-                    android:layout_width="@dimen/_36sdp"
-                    android:layout_height="@dimen/_36sdp"
-                    android:src="@drawable/attach_money_24"
-                    android:layout_gravity="center" />
-            </FrameLayout>
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/textCheckoutPaymentTitle"
+                    app:layout_constraintStart_toStartOf="@+id/textCheckoutPaymentTitle"
+                    android:layout_marginTop="@dimen/_4sdp">
 
-            <TextView
-                android:id="@+id/textCheckoutPaymentTextCash"
-                app:layout_constraintStart_toStartOf="@+id/layoutCheckoutMoney"
-                app:layout_constraintTop_toBottomOf="@+id/layoutCheckoutMoney"
-                app:layout_constraintEnd_toEndOf="@+id/layoutCheckoutMoney"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Cash"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/_10ssp"
-                android:fontFamily="@font/alata"
-                android:textStyle="bold"
-                android:gravity="center" />
+                    <View
+                        android:layout_width="@dimen/_44sdp"
+                        android:layout_height="@dimen/_44sdp"
+                        android:background="@drawable/rectangle_food_container_bg" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_36sdp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:src="@drawable/attach_money_24"
+                        android:layout_gravity="center" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/textCheckoutPaymentTextCash"
+                    app:layout_constraintStart_toStartOf="@+id/layoutCheckoutMoney"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutCheckoutMoney"
+                    app:layout_constraintEnd_toEndOf="@+id/layoutCheckoutMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cash"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/alata"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+            </LinearLayout>
 
             <View
                 android:id="@+id/dividerCheckout2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grey"
-                app:layout_constraintTop_toBottomOf="@+id/textCheckoutPaymentTextCash"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCheckoutMoney"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_28sdp"
                 android:layout_marginEnd="@dimen/_28sdp" />

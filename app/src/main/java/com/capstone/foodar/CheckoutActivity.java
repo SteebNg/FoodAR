@@ -27,6 +27,7 @@ import com.capstone.foodar.databinding.ActivityCheckoutBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -225,49 +226,54 @@ public class CheckoutActivity extends AppCompatActivity {
         binding.buttonCheckoutPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (servingMode.equals(Constants.KEY_DINE_IN_MODE)) {
-                    String tableNum = String.valueOf(binding.etCheckoutTableNum.getText());
-                    if (tableNum.isEmpty()) {
-                        Toast.makeText(CheckoutActivity.this, "Please enter the table number.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        ArrayList<String> cartsId = new ArrayList<>();
-                        for (FoodInCart food : foodsInCart) {
-                            cartsId.add(food.cartId);
-                        }
+                if (!foodsInCart.isEmpty()) {
+                    if (servingMode.equals(Constants.KEY_DINE_IN_MODE)) {
+                        String tableNum = String.valueOf(binding.etCheckoutTableNum.getText());
+                        if (tableNum.isEmpty()) {
+                            Toast.makeText(CheckoutActivity.this, "Please enter the table number.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            ArrayList<String> cartsId = new ArrayList<>();
+                            for (FoodInCart food : foodsInCart) {
+                                cartsId.add(food.cartId);
+                            }
 
-                        Map<String, Object> order = new HashMap<>();
-                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                        order.put(Constants.KEY_CARTS, cartsId);
-                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
-                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
-                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
-                        order.put(Constants.KEY_TABLE_NUM, tableNum);
-                        registerOrderToDb(order);
-                    }
-                } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
-                    String destination = String.valueOf(binding.textCheckoutDeliveryDestinationName.getText());
-                    if (!destination.isEmpty()) {
-                        ArrayList<String> cartsId = new ArrayList<>();
-                        for (FoodInCart food : foodsInCart) {
-                            cartsId.add(food.cartId);
+                            Map<String, Object> order = new HashMap<>();
+                            order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
+                            order.put(Constants.KEY_CARTS, cartsId);
+                            order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                            order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
+                            order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
+                            order.put(Constants.KEY_SERVING_METHOD, servingMode);
+                            order.put(Constants.KEY_TABLE_NUM, tableNum);
+                            registerOrderToDb(order);
                         }
+                    } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
+                        String destination = String.valueOf(binding.textCheckoutDeliveryDestinationName.getText());
+                        if (!destination.isEmpty()) {
+                            ArrayList<String> cartsId = new ArrayList<>();
+                            for (FoodInCart food : foodsInCart) {
+                                cartsId.add(food.cartId);
+                            }
 
-                        Map<String, Object> order = new HashMap<>();
-                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                        order.put(Constants.KEY_CARTS, cartsId);
-                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
-                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
-                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
-                        order.put(Constants.KEY_DESTINATION, destination);
-                        registerOrderToDb(order);
-                    } else {
-                        Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
-                        startActivityForResult(intent, DESTINATION_RESULT);
+                            Map<String, Object> order = new HashMap<>();
+                            order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
+                            order.put(Constants.KEY_CARTS, cartsId);
+                            order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                            order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
+                            order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
+                            order.put(Constants.KEY_SERVING_METHOD, servingMode);
+                            order.put(Constants.KEY_DESTINATION, destination);
+                            registerOrderToDb(order);
+                        } else {
+                            Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
+                            startActivityForResult(intent, DESTINATION_RESULT);
+                        }
                     }
+                    preferenceManager.clearString(Constants.KEY_TABLE_NUM);
+                } else {
+                    Snackbar snackbar = Snackbar.make(binding.main, "Empty cart. Place some order and checkout here.", Snackbar.LENGTH_SHORT);
+                    snackbar.show();
                 }
-                preferenceManager.clearString(Constants.KEY_TABLE_NUM);
             }
         });
         binding.imageCheckoutDestinationChange.setOnClickListener(new View.OnClickListener() {
