@@ -298,6 +298,7 @@ public class HomeActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         currentFoodCategory = Constants.KEY_ALL_MENU;
         filteredAllMenu = new ArrayList<>();
+        preferenceManager.clearString(Constants.KEY_TABLE_NUM);
 
         isLoggedIn = isLoggedIn();
 
