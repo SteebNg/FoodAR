@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_20sdp"
+    android:background="@drawable/bg_rectangle_rounded_corner">
+
+    <ImageView
+        android:id="@+id/imageDialogOtp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:src="@drawable/textsms_24"
+        app:tint="@color/hintColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textDialogOtpTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageDialogOtp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="OTP Sent"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <TextView
+        android:id="@+id/textDialogOtpDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogOtpTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="An OTP has been sent to your phone number via SMS. Check your SMS inbox."
+        android:maxWidth="@dimen/_240sdp"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <EditText
+        android:id="@+id/etDialogBankingOtp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogOtpDesc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/et_border_bg"
+        android:hint="1234"
+        android:gravity="center"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/hintColor"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/_16ssp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_2sdp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etDialogBankingOtp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonDialogOtpCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:backgroundTint="@color/warningRed"
+            android:textColor="@color/white"
+            android:fontFamily="@font/alata"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/buttonDialogOtpCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60"
+            android:backgroundTint="@color/grey"
+            android:textColor="@color/white"
+            android:fontFamily="@font/alata"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/buttonDialogOtpResend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resend"
+            android:backgroundTint="@color/bg_darker"
+            android:textColor="@color/primary_text"
+            android:fontFamily="@font/alata"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/buttonDialogOtpConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:backgroundTint="@color/lightGreen"
+            android:textColor="@color/primary_text"
+            android:fontFamily="@font/alata"
+            android:layout_weight="1"
+            android:visibility="visible"
+            android:layout_marginStart="@dimen/_4sdp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

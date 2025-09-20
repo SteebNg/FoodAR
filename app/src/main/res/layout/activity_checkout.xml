@@ -101,7 +101,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textCheckoutPaymentTitle"
                 app:layout_constraintStart_toStartOf="@+id/textCheckoutPaymentTitle"
                 android:layout_marginTop="@dimen/_4sdp"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@drawable/bg_rectangle_outlined_rounded_corner"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_4sdp">
 
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -130,6 +133,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cash"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/_10ssp"
+                    android:fontFamily="@font/alata"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutCheckoutBanking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/layoutCheckoutMoney"
+                app:layout_constraintTop_toTopOf="@+id/layoutCheckoutMoney"
+                app:layout_constraintBottom_toBottomOf="@+id/layoutCheckoutMoney"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/_8sdp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/textCheckoutPaymentTitle"
+                    app:layout_constraintStart_toStartOf="@+id/textCheckoutPaymentTitle"
+                    android:layout_marginTop="@dimen/_4sdp">
+
+                    <View
+                        android:layout_width="@dimen/_44sdp"
+                        android:layout_height="@dimen/_44sdp"
+                        android:background="@drawable/rectangle_food_container_bg" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_36sdp"
+                        android:layout_height="@dimen/_36sdp"
+                        android:src="@drawable/bank"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_3sdp"/>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/textCheckoutPaymentTextBanking"
+                    app:layout_constraintStart_toStartOf="@+id/layoutCheckoutMoney"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutCheckoutMoney"
+                    app:layout_constraintEnd_toEndOf="@+id/layoutCheckoutMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Banking"
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/_10ssp"
                     android:fontFamily="@font/alata"
