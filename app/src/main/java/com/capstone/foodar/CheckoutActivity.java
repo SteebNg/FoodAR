@@ -41,6 +41,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -322,6 +323,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
                 order.put(Constants.KEY_PAYMENT_METHOD, paymentMethod);
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
+                order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                 order.put(Constants.KEY_TABLE_NUM, tableNum);
                 registerOrderToDb(order);
             }
@@ -340,6 +342,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
                 order.put(Constants.KEY_PAYMENT_METHOD, paymentMethod);
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
+                order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                 order.put(Constants.KEY_DESTINATION, destination);
                 registerOrderToDb(order);
             } else {
