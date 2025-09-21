@@ -75,5 +75,41 @@
             android:textSize="@dimen/_13ssp"
             android:fontFamily="@font/alata"
             android:gravity="start" />
+
+        <View
+            android:id="@+id/dividerAdminHome2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@+id/textAdminHomeLocation"
+            android:background="@color/hintColor"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/textAdminHomeCurrentOrderTitle"
+            app:layout_constraintStart_toStartOf="@+id/textAdminHomeLocation"
+            app:layout_constraintTop_toBottomOf="@+id/dividerAdminHome2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Order"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:textSize="@dimen/_15ssp"
+            android:fontFamily="@font/alata"
+            android:gravity="start"
+            android:layout_marginTop="@dimen/_8sdp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAdminHomeCurrentOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textAdminHomeCurrentOrderTitle"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            tools:itemCount="2"
+            tools:listitem="@layout/layout_admin_home_table_current_order_item_list"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

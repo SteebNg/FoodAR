@@ -311,14 +311,9 @@ public class CheckoutActivity extends AppCompatActivity {
             if (tableNum.isEmpty()) {
                 Toast.makeText(CheckoutActivity.this, "Please enter the table number.", Toast.LENGTH_SHORT).show();
             } else {
-                ArrayList<String> cartsId = new ArrayList<>();
-                for (FoodInCart food : foodsInCart) {
-                    cartsId.add(food.cartId);
-                }
-
                 Map<String, Object> order = new HashMap<>();
                 order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                order.put(Constants.KEY_CARTS, cartsId);
+                order.put(Constants.KEY_CARTS, foodsInCart);
                 order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
                 order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
                 order.put(Constants.KEY_PAYMENT_METHOD, paymentMethod);
@@ -330,14 +325,9 @@ public class CheckoutActivity extends AppCompatActivity {
         } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
             String destination = String.valueOf(binding.textCheckoutDeliveryDestinationName.getText());
             if (!destination.isEmpty()) {
-                ArrayList<String> cartsId = new ArrayList<>();
-                for (FoodInCart food : foodsInCart) {
-                    cartsId.add(food.cartId);
-                }
-
                 Map<String, Object> order = new HashMap<>();
                 order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                order.put(Constants.KEY_CARTS, cartsId);
+                order.put(Constants.KEY_CARTS, foodsInCart);
                 order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
                 order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
                 order.put(Constants.KEY_PAYMENT_METHOD, paymentMethod);

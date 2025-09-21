@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryTableItemTableNum"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Table 100"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryTableItemMore"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutOrderHistoryTableItemTableNum"
+        app:layout_constraintBottom_toBottomOf="@+id/textLayoutOrderHistoryTableItemTableNum"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="More"
+        android:textColor="@color/blueText"
+        android:textSize="@dimen/_8ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerLayoutAdminHomeTableCurrentOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutOrderHistoryTableItemTableNum"
+        android:layout_marginTop="@dimen/_4sdp"
+        tools:itemCount="2"
+        tools:listitem="@layout/layout_admin_home_indi_current_order_item_list"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
