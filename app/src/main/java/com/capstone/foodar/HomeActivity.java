@@ -410,24 +410,26 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         Intent intent;
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {
-                                if (isLoggedIn) {
-                                    if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
-                                        intent = new Intent(HomeActivity.this, CheckoutActivity.class);
-                                        startActivity(intent);
-                                    } else {
-                                        intent = new Intent(HomeActivity.this, LocationSelectActivity.class);
-                                        startActivityForResult(intent, LOCATION_ACTIVITY_RESULT);
-                                    }
-                                } else {
-                                    intent = new Intent(HomeActivity.this, LoginActivity.class);
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        if (task.getResult().isEmpty()) {
+                            if (isLoggedIn) {
+                                if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
+                                    intent = new Intent(HomeActivity.this, CheckoutActivity.class);
                                     startActivity(intent);
+                                } else {
+                                    intent = new Intent(HomeActivity.this, LocationSelectActivity.class);
+                                    startActivityForResult(intent, LOCATION_ACTIVITY_RESULT);
                                 }
                             } else {
-                                intent = new Intent(HomeActivity.this, OrderStatusClientActivity.class);
+                                intent = new Intent(HomeActivity.this, LoginActivity.class);
                                 startActivity(intent);
                             }
+                        } else {
+                            intent = new Intent(HomeActivity.this, OrderStatusClientActivity.class);
+                            startActivity(intent);
                         }
                     }
                 });
