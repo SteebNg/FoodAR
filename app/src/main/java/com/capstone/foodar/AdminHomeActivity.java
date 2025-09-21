@@ -60,6 +60,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         setListeners();
         setLocation();
         getCurrentOrders();
+        getRevenueInfo();
     }
 
     private void getCurrentOrders() {
@@ -83,7 +84,8 @@ public class AdminHomeActivity extends AppCompatActivity {
 
                                 if (cartItems != null) {
                                     int [] foodsProcessed = {0};
-                                    for (Map<String, Object> cartItem : cartItems) {
+                                    for (int i = 0; i < 2; i++) {
+                                        Map<String, Object> cartItem = cartItems.get(i);
                                         FoodInCart food = new FoodInCart();
 
                                         food.foodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
@@ -138,8 +140,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         tableAdapter.setOnItemClickListener(new AdminHomeTableCurrentOrderListAdapter.OnItemClickListener() {
             @Override
             public void onClick(CurrentOrder order) {
-                // TODO: Navigate to the activity
-                Intent intent = new Intent(AdminHomeActivity.this, Home);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminCurrentOrderActivity.class);
                 intent.putExtra(Constants.KEY_ORDER_ID, order.currentOrderId);
                 startActivityForResult(intent, CURRENT_ORDER_ACTIVITY_RESULT);
             }
