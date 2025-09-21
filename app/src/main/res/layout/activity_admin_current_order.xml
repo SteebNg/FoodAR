@@ -50,7 +50,7 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_12sdp"
-                tools:listitem="@layout/layout_admin_home_table_current_order_item_list" />
+                tools:listitem="@layout/layout_admin_current_order_item_list" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

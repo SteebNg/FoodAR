@@ -274,42 +274,9 @@ public class CheckoutActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                      
-                        Map<String, Object> order = new HashMap<>();
-                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                        order.put(Constants.KEY_CARTS, cartsId);
-                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
-                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
-                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
-                        order.put(Constants.KEY_TABLE_NUM, tableNum);
-                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
-                        registerOrderToDb(order);
-                    }
-                } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
-                    String destination = String.valueOf(binding.textCheckoutDeliveryDestinationName.getText());
-                    if (!destination.isEmpty()) {
-                        ArrayList<String> cartsId = new ArrayList<>();
-                        for (FoodInCart food : foodsInCart) {
-                            cartsId.add(food.cartId);
-                        }
-
-                        Map<String, Object> order = new HashMap<>();
-                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                        order.put(Constants.KEY_CARTS, cartsId);
-                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
-                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
-                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
-                        order.put(Constants.KEY_DESTINATION, destination);
-                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
-                        registerOrderToDb(order);
-                    } else {
-                        Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
-                        startActivityForResult(intent, DESTINATION_RESULT);
                     }
                 });
-            }
+            };
         });
         binding.imageCheckoutDestinationChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -353,6 +320,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
                 order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                 order.put(Constants.KEY_TABLE_NUM, tableNum);
+                order.put(Constants.KEY_ORDER_STATUS, Constants.KEY_ORDER_PENDING);
                 registerOrderToDb(order);
             }
         } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
@@ -367,6 +335,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
                 order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                 order.put(Constants.KEY_DESTINATION, destination);
+                order.put(Constants.KEY_ORDER_STATUS, Constants.KEY_ORDER_PENDING);
                 registerOrderToDb(order);
             } else {
                 Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
@@ -466,7 +435,7 @@ public class CheckoutActivity extends AppCompatActivity {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(CheckoutActivity.this, channelId)
                     .setSmallIcon(R.drawable.textsms_24)
                     .setContentText("OTP Number")
-                    .setContentText(String.valueOf(otpNum))
+                    .setContentText(String.valueOf(otpNum) + " is your OTP number")
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH);
 
@@ -579,6 +548,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             foodsInCartProcessed[0]++;
                             if (foodsInCartProcessed[0] == foodsInCart.size()) {
+                                Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show(); //TODO Maybe navigate the user to a new acitivity???
                                 preferenceManager.putBoolean(Constants.KEY_ORDERING, true);
                                 finish();
                             }

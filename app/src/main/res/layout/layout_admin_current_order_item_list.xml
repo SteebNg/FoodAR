@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="@dimen/_12sdp">
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableItemTableNum"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Table 100"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerLayoutAdminCurrentOrderCurrentOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableItemTableNum"
+        android:layout_marginTop="@dimen/_4sdp"
+        tools:itemCount="2"
+        tools:listitem="@layout/layout_admin_home_indi_current_order_item_list"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableTotalOrderPriceHeader"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerLayoutAdminCurrentOrderCurrentOrder"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: "
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableTotalOrderPrice"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutAdminCurrentOrderTableTotalOrderPriceHeader"
+        app:layout_constraintStart_toEndOf="@+id/textLayoutAdminCurrentOrderTableTotalOrderPriceHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RM 100.00"
+        android:textColor="@color/hintColor"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableItemPaymentMethod"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutAdminCurrentOrderTableTotalOrderPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/textLayoutAdminCurrentOrderTableTotalOrderPrice"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Banking"
+        android:textColor="@color/warningRed"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="end"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarLayoutAdminCurrentOrderTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableTotalOrderPrice"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:progress="25"
+        android:progressTint="@color/warningRed" />
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableCurrentStatusHeading"
+        app:layout_constraintTop_toBottomOf="@+id/progressBarLayoutAdminCurrentOrderTable"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Status: Cooking"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_9ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"
+        android:layout_marginTop="@dimen/_4sdp"/>
+
+    <Button
+        android:id="@+id/buttonLayoutAdminCurrentOrderTableStatusProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableCurrentStatusHeading"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:backgroundTint="@color/lightGreen"
+        android:text="Done Cooking"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

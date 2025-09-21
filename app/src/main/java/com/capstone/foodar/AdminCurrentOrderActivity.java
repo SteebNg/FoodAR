@@ -2,6 +2,7 @@ package com.capstone.foodar;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -74,6 +75,8 @@ public class AdminCurrentOrderActivity extends AppCompatActivity {
                             order.currentOrderId = document.getId();
                             order.destination = document.getString(Constants.KEY_DESTINATION);
                             order.tableNum = document.getString(Constants.KEY_TABLE_NUM);
+                            order.orderTotalPrice = document.getDouble(Constants.KEY_ORDER_PRICE);
+                            order.status = document.getString(Constants.KEY_ORDER_STATUS);
 
                             List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
 
@@ -128,7 +131,38 @@ public class AdminCurrentOrderActivity extends AppCompatActivity {
     }
 
     private AdminCurrentOrderTableListAdapter getCurrentOrderRecycler() {
-        return new AdminCurrentOrderTableListAdapter(orders, AdminCurrentOrderActivity.this);
+        AdminCurrentOrderTableListAdapter currentOrderAdapter = new AdminCurrentOrderTableListAdapter(orders, AdminCurrentOrderActivity.this);
+
+        currentOrderAdapter.setOnButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
+            @Override
+            public void onClick(CurrentOrder order, Button button) {
+                String orderStatus = order.status;
+                button.setEnabled(false);
+                if (orderStatus.equals(Constants.KEY_ORDER_PENDING)) {
+                    updateCurrentOrderStatus(Constants.KEY_PREPARING, order.currentOrderId, button);
+                } else if (orderStatus.equals(Constants.KEY_PREPARING)) {
+                    if (order.servingMethod.equals(Constants.KEY_DELIVERY_MODE)) {
+                        updateCurrentOrderStatus(Constants.KEY_DELIVERING, order.currentOrderId, button);
+                    } else {
+                        updateCurrentOrderStatus(Constants.KEY_SERVING, order.currentOrderId, button);
+                    }
+                }
+            }
+        });
+
+        return currentOrderAdapter;
+    }
+
+    private void updateCurrentOrderStatus(String status, String currentOrderId, Button button) {
+        db.collection(Constants.KEY_CURRENT_ORDERS)
+                .document(currentOrderId)
+                .update(Constants.KEY_ORDER_STATUS, status)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        button.setEnabled(true);
+                    }
+                });
     }
 
     private void init() {

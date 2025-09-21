@@ -61,7 +61,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         setListeners();
         setLocation();
         getCurrentOrders();
-        getRevenueInfo();
+        //getRevenueInfo(); TODO
     }
 
     private void getCurrentOrders() {
@@ -181,7 +181,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 setListeners();
                 setLocation();
                 getCurrentOrders();
-                getRevenueInfo();
+                //TODO getRevenueInfo();
                 binding.main.setRefreshing(false);
             }
         });
