@@ -63,6 +63,12 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                         });
             }
         });
+        binding.imageClientStatusBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void getOrderStatus() {
