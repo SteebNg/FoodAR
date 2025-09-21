@@ -44,7 +44,7 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CurrentOrder order = orders.get(position);
         holder.paymentMethod.setText(order.paymentMethod);
-        holder.orderTotalPrice.setText(String.valueOf(order.orderTotalPrice));
+        holder.orderTotalPrice.setText("RM " + order.orderTotalPrice);
         holder.orderStatus.setText(order.status);
         setProgress(order.status, holder.orderProgress, holder.orderStatus, holder.buttonStatusProgressing);
 
