@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.capstone.foodar.Adapter.AdminHomeTableCurrentOrderListAdapter;
 import com.capstone.foodar.Model.CurrentOrder;
@@ -171,6 +172,17 @@ public class AdminHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO
+            }
+        });
+        binding.main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                init();
+                setListeners();
+                setLocation();
+                getCurrentOrders();
+                getRevenueInfo();
+                binding.main.setRefreshing(false);
             }
         });
     }
