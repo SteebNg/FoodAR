@@ -56,7 +56,7 @@ public class AdminHomeIndiCurrentOrderListAdapter extends RecyclerView.Adapter<A
 
     @Override
     public int getItemCount() {
-        return 2;
+        return foods.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
