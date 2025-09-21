@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.capstone.foodar.Adapter.ReviewListAdapter;
 import com.capstone.foodar.Model.Review;
@@ -30,8 +31,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class ReviewsActivity extends AppCompatActivity {
-
-    // TODO: Make sure this activity can be assessed from user's history too
 
     ActivityReviewsBinding binding;
     private StorageReference storageRef;
@@ -167,6 +166,17 @@ public class ReviewsActivity extends AppCompatActivity {
                 Intent intent = new Intent(ReviewsActivity.this, WriteReviewsActivity.class);
                 intent.putExtra(Constants.KEY_FOOD_ID, foodId);
                 startActivity(intent);
+            }
+        });
+        binding.refreshReview.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                init();
+                checkUserOrdered();
+                setListeners();
+                getReviewsFromDb();
+                calculateRating();
+                binding.refreshReview.setRefreshing(false);
             }
         });
     }
