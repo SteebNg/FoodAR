@@ -274,6 +274,39 @@ public class CheckoutActivity extends AppCompatActivity {
                                 }
                             });
                         }
+                      
+                        Map<String, Object> order = new HashMap<>();
+                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
+                        order.put(Constants.KEY_CARTS, cartsId);
+                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
+                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
+                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
+                        order.put(Constants.KEY_TABLE_NUM, tableNum);
+                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
+                        registerOrderToDb(order);
+                    }
+                } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
+                    String destination = String.valueOf(binding.textCheckoutDeliveryDestinationName.getText());
+                    if (!destination.isEmpty()) {
+                        ArrayList<String> cartsId = new ArrayList<>();
+                        for (FoodInCart food : foodsInCart) {
+                            cartsId.add(food.cartId);
+                        }
+
+                        Map<String, Object> order = new HashMap<>();
+                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
+                        order.put(Constants.KEY_CARTS, cartsId);
+                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
+                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
+                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
+                        order.put(Constants.KEY_DESTINATION, destination);
+                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
+                        registerOrderToDb(order);
+                    } else {
+                        Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
+                        startActivityForResult(intent, DESTINATION_RESULT);
                     }
                 });
             }

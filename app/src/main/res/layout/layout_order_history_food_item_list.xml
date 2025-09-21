@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="@dimen/_8sdp">
+
+    <FrameLayout
+        android:id="@+id/frameLayoutOrderHistoryItemFoodImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:layout_width="@dimen/_72sdp"
+            android:layout_height="@dimen/_72sdp"
+            android:background="@drawable/rectangle_food_container_bg" />
+
+        <ImageView
+            android:id="@+id/imageLayoutOrderHistoryItemFoodImage"
+            android:layout_width="@dimen/_52sdp"
+            android:layout_height="@dimen/_52sdp"
+            android:src="@drawable/burbur_2"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryItemFoodName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/frameLayoutOrderHistoryItemFoodImage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Combo Deluxe"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/alata"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryItemFoodOption"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutOrderHistoryItemFoodName"
+        app:layout_constraintStart_toStartOf="@+id/textLayoutOrderHistoryItemFoodName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Medium set:\nMedium Fries and Medium Coca Cola"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_9ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="5"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryItemFoodAmount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="2x"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="5"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryItemFoodRemarks"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutOrderHistoryItemFoodOption"
+        app:layout_constraintStart_toStartOf="@+id/textLayoutOrderHistoryItemFoodOption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Remark: No remark"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_9ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="5"
+        android:gravity="start"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <TextView
+        android:id="@+id/textLayoutOrderHistoryItemFoodPriceTotal"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutOrderHistoryItemFoodRemarks"
+        app:layout_constraintStart_toStartOf="@+id/textLayoutOrderHistoryItemFoodRemarks"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Total: RM 11.99"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_9ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="start"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

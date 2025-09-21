@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderStatusClientActivity"
+    android:background="@color/bg_dark">
+
+    <TextView
+        android:id="@+id/textClientStatusTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Status"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <ImageView
+        android:id="@+id/imageClientStatusBack"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        app:layout_constraintTop_toTopOf="@+id/textClientStatusTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textClientStatusTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/arrow_back_24"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:paddingTop="@dimen/_2sdp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_100sdp">
+
+        <ProgressBar
+            android:id="@+id/progressClientStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/textClientStatusTitle"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_16sdp" />
+
+        <TextView
+            android:id="@+id/textClientStatusStatusTitle"
+            app:layout_constraintTop_toBottomOf="@+id/progressClientStatus"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Preparing..."
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/_16ssp"
+            android:fontFamily="@font/alata"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_16sdp"/>
+
+        <TextView
+            android:id="@+id/textClientStatusStatusBody"
+            app:layout_constraintTop_toBottomOf="@+id/textClientStatusStatusTitle"
+            app:layout_constraintStart_toStartOf="@+id/textClientStatusStatusTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In Kitchen..."
+            android:textColor="@color/secondary_text"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/alata"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/_16sdp"/>
+
+        <ImageView
+            android:layout_width="@dimen/_160sdp"
+            android:layout_height="@dimen/_160sdp"
+            app:layout_constraintTop_toBottomOf="@+id/textClientStatusStatusBody"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/frying"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/buttonClientStatusConfirmReceive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Order Received"
+            android:backgroundTint="@color/lightGreen"
+            android:textColor="@color/primary_text"
+            android:fontFamily="@font/alata"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:visibility="gone"
+            android:enabled="false"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
