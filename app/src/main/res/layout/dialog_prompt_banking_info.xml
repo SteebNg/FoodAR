@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_240sdp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_20sdp"
+    android:background="@drawable/bg_rectangle_rounded_corner">
+
+    <ImageView
+        android:id="@+id/imageDialogBankIcon"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/bank"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textDialogBankingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageDialogBankIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Input Banking Details"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <TextView
+        android:id="@+id/textDialogBankingBankNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogBankingTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="Bank Number:"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <EditText
+        android:id="@+id/etDialogBankingBankNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogBankingBankNum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/et_border_bg"
+        android:hint="Bank Number"
+        android:fontFamily="@font/alata"
+        android:paddingStart="@dimen/_8sdp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/hintColor"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:paddingBottom="@dimen/_2sdp"/>
+
+    <TextView
+        android:id="@+id/textDialogBankingBankCvc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etDialogBankingBankNum"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="CVV/CVC:"
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/primary_text"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <EditText
+        android:id="@+id/etDialogBankingBankCvc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogBankingBankCvc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/et_border_bg"
+        android:hint="1234"
+        android:fontFamily="@font/alata"
+        android:paddingStart="@dimen/_8sdp"
+        android:textColor="@color/primary_text"
+        android:textColorHint="@color/hintColor"
+        android:textCursorDrawable="@null"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:paddingBottom="@dimen/_2sdp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/etDialogBankingBankCvc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonDialogBankingCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:backgroundTint="@color/grey"
+            android:textColor="@color/white"
+            android:fontFamily="@font/alata"
+            android:layout_marginEnd="@dimen/_8sdp"/>
+
+        <Button
+            android:id="@+id/buttonDialogBankingSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:backgroundTint="@color/lightGreen"
+            android:textColor="@color/primary_text"
+            android:fontFamily="@font/alata"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

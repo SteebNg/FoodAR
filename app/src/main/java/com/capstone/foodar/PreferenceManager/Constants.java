@@ -46,6 +46,8 @@ public class Constants {
     public static final String KEY_TABLE_NUM = "TableNum";
     public static final String KEY_DESTINATION = "Destination";
     public static final String KEY_ORDERING = "Ordering";
+    public static final String KEY_CASH = "Cash";
+    public static final String KEY_BANKING = "Banking";
     public static final String KEY_FOOD_IN_CART = "FoodInCart";
     public static final String KEY_ORDER_STATUS = "OrderStatus";
     public static final String KEY_ORDER_PENDING = "OrderPending";
