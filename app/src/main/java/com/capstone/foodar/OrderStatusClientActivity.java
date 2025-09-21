@@ -86,27 +86,27 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                                 switch (orderStatusTitle) {
                                     case Constants.KEY_ORDER_PENDING:
                                         binding.textClientStatusStatusBody.setText("Waiting for order to be accepted...");
-                                        Glide.with(OrderStatusClientActivity.this).load(R.drawable.receipt_verification).into(binding.imageClientStatusBack);
+                                        Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.receipt_verification).into(binding.imageClientStatusMain);
                                         binding.progressClientStatus.setProgress(ORDER_PENDING);
                                         break;
                                     case Constants.KEY_PREPARING:
                                         binding.textClientStatusStatusBody.setText("In the kitchen...");
-                                        Glide.with(OrderStatusClientActivity.this).load(R.drawable.frying).into(binding.imageClientStatusBack);
+                                        Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.frying).into(binding.imageClientStatusMain);
                                         binding.progressClientStatus.setProgress(PREPARING);
                                         break;
                                     case Constants.KEY_DELIVERING:
                                         binding.textClientStatusStatusBody.setText("To your location...");
-                                        Glide.with(OrderStatusClientActivity.this).load(R.drawable.delivery_scooter).into(binding.imageClientStatusBack);
+                                        Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.delivery_scooter).into(binding.imageClientStatusMain);
                                         binding.progressClientStatus.setProgress(DELIVERING);
                                         break;
                                     case Constants.KEY_SERVING:
                                         binding.textClientStatusStatusBody.setText("Waiting for waiter to serve...");
-                                        Glide.with(OrderStatusClientActivity.this).load(R.drawable.waiter).into(binding.imageClientStatusBack);
+                                        Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.waiter).into(binding.imageClientStatusMain);
                                         binding.progressClientStatus.setProgress(SERVING);
                                         break;
                                     case Constants.KEY_COMPLETED:
                                         binding.textClientStatusStatusBody.setText("Your order as arrived. Click the below button to confirm.");
-                                        Glide.with(OrderStatusClientActivity.this).load(R.drawable.verified).into(binding.imageClientStatusBack);
+                                        Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.verified).into(binding.imageClientStatusMain);
                                         binding.progressClientStatus.setProgress(Completed);
                                         binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
                                         binding.buttonClientStatusConfirmReceive.setEnabled(true);
