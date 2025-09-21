@@ -39,7 +39,12 @@ public class AdminHomeTableCurrentOrderListAdapter extends RecyclerView.Adapter<
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CurrentOrder order = orders.get(position);
 
-        holder.tableNum.setText(order.tableNum);
+
+        if (!order.tableNum.isEmpty()) {
+            holder.tableNum.setText(order.tableNum);
+        } else {
+            holder.tableNum.setText(order.destination);
+        }
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
