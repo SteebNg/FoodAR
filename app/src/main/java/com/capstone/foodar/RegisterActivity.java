@@ -121,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         });
 
                                 sendVerificationEmail();
+                                firebaseAuth.signOut();
                             }
                         }
                     });
