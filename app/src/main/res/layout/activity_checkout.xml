@@ -149,7 +149,9 @@
                 app:layout_constraintTop_toTopOf="@+id/layoutCheckoutMoney"
                 app:layout_constraintBottom_toBottomOf="@+id/layoutCheckoutMoney"
                 android:gravity="center"
-                android:layout_marginStart="@dimen/_8sdp">
+                android:layout_marginStart="@dimen/_8sdp"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_4sdp">
 
                 <FrameLayout
                     android:layout_width="wrap_content"
