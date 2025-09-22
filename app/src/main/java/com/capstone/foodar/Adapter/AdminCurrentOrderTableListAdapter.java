@@ -48,7 +48,7 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
         holder.orderStatus.setText(order.status);
         setProgress(order.status, holder.orderProgress, holder.orderStatus, holder.buttonStatusProgressing);
 
-        if (!order.tableNum.isEmpty()) {
+        if (order.tableNum != null) {
             holder.tableNum.setText(order.tableNum);
         } else {
             holder.tableNum.setText(order.destination);
