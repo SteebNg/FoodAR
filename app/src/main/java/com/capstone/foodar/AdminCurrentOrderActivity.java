@@ -169,5 +169,6 @@ public class AdminCurrentOrderActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
         preferenceManager = new PreferenceManager(getApplicationContext());
+        orders = new ArrayList<>();
     }
 }
