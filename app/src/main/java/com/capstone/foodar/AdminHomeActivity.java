@@ -73,31 +73,32 @@ public class AdminHomeActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int[] orderProcessed = {0};
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.getString(Constants.KEY_ORDER_STATUS).equals(Constants.KEY_COMPLETED)) {
-                                    CurrentOrder order = new CurrentOrder();
-                                    order.currentOrderId = document.getId();
-                                    order.destination = document.getString(Constants.KEY_DESTINATION);
-                                    order.tableNum = document.getString(Constants.KEY_TABLE_NUM);
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        int[] orderProcessed = {0};
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.getString(Constants.KEY_ORDER_STATUS).equals(Constants.KEY_COMPLETED)) {
+                                CurrentOrder order = new CurrentOrder();
+                                order.currentOrderId = document.getId();
+                                order.destination = document.getString(Constants.KEY_DESTINATION);
+                                order.tableNum = document.getString(Constants.KEY_TABLE_NUM);
 
-                                    List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
+                                List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
 
-                                    if (cartItems != null) {
-                                        int [] foodsProcessed = {0};
-                                        for (int i = 0; i < 2; i++) {
-                                            Map<String, Object> cartItem = cartItems.get(i);
-                                            FoodInCart food = new FoodInCart();
+                                if (cartItems != null) {
+                                    int [] foodsProcessed = {0};
+                                    for (int i = 0; i < 2; i++) {
+                                        Map<String, Object> cartItem = cartItems.get(i);
+                                        FoodInCart food = new FoodInCart();
 
-                                            food.foodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
-                                            food.foodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
-                                            food.foodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
-                                            food.foodQuantity = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
-                                            food.foodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
-                                            food.remarks = cartItem.get(Constants.KEY_REMARKS).toString();
-                                            getFoodImage(orderProcessed, foodsProcessed, task.getResult().size(), cartItems.size(), food, order);
-                                        }
+                                        food.foodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
+                                        food.foodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
+                                        food.foodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
+                                        food.foodQuantity = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
+                                        food.foodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
+                                        food.remarks = cartItem.get(Constants.KEY_REMARKS).toString();
+                                        getFoodImage(orderProcessed, foodsProcessed, task.getResult().size(), cartItems.size(), food, order);
                                     }
                                 }
                             }
