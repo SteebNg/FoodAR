@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
@@ -56,4 +58,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
+
+    implementation(project(":unityLibrary"))
+    implementation(fileTree(project.projectDir.toString() + "/unityLibrary/libs") { include("*.jar") })
 }

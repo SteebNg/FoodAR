@@ -17,9 +17,13 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://jitpack.io")
+
+        flatDir {
+            dirs("${rootProject.projectDir}/unityLibrary/libs")
+        }
     }
 }
 
 rootProject.name = "FoodAR"
-include(":app")
+include(":app", ":unityLibrary", ":unityLibrary:xrmanifest.androidlib", ":unityLibrary:FirebaseApp.androidlib")
  

@@ -114,6 +114,29 @@
                         android:textSize="@dimen/_12ssp"
                         android:textColor="@color/secondary_text" />
 
+                    <FrameLayout
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        app:layout_constraintTop_toTopOf="@+id/textFoodDetailsName"
+                        app:layout_constraintBottom_toBottomOf="@+id/textFoodDetailsDesc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/buttonFoodDetailsAR">
+
+                        <View
+                            android:id="@+id/bgFoodDetailsAr"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_rectangle_rounded_corner"
+                            android:backgroundTint="@color/grey"/>
+
+                        <ImageView
+                            android:id="@+id/imageFoodDetailsAr"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/no_video"
+                            android:padding="@dimen/_8sdp" />
+                    </FrameLayout>
+
                     <View
                         android:id="@+id/dividerFoodDetails1"
                         android:layout_width="match_parent"

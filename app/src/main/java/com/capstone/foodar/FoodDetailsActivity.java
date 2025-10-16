@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.unity3d.player.UnityPlayerGameActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,8 +76,27 @@ public class FoodDetailsActivity extends AppCompatActivity {
         init();
         setListeners();
         setFoodDetails();
+        checkIf3DModelExists();
         setReviews();
         setOptions();
+    }
+
+    private void checkIf3DModelExists() {
+        storageRef.child(Constants.KEY_FOODS
+                + "/"
+                + foodId
+                + "/"
+                + "3DModel.fbx")
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        int arAvailableDrawable = R.drawable.video_camera_back_24;
+
+                        binding.buttonFoodDetailsAR.setEnabled(true);
+                        Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
+                    }
+                });
     }
 
     private void setOptions() {
@@ -280,6 +300,14 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         });
             }
         });
+        binding.buttonFoodDetailsAR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FoodDetailsActivity.this, UnityPlayerGameActivity.class);
+                intent.putExtra("result", foodId);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<String> getFoodOptions() {
@@ -422,5 +450,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
         food = new Food();
         foodOptions = new ArrayList<>();
         preferenceManager = new PreferenceManager(getApplicationContext());
+        binding.buttonFoodDetailsAR.setEnabled(false);
     }
 }
