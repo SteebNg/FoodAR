@@ -80,7 +80,7 @@
             android:textSize="@dimen/_12ssp"
             android:fontFamily="@font/alata"
             android:textStyle="bold"
-            android:gravity="center"
+            android:gravity="start"
             android:layout_marginStart="@dimen/_16sdp"/>
 
         <pl.droidsonroids.gif.GifImageView
