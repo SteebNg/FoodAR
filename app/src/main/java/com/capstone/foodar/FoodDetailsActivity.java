@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -86,7 +87,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
                 + "/"
                 + foodId
                 + "/"
-                + "3DModel.fbx")
+                + "3DModel.obj")
                 .getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -95,6 +96,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
                         binding.buttonFoodDetailsAR.setEnabled(true);
                         Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
+                        binding.bgFoodDetailsAr.setBackgroundColor(ContextCompat.getColor(FoodDetailsActivity.this, R.color.lightGreen));
                     }
                 });
     }
