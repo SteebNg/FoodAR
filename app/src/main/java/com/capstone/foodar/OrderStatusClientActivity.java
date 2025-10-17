@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -23,7 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -40,7 +38,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
     ActivityOrderStatusClientBinding binding;
     private FirebaseFirestore db;
     private PreferenceManager preferenceManager;
-    private int ORDER_PENDING = 25, PREPARING = 50, DELIVERING = 75, SERVING = 75, Completed = 100;
+    private int ORDER_PENDING = 25, PREPARING = 50, DELIVERING = 75, SERVING = 75, COMPLETED = 100;
     private CurrentOrder currentOrder;
     private StorageReference storageRef;
 
@@ -88,12 +86,14 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                                     for (Map<String, Object> cartItem : cartItems) {
                                         FoodInCart food = new FoodInCart();
 
-                                        food.foodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
-                                        food.foodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
-                                        food.foodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
-                                        food.foodQuantity = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
-                                        food.foodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
-                                        food.remarks = cartItem.get(Constants.KEY_REMARKS).toString();
+                                        food.CartId = cartItem.get(Constants.KEY_CART_ID).toString();
+                                        food.FoodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
+                                        food.FoodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
+                                        food.FoodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
+                                        food.FoodAmount = Math.toIntExact((long) cartItem.get(Constants.KEY_FOOD_AMOUNT));
+                                        food.FoodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
+                                        food.Remarks = cartItem.get(Constants.KEY_REMARKS).toString();
+                                        food.LocationId = cartItem.get(Constants.KEY_LOCATION_ID).toString();
                                         getFoodImage(foodsProcessed, cartItems.size(), food);
                                     }
                                 }
@@ -107,7 +107,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
     private void getFoodImage(int[] foodProcessed, int expectedFoodsSize, FoodInCart food) {
         storageRef.child(Constants.KEY_FOODS
                         + "/"
-                        + food.foodId
+                        + food.FoodId
                         + "/"
                         + Constants.KEY_FOOD_IMAGE + ".jpeg")
                 .getDownloadUrl()
@@ -130,7 +130,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> order = new HashMap<>();
-                order.put(Constants.KEY_USER_ID, currentOrder.userId);
+                order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
                 order.put(Constants.KEY_LOCATION_ID, currentOrder.locationId);
                 order.put(Constants.KEY_ORDER_PRICE, currentOrder.orderTotalPrice);
                 order.put(Constants.KEY_CARTS, currentOrder.foods);
@@ -199,7 +199,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
             case Constants.KEY_COMPLETED:
                 binding.textClientStatusStatusBody.setText("Your order as arrived. Click the below button to confirm.");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.verified).into(binding.imageClientStatusMain);
-                binding.progressClientStatus.setProgress(Completed);
+                binding.progressClientStatus.setProgress(COMPLETED);
                 binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
                 break;
@@ -211,5 +211,6 @@ public class OrderStatusClientActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         storageRef = FirebaseStorage.getInstance().getReference();
         currentOrder = new CurrentOrder();
+        currentOrder.foods = new ArrayList<>();
     }
 }
