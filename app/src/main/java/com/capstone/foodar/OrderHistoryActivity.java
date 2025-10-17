@@ -72,19 +72,20 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                     OrderHistoryFoodParent order = new OrderHistoryFoodParent();
                                     order.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
 
-                                    List<Map<String, Object>> foodsInCartData = (List<Map<String, Object>>) document.get(Constants.KEY_FOOD_IN_CART);
+                                    List<Map<String, Object>> foodsInCartData = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
                                     if (foodsInCartData != null) {
                                         int[] foodProcessed = {0};
                                         ArrayList<FoodInCart> foodsInCart = new ArrayList<>();
                                         for (Map<String, Object> foodMap : foodsInCartData) {
                                             FoodInCart foodInCart = new FoodInCart();
-                                            foodInCart.foodId = (String) foodMap.get(Constants.KEY_FOOD_ID);
-                                            foodInCart.foodOptions = (ArrayList<String>) foodMap.get(Constants.KEY_FOOD_OPTIONS);
-                                            foodInCart.foodPrice = (double) foodMap.get(Constants.KEY_FOOD_PRICE);
-                                            foodInCart.locationId = (String) foodMap.get(Constants.KEY_LOCATION_ID);
-                                            foodInCart.remarks = (String) foodMap.get(Constants.KEY_REMARKS);
-                                            foodInCart.foodQuantity = (int) foodMap.get(Constants.KEY_FOOD_AMOUNT);
-                                            foodInCart.foodName = (String) foodMap.get(Constants.KEY_FOOD_NAME);
+                                            foodInCart.CartId = foodMap.get(Constants.KEY_CART_ID).toString();
+                                            foodInCart.FoodId = (String) foodMap.get(Constants.KEY_FOOD_ID);
+                                            foodInCart.FoodOptions = (ArrayList<String>) foodMap.get(Constants.KEY_FOOD_OPTIONS);
+                                            foodInCart.FoodPrice = (double) foodMap.get(Constants.KEY_FOOD_PRICE);
+                                            foodInCart.LocationId = (String) foodMap.get(Constants.KEY_LOCATION_ID);
+                                            foodInCart.Remarks = (String) foodMap.get(Constants.KEY_REMARKS);
+                                            foodInCart.FoodAmount = Math.toIntExact((long) foodMap.get(Constants.KEY_FOOD_AMOUNT));
+                                            foodInCart.FoodName = (String) foodMap.get(Constants.KEY_FOOD_NAME);
                                             getFoodsImage(foodsInCart, foodInCart, foodProcessed, order, orderProcessed, task.getResult().size());
                                         }
                                     }
@@ -101,7 +102,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private void getFoodsImage(ArrayList<FoodInCart> foodsInCart, FoodInCart foodInCart, int[] foodProcessed, OrderHistoryFoodParent order, int[] orderProcessed, int totalOrders) {
         storageRef.child(Constants.KEY_FOODS
                 + "/"
-                + foodInCart.foodId
+                + foodInCart.FoodId
                 + "/"
                 + Constants.KEY_FOOD_IMAGE + ".jpeg")
                 .getDownloadUrl()
@@ -110,6 +111,7 @@ public class OrderHistoryActivity extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         foodInCart.foodImage = uri;
                         foodsInCart.add(foodInCart);
+                        foodProcessed[0]++;
                         if (foodProcessed[0] == foodsInCart.size()) {
                             order.foodsInCart = foodsInCart;
                             orderProcessed[0]++;
@@ -145,5 +147,6 @@ public class OrderHistoryActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference();
         preferenceManager = new PreferenceManager(getApplicationContext());
+        orderHistoryFoodParents = new ArrayList<>();
     }
 }
