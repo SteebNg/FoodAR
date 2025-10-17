@@ -18,6 +18,8 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
 
+        maven("file:///D:/Unity%20Projects/ARProjectTest/Assets/GeneratedLocalRepo/Firebase/m2repository" )
+
         flatDir {
             dirs("${rootProject.projectDir}/unityLibrary/libs")
         }
