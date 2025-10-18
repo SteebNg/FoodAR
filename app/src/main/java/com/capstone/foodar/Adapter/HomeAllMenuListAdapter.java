@@ -15,12 +15,14 @@ import com.bumptech.glide.Glide;
 import com.capstone.foodar.Model.Food;
 import com.capstone.foodar.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuListAdapter.ViewHolder>{
     private ArrayList<Food> foods;
     private Context context;
     private OnItemClickListener onItemClickListener;
+    private static final DecimalFormat priceFormat = new DecimalFormat("0.00");
 
     public HomeAllMenuListAdapter(ArrayList<Food> foods, Context context) {
         this.foods = foods;
@@ -42,7 +44,8 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
         Food food = foods.get(position);
 
         holder.foodName.setText(food.foodName);
-        holder.foodPrice.setText(String.valueOf(food.foodPrice));
+        String foodPrice = "RM " + priceFormat.format(food.foodPrice);
+        holder.foodPrice.setText(foodPrice);
         holder.foodRating.setRating((float) food.foodRating);
         Glide.with(context).load(food.foodImage).into(holder.foodImage);
         holder.itemView.setOnClickListener(v -> onItemClickListener.onClick(foods.get(position)));

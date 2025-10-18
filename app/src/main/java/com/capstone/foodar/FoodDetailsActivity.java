@@ -3,6 +3,7 @@ package com.capstone.foodar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -38,6 +39,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unity3d.player.UnityPlayerGameActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -57,6 +59,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private FoodDetailsReviewListAdapter reviewListAdapter;
     private FoodDetailsOptionListAdapter optionListAdapter;
     private PreferenceManager preferenceManager;
+    private static DecimalFormat priceFormat;
 
     // for checkout activity
     private String cartId;
@@ -96,7 +99,9 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
                         binding.buttonFoodDetailsAR.setEnabled(true);
                         Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
-                        binding.bgFoodDetailsAr.setBackgroundColor(ContextCompat.getColor(FoodDetailsActivity.this, R.color.lightGreen));
+                        binding.bgFoodDetailsAr.setBackgroundTintList(
+                                ContextCompat.getColorStateList(FoodDetailsActivity.this, R.color.lightGreen)
+                        );
                     }
                 });
     }
@@ -379,7 +384,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
         // calculate quantity
         totalPrice *= Integer.parseInt(binding.textFoodDetailsQuantity.getText().toString());
-        String formattedPrice = String.format(Locale.getDefault(),"%.2f", Math.abs(totalPrice));
+        String formattedPrice = priceFormat.format(totalPrice);
 
         binding.textFoodDetailsPriceAmount.setText("RM " + formattedPrice);
     }
@@ -418,7 +423,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
                                 binding.textFoodDetailsName.setText(food.foodName);
                                 binding.textFoodDetailsDesc.setText(food.foodDesc);
-                                binding.textFoodDetailsPriceAmount.setText("RM " + food.foodPrice);
+                                binding.textFoodDetailsPriceAmount.setText("RM " + priceFormat.format(food.foodPrice));
 
                                 setFoodImage();
                             }
@@ -453,5 +458,12 @@ public class FoodDetailsActivity extends AppCompatActivity {
         foodOptions = new ArrayList<>();
         preferenceManager = new PreferenceManager(getApplicationContext());
         binding.buttonFoodDetailsAR.setEnabled(false);
+        priceFormat = new DecimalFormat("0.00");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("ResumingFoodDetails", "Resumed");
     }
 }

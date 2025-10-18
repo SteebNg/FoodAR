@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
         // changeSearchHintFont();
         setListeners();
         if (isLoggedIn) {
-            loadOrderAgain();
+            //loadOrderAgain(); TODO
         } else {
             binding.layoutHomeOrderAgain.setVisibility(View.GONE);
         }
@@ -374,7 +374,7 @@ public class HomeActivity extends AppCompatActivity {
                 init();
                 setListeners();
                 if (isLoggedIn) {
-                    loadOrderAgain();
+                    // loadOrderAgain(); TODO
                 } else {
                     binding.layoutHomeOrderAgain.setVisibility(View.GONE);
                 }
