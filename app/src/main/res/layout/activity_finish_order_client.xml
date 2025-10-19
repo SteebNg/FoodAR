@@ -5,27 +5,28 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VerificationActivity"
+    tools:context=".FinishOrderClientActivity"
     android:background="@color/bg_dark">
 
     <ImageView
-        android:id="@+id/imageVerification"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:src="@drawable/email"
+        android:id="@+id/imageFinishClient"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="@dimen/_140sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_140sdp" />
+        android:src="@drawable/complete"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_marginEnd="@dimen/_12sdp" />
 
     <TextView
-        android:id="@+id/textVerificationTitle"
+        android:id="@+id/textFinishClientTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/imageVerification"
-        app:layout_constraintStart_toStartOf="@+id/imageVerification"
-        app:layout_constraintEnd_toEndOf="@+id/imageVerification"
-        android:text="Registration Successful"
+        app:layout_constraintTop_toBottomOf="@+id/imageFinishClient"
+        app:layout_constraintStart_toStartOf="@+id/imageFinishClient"
+        app:layout_constraintEnd_toEndOf="@+id/imageFinishClient"
+        android:text="Successful Order"
         android:textSize="@dimen/_16ssp"
         android:layout_marginTop="@dimen/_36sdp"
         android:fontFamily="@font/alata"
@@ -33,13 +34,13 @@
         android:textColor="@color/primary_text"/>
 
     <TextView
-        android:id="@+id/textVerificationSubtitle"
+        android:id="@+id/textFinishClientDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textVerificationTitle"
-        app:layout_constraintStart_toStartOf="@+id/textVerificationTitle"
-        app:layout_constraintEnd_toEndOf="@+id/textVerificationTitle"
-        android:text="Your registration is successful. Login to enjoy some delightful meals."
+        app:layout_constraintTop_toBottomOf="@+id/textFinishClientTitle"
+        app:layout_constraintStart_toStartOf="@+id/textFinishClientTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textFinishClientTitle"
+        android:text="Hope you enjoy the meal and have a great day."
         android:textSize="@dimen/_12ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:fontFamily="@font/alata"
@@ -49,15 +50,16 @@
         android:layout_marginEnd="@dimen/_8sdp"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonVerification"
+        android:id="@+id/buttonFinishClient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textVerificationSubtitle"
+        app:layout_constraintTop_toBottomOf="@+id/textFinishClientDesc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_20sdp"
-        android:text="Back"
+        android:text="Confirm"
         android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/lightGreen"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp" />
 

@@ -51,7 +51,8 @@
             app:layout_constraintTop_toBottomOf="@+id/textClientStatusTitle"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_16sdp" />
+            android:layout_marginTop="@dimen/_16sdp"
+            android:progressTint="@color/progressColor"/>
 
         <TextView
             android:id="@+id/textClientStatusStatusTitle"
@@ -79,10 +80,11 @@
             android:textSize="@dimen/_12ssp"
             android:fontFamily="@font/alata"
             android:textStyle="bold"
-            android:gravity="center"
+            android:gravity="start"
             android:layout_marginStart="@dimen/_16sdp"/>
 
-        <ImageView
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/imageClientStatusMain"
             android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_160sdp"
             app:layout_constraintTop_toBottomOf="@+id/textClientStatusStatusBody"

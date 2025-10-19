@@ -3,6 +3,7 @@ package com.capstone.foodar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -35,7 +37,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.unity3d.player.UnityPlayerGameActivity;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -55,6 +59,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private FoodDetailsReviewListAdapter reviewListAdapter;
     private FoodDetailsOptionListAdapter optionListAdapter;
     private PreferenceManager preferenceManager;
+    private static DecimalFormat priceFormat;
 
     // for checkout activity
     private String cartId;
@@ -75,8 +80,30 @@ public class FoodDetailsActivity extends AppCompatActivity {
         init();
         setListeners();
         setFoodDetails();
+        checkIf3DModelExists();
         setReviews();
         setOptions();
+    }
+
+    private void checkIf3DModelExists() {
+        storageRef.child(Constants.KEY_FOODS
+                + "/"
+                + foodId
+                + "/"
+                + "3DModel.obj")
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        int arAvailableDrawable = R.drawable.video_camera_back_24;
+
+                        binding.buttonFoodDetailsAR.setEnabled(true);
+                        Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
+                        binding.bgFoodDetailsAr.setBackgroundTintList(
+                                ContextCompat.getColorStateList(FoodDetailsActivity.this, R.color.lightGreen)
+                        );
+                    }
+                });
     }
 
     private void setOptions() {
@@ -280,6 +307,14 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         });
             }
         });
+        binding.buttonFoodDetailsAR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FoodDetailsActivity.this, UnityPlayerGameActivity.class);
+                intent.putExtra("result", foodId);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<String> getFoodOptions() {
@@ -349,7 +384,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
         // calculate quantity
         totalPrice *= Integer.parseInt(binding.textFoodDetailsQuantity.getText().toString());
-        String formattedPrice = String.format(Locale.getDefault(),"%.2f", Math.abs(totalPrice));
+        String formattedPrice = priceFormat.format(totalPrice);
 
         binding.textFoodDetailsPriceAmount.setText("RM " + formattedPrice);
     }
@@ -388,7 +423,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
                                 binding.textFoodDetailsName.setText(food.foodName);
                                 binding.textFoodDetailsDesc.setText(food.foodDesc);
-                                binding.textFoodDetailsPriceAmount.setText("RM " + food.foodPrice);
+                                binding.textFoodDetailsPriceAmount.setText("RM " + priceFormat.format(food.foodPrice));
 
                                 setFoodImage();
                             }
@@ -422,5 +457,13 @@ public class FoodDetailsActivity extends AppCompatActivity {
         food = new Food();
         foodOptions = new ArrayList<>();
         preferenceManager = new PreferenceManager(getApplicationContext());
+        binding.buttonFoodDetailsAR.setEnabled(false);
+        priceFormat = new DecimalFormat("0.00");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("ResumingFoodDetails", "Resumed");
     }
 }

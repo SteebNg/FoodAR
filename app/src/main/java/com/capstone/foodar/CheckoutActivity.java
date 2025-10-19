@@ -113,14 +113,14 @@ public class CheckoutActivity extends AppCompatActivity {
                             final int[] foodInCartProcessed = {0};
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 FoodInCart food = new FoodInCart();
-                                food.foodId = document.getString(Constants.KEY_FOOD_ID);
-                                food.foodOptions = (ArrayList<String>) document.get(Constants.KEY_FOOD_OPTIONS);
-                                food.foodPrice = document.getDouble(Constants.KEY_ORDER_PRICE);
-                                food.locationId = document.getString(Constants.KEY_LOCATION_ID);
-                                food.remarks = document.getString(Constants.KEY_REMARKS);
-                                food.foodQuantity = Math.toIntExact(document.getLong(Constants.KEY_FOOD_AMOUNT));
-                                food.foodName = document.getString(Constants.KEY_FOOD_NAME);
-                                food.cartId = document.getId();
+                                food.FoodId = document.getString(Constants.KEY_FOOD_ID);
+                                food.FoodOptions = (ArrayList<String>) document.get(Constants.KEY_FOOD_OPTIONS);
+                                food.FoodPrice = document.getDouble(Constants.KEY_ORDER_PRICE);
+                                food.LocationId = document.getString(Constants.KEY_LOCATION_ID);
+                                food.Remarks = document.getString(Constants.KEY_REMARKS);
+                                food.FoodAmount = Math.toIntExact(document.getLong(Constants.KEY_FOOD_AMOUNT));
+                                food.FoodName = document.getString(Constants.KEY_FOOD_NAME);
+                                food.CartId = document.getId();
 
                                 getFoodImages(food, task.getResult().size(), foodInCartProcessed);
                             }
@@ -132,7 +132,7 @@ public class CheckoutActivity extends AppCompatActivity {
     private void getFoodImages(FoodInCart food, int numOfFoodCart, int[] foodInCartProcessed) {
         storageRef.child(Constants.KEY_FOODS
                         + "/"
-                        + food.foodId
+                        + food.FoodId
                         + "/"
                         + Constants.KEY_FOOD_IMAGE + ".jpeg")
                 .getDownloadUrl()
@@ -161,7 +161,7 @@ public class CheckoutActivity extends AppCompatActivity {
         double totalPrice = 0;
         if (foodsInCart != null && !foodsInCart.isEmpty()) {
             for (FoodInCart food : foodsInCart) {
-                totalPrice += food.foodPrice;
+                totalPrice += food.FoodPrice;
             }
             String formattedTotalAmount = "RM " + String.format(Locale.getDefault(), "%.2f", totalPrice);
             binding.textCheckoutBottomTotalAmount.setText(formattedTotalAmount);
@@ -197,8 +197,8 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(int pos, FoodInCart food) {
                 Intent intent = new Intent(CheckoutActivity.this, FoodDetailsActivity.class);
-                intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
-                intent.putExtra(Constants.KEY_CART_ID, food.cartId);
+                intent.putExtra(Constants.KEY_FOOD_ID, food.FoodId);
+                intent.putExtra(Constants.KEY_CART_ID, food.CartId);
                 intent.putExtra(Constants.KEY_POSITION, pos);
                 startActivityForResult(intent, FOOD_DETAILS_RESULT);
             }
@@ -209,11 +209,11 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void removeCart(int pos, FoodInCart food, boolean isEdit) {
         if (pos != -1) {
-            db.collection(Constants.KEY_CARTS).document(food.cartId).delete()
+            db.collection(Constants.KEY_CARTS).document(food.CartId).delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            foodCartListAdapter.removeCartId(food.cartId, pos);
+                            foodCartListAdapter.removeCartId(food.CartId, pos);
                             foodsInCart.remove(food);
 
                             if (isEdit) {
@@ -274,42 +274,9 @@ public class CheckoutActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                      
-                        Map<String, Object> order = new HashMap<>();
-                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                        order.put(Constants.KEY_CARTS, cartsId);
-                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
-                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
-                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
-                        order.put(Constants.KEY_TABLE_NUM, tableNum);
-                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
-                        registerOrderToDb(order);
-                    }
-                } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
-                    String destination = String.valueOf(binding.textCheckoutDeliveryDestinationName.getText());
-                    if (!destination.isEmpty()) {
-                        ArrayList<String> cartsId = new ArrayList<>();
-                        for (FoodInCart food : foodsInCart) {
-                            cartsId.add(food.cartId);
-                        }
-
-                        Map<String, Object> order = new HashMap<>();
-                        order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
-                        order.put(Constants.KEY_CARTS, cartsId);
-                        order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                        order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
-                        order.put(Constants.KEY_PAYMENT_METHOD, "Cash"); //TODO: Change the payment method??
-                        order.put(Constants.KEY_SERVING_METHOD, servingMode);
-                        order.put(Constants.KEY_DESTINATION, destination);
-                        order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
-                        registerOrderToDb(order);
-                    } else {
-                        Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
-                        startActivityForResult(intent, DESTINATION_RESULT);
                     }
                 });
-            }
+            };
         });
         binding.imageCheckoutDestinationChange.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -348,11 +315,15 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
                 order.put(Constants.KEY_CARTS, foodsInCart);
                 order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
+
+                String numericOrderPrice = binding.textCheckoutBottomTotalAmount.getText().toString().replaceAll("[^0-9.]", "");
+                order.put(Constants.KEY_ORDER_PRICE, Float.parseFloat(numericOrderPrice));
+
                 order.put(Constants.KEY_PAYMENT_METHOD, paymentMethod);
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
                 order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                 order.put(Constants.KEY_TABLE_NUM, tableNum);
+                order.put(Constants.KEY_ORDER_STATUS, Constants.KEY_ORDER_PENDING);
                 registerOrderToDb(order);
             }
         } else if (servingMode.equals(Constants.KEY_DELIVERY_MODE)){
@@ -367,6 +338,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
                 order.put(Constants.KEY_TIMESTAMP, Timestamp.now());
                 order.put(Constants.KEY_DESTINATION, destination);
+                order.put(Constants.KEY_ORDER_STATUS, Constants.KEY_ORDER_PENDING);
                 registerOrderToDb(order);
             } else {
                 Intent intent = new Intent(CheckoutActivity.this, DestinationSelectActivity.class);
@@ -466,7 +438,7 @@ public class CheckoutActivity extends AppCompatActivity {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(CheckoutActivity.this, channelId)
                     .setSmallIcon(R.drawable.textsms_24)
                     .setContentText("OTP Number")
-                    .setContentText(String.valueOf(otpNum))
+                    .setContentText(String.valueOf(otpNum) + " is your OTP number")
                     .setAutoCancel(true)
                     .setPriority(NotificationCompat.PRIORITY_HIGH);
 
@@ -573,12 +545,13 @@ public class CheckoutActivity extends AppCompatActivity {
     private void removeCartFromDb() {
         final int[] foodsInCartProcessed = {0};
         for (FoodInCart food : foodsInCart) {
-            db.collection(Constants.KEY_CARTS).document(food.cartId).delete()
+            db.collection(Constants.KEY_CARTS).document(food.CartId).delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             foodsInCartProcessed[0]++;
                             if (foodsInCartProcessed[0] == foodsInCart.size()) {
+                                Toast.makeText(CheckoutActivity.this, "Order Placed", Toast.LENGTH_SHORT).show(); //TODO Maybe navigate the user to a new acitivity???
                                 preferenceManager.putBoolean(Constants.KEY_ORDERING, true);
                                 finish();
                             }
@@ -615,7 +588,7 @@ public class CheckoutActivity extends AppCompatActivity {
                 FoodInCart foodInCart = new FoodInCart();
 
                 for (FoodInCart food : foodsInCart) {
-                    if (food.cartId.equals(cartId)) {
+                    if (food.CartId.equals(cartId)) {
                         foodInCart = food;
                         break;
                     }

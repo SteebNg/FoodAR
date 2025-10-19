@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.capstone.foodar.Model.FoodInCart;
-import com.capstone.foodar.Model.OrderHistoryFoodParent;
 import com.capstone.foodar.R;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class OrderHistoryChildRecyclerListAdapter extends RecyclerView.Adapter<O
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_checkout_food_item_list,
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_admin_home_indi_current_order_item_list,
                 parent,
                 false);
 
@@ -41,23 +40,23 @@ public class OrderHistoryChildRecyclerListAdapter extends RecyclerView.Adapter<O
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FoodInCart food = foodsInCart.get(position);
 
-        holder.foodName.setText(food.foodName);
-        holder.foodAmount.setText(food.foodQuantity + "x");
+        holder.foodName.setText(food.FoodName);
+        holder.foodAmount.setText(food.FoodAmount + "x");
 
         StringBuilder foodOptionsCombined = new StringBuilder();
-        for (String foodOption : food.foodOptions) {
+        for (String foodOption : food.FoodOptions) {
             foodOptionsCombined.append(foodOption).append("\n");
         }
         holder.foodOptions.setText(foodOptionsCombined);
 
-        String remarks = food.remarks;
+        String remarks = food.Remarks;
         if (remarks.isEmpty()) {
             holder.remarks.setText("Remarks: No remarks");
         } else {
             holder.remarks.setText("Remarks: " + remarks);
         }
 
-        String formattedTotalPrice = "Total: RM " + food.foodPrice;
+        String formattedTotalPrice = "Total: RM " + food.FoodPrice;
         holder.foodTotalPrice.setText(formattedTotalPrice);
 
         Glide.with(context).load(food.foodImage).into(holder.foodImage);

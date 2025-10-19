@@ -81,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
         // changeSearchHintFont();
         setListeners();
         if (isLoggedIn) {
-            loadOrderAgain();
+            //loadOrderAgain(); TODO
         } else {
             binding.layoutHomeOrderAgain.setVisibility(View.GONE);
         }
@@ -125,13 +125,17 @@ public class HomeActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+                            if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     if (document.exists()) {
                                         allMenuFoods = new ArrayList<>();
                                         loadAllMenuList(document);
                                     }
                                 }
+                            } else if (task.getResult().isEmpty() && allMenuAdapter != null) {
+                                allMenuFoods.clear();
+                                allMenuAdapter.notifyDataSetChanged();
+                                setFoodCategoryPopupMenu();
                             }
                         }
                     });
@@ -370,7 +374,7 @@ public class HomeActivity extends AppCompatActivity {
                 init();
                 setListeners();
                 if (isLoggedIn) {
-                    loadOrderAgain();
+                    // loadOrderAgain(); TODO
                 } else {
                     binding.layoutHomeOrderAgain.setVisibility(View.GONE);
                 }
@@ -515,8 +519,10 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
+            loadAllMenu();
         } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             loadLocation();
+            loadAllMenu();
         }
     }
 }

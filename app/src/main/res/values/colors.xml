@@ -22,4 +22,5 @@
     <color name="pinkishGreyBlueSecondary">#EDEFF3</color>
     <color name="GreenishGrey">#CFE2CC</color>
     <color name="GreenishGreySecondary">#E1EDE0</color>
+    <color name="progressColor">#601410</color>
 </resources>

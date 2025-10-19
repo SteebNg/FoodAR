@@ -42,23 +42,23 @@ public class FoodCartFoodListAdapter extends RecyclerView.Adapter<FoodCartFoodLi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FoodInCart food = foodsInCart.get(position);
 
-        holder.foodName.setText(food.foodName);
-        holder.foodAmount.setText(food.foodQuantity + "x");
+        holder.foodName.setText(food.FoodName);
+        holder.foodAmount.setText(food.FoodAmount + "x");
 
         StringBuilder foodOptionsCombined = new StringBuilder();
-        for (String foodOption : food.foodOptions) {
+        for (String foodOption : food.FoodOptions) {
             foodOptionsCombined.append(foodOption).append("\n");
         }
         holder.foodOptions.setText(foodOptionsCombined);
 
-        String remarks = food.remarks;
+        String remarks = food.Remarks;
         if (remarks.isEmpty()) {
             holder.remarks.setText("Remarks: No remarks");
         } else {
             holder.remarks.setText("Remarks: " + remarks);
         }
 
-        String formattedTotalPrice = "Total: RM " + food.foodPrice;
+        String formattedTotalPrice = "Total: RM " + food.FoodPrice;
         holder.foodTotalPrice.setText(formattedTotalPrice);
 
         Glide.with(context).load(food.foodImage).into(holder.foodImage);
@@ -104,7 +104,7 @@ public class FoodCartFoodListAdapter extends RecyclerView.Adapter<FoodCartFoodLi
 
     public void removeCartId(String cartId, int pos) {
         for (FoodInCart food : foodsInCart) {
-            if (food.cartId.equals(cartId)) {
+            if (food.CartId.equals(cartId)) {
                 foodsInCart.remove(food);
                 notifyItemRemoved(pos);
                 break;

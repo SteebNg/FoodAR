@@ -149,7 +149,9 @@
                 app:layout_constraintTop_toTopOf="@+id/layoutCheckoutMoney"
                 app:layout_constraintBottom_toBottomOf="@+id/layoutCheckoutMoney"
                 android:gravity="center"
-                android:layout_marginStart="@dimen/_8sdp">
+                android:layout_marginStart="@dimen/_8sdp"
+                android:paddingStart="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_4sdp">
 
                 <FrameLayout
                     android:layout_width="wrap_content"
@@ -228,7 +230,7 @@
                     android:background="@drawable/bg_rectangle_white"
                     android:backgroundTint="@color/bg"
                     android:fontFamily="@font/alata"
-                    android:text="100"
+                    android:text=""
                     android:gravity="center"
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/_16ssp" />

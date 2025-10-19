@@ -41,22 +41,22 @@ public class AdminHomeIndiCurrentOrderListAdapter extends RecyclerView.Adapter<A
         FoodInCart food = foods.get(position);
 
         Glide.with(context).load(food.foodImage).into(holder.foodImage);
-        holder.foodName.setText(food.foodName);
+        holder.foodName.setText(food.FoodName);
 
         StringBuilder foodOptionsCombined = new StringBuilder();
-        for (String option : food.foodOptions) {
+        for (String option : food.FoodOptions) {
             foodOptionsCombined.append(option).append("\n");
         }
         holder.foodOptions.setText(foodOptionsCombined);
 
-        holder.foodRemark.setText(food.remarks);
-        holder.foodPrice.setText(String.valueOf(food.foodPrice));
-        holder.foodAmount.setText(String.valueOf(food.foodQuantity));
+        holder.foodRemark.setText(food.Remarks);
+        holder.foodPrice.setText(String.valueOf(food.FoodPrice));
+        holder.foodAmount.setText(String.valueOf(food.FoodAmount));
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return foods.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

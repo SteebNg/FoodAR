@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.capstone.foodar.Adapter.AdminHomeTableCurrentOrderListAdapter;
 import com.capstone.foodar.Model.CurrentOrder;
@@ -60,6 +61,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         setListeners();
         setLocation();
         getCurrentOrders();
+        //getRevenueInfo(); TODO
     }
 
     private void getCurrentOrders() {
@@ -71,9 +73,12 @@ public class AdminHomeActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int[] orderProcessed = {0};
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        int[] orderProcessed = {0};
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.getString(Constants.KEY_ORDER_STATUS).equals(Constants.KEY_COMPLETED)) {
                                 CurrentOrder order = new CurrentOrder();
                                 order.currentOrderId = document.getId();
                                 order.destination = document.getString(Constants.KEY_DESTINATION);
@@ -83,15 +88,16 @@ public class AdminHomeActivity extends AppCompatActivity {
 
                                 if (cartItems != null) {
                                     int [] foodsProcessed = {0};
-                                    for (Map<String, Object> cartItem : cartItems) {
+                                    for (int i = 0; i < 2; i++) {
+                                        Map<String, Object> cartItem = cartItems.get(i);
                                         FoodInCart food = new FoodInCart();
 
-                                        food.foodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
-                                        food.foodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
-                                        food.foodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
-                                        food.foodQuantity = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
-                                        food.foodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
-                                        food.remarks = cartItem.get(Constants.KEY_REMARKS).toString();
+                                        food.FoodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
+                                        food.FoodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
+                                        food.FoodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
+                                        food.FoodAmount = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
+                                        food.FoodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
+                                        food.Remarks = cartItem.get(Constants.KEY_REMARKS).toString();
                                         getFoodImage(orderProcessed, foodsProcessed, task.getResult().size(), cartItems.size(), food, order);
                                     }
                                 }
@@ -104,7 +110,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     private void getFoodImage(int[] orderProcessed, int[] foodProcessed, int expectedOrderSize, int expectedFoodsSize, FoodInCart food, CurrentOrder order) {
         storageRef.child(Constants.KEY_FOODS
                 + "/"
-                + food.foodId
+                + food.FoodId
                 + "/"
                 + Constants.KEY_FOOD_IMAGE + ".jpeg")
                 .getDownloadUrl()
@@ -138,8 +144,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         tableAdapter.setOnItemClickListener(new AdminHomeTableCurrentOrderListAdapter.OnItemClickListener() {
             @Override
             public void onClick(CurrentOrder order) {
-                // TODO: Navigate to the activity
-                Intent intent = new Intent(AdminHomeActivity.this, Home);
+                Intent intent = new Intent(AdminHomeActivity.this, AdminCurrentOrderActivity.class);
                 intent.putExtra(Constants.KEY_ORDER_ID, order.currentOrderId);
                 startActivityForResult(intent, CURRENT_ORDER_ACTIVITY_RESULT);
             }
@@ -170,6 +175,17 @@ public class AdminHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO
+            }
+        });
+        binding.main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                init();
+                setListeners();
+                setLocation();
+                getCurrentOrders();
+                //TODO getRevenueInfo();
+                binding.main.setRefreshing(false);
             }
         });
     }
