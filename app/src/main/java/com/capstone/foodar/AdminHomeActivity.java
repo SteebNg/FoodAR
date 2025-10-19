@@ -92,12 +92,12 @@ public class AdminHomeActivity extends AppCompatActivity {
                                         Map<String, Object> cartItem = cartItems.get(i);
                                         FoodInCart food = new FoodInCart();
 
-                                        food.foodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
-                                        food.foodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
-                                        food.foodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
-                                        food.foodQuantity = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
-                                        food.foodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
-                                        food.remarks = cartItem.get(Constants.KEY_REMARKS).toString();
+                                        food.FoodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
+                                        food.FoodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
+                                        food.FoodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
+                                        food.FoodAmount = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
+                                        food.FoodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
+                                        food.Remarks = cartItem.get(Constants.KEY_REMARKS).toString();
                                         getFoodImage(orderProcessed, foodsProcessed, task.getResult().size(), cartItems.size(), food, order);
                                     }
                                 }
@@ -110,7 +110,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     private void getFoodImage(int[] orderProcessed, int[] foodProcessed, int expectedOrderSize, int expectedFoodsSize, FoodInCart food, CurrentOrder order) {
         storageRef.child(Constants.KEY_FOODS
                 + "/"
-                + food.foodId
+                + food.FoodId
                 + "/"
                 + Constants.KEY_FOOD_IMAGE + ".jpeg")
                 .getDownloadUrl()
