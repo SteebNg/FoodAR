@@ -31,5 +31,9 @@
         <item name="colorControlActivated">@color/duskYellow</item>
     </style>
     
+    <style name="Theme.Navigation" parent="Base.Theme.FoodAR">
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+    
     <style name="Theme.FoodAR" parent="Base.Theme.FoodAR" />
 </resources>

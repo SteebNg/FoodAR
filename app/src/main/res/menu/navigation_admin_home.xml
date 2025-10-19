@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/manageMenu"
-        android:title="Manage Menu"
-        android:icon="@drawable/menu"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
-    <item android:id="@+id/revenueAdmin"
-        android:title="Revenue Overview"
-        android:icon="@drawable/attach_money_24"/>
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/currentOrdersAdmin"
+            android:title="Current Orders"
+            android:icon="@drawable/receipt_long_24"
+            android:checked="true"/>
+
+        <item android:id="@+id/manageMenuAdmin"
+            android:title="Manage Menu"
+            android:icon="@drawable/menu"/>
+
+        <item android:id="@+id/revenueAdmin"
+            android:title="Revenue Overview"
+            android:icon="@drawable/attach_money_24"/>
+    </group>
 </menu>
