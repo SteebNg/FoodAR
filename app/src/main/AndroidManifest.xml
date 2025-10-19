@@ -24,6 +24,9 @@
         android:theme="@style/Theme.FoodAR"
         tools:targetApi="31">
         <activity
+            android:name=".AdminHomeActivity"
+            android:exported="true" />
+        <activity
             android:name=".FinishOrderClientActivity"
             android:exported="false" />
         <activity
