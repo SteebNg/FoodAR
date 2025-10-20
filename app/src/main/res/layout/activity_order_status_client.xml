@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OrderStatusClientActivity"
-    android:background="@color/bg_dark">
+    android:background="@color/bg">
 
     <TextView
         android:id="@+id/textClientStatusTitle"
@@ -81,17 +81,30 @@
             android:fontFamily="@font/alata"
             android:textStyle="bold"
             android:gravity="start"
-            android:layout_marginStart="@dimen/_16sdp"/>
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_20sdp"/>
 
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/imageClientStatusMain"
+        <FrameLayout
             android:layout_width="@dimen/_160sdp"
             android:layout_height="@dimen/_160sdp"
-            app:layout_constraintTop_toBottomOf="@+id/textClientStatusStatusBody"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/frying"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_rectangle_rounded_corner"
+                android:backgroundTint="@color/white" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/imageClientStatusMain"
+                android:layout_width="@dimen/_160sdp"
+                android:layout_height="@dimen/_160sdp"
+                app:layout_constraintTop_toBottomOf="@+id/textClientStatusStatusBody"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/frying"
+                android:layout_gravity="center"/>
+        </FrameLayout>
 
         <Button
             android:id="@+id/buttonClientStatusConfirmReceive"
