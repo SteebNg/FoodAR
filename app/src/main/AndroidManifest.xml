@@ -26,6 +26,9 @@
         android:theme="@style/Theme.FoodAR"
         tools:targetApi="31">
         <activity
+            android:name=".AdminAddFoodSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminAddFoodActivity"
             android:exported="false" />
         <activity

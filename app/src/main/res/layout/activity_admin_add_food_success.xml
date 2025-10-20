@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminAddFoodSuccessActivity"
+    android:background="@color/bg_dark">
+
+    <ImageView
+        android:id="@+id/imageAdminAddFoodSuccess"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:src="@drawable/verified"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_140sdp" />
+
+    <TextView
+        android:id="@+id/textAdminAddFoodSuccessTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Item Added to your Menu"
+        android:textSize="@dimen/_15ssp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        android:fontFamily="@font/alata"
+        android:layout_weight="10"
+        app:layout_constraintTop_toBottomOf="@+id/imageAdminAddFoodSuccess"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonAdminAddFoodSuccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textAdminAddFoodSuccessTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="Confirm"
+        android:fontFamily="@font/alata"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_rectangle_white"
+        android:backgroundTint="@color/lightGreen"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
