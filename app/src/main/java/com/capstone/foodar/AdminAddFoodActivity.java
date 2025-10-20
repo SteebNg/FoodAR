@@ -2,6 +2,9 @@ package com.capstone.foodar;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -78,6 +81,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
     private String currentFoodCategory;
     private boolean wantModelUpload;
     String[] generatedFoodId;
+    private boolean addCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +145,64 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                 submitToDb();
             }
         });
+        binding.buttonAdminAddFoodAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!addCategory) {
+                    binding.imageAdminAddFoodHideCategory.setVisibility(View.VISIBLE);
+                    binding.imageAdminAddFoodAddCategory.setVisibility(View.GONE);
+                    binding.layoutAdminAddFoodAddFoodCategory.setVisibility(View.VISIBLE);
+                    addCategory = true;
+                } else {
+                    binding.imageAdminAddFoodHideCategory.setVisibility(View.GONE);
+                    binding.imageAdminAddFoodAddCategory.setVisibility(View.VISIBLE);
+                    binding.layoutAdminAddFoodAddFoodCategory.setVisibility(View.GONE);
+                    addCategory = false;
+                }
+            }
+        });
+        binding.buttonAdminAddFoodAddCategoryConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String categoryToBeAdded = binding.etAdminAddFoodAddCategory.getText().toString().trim();
+
+                if (categoryToBeAdded.isEmpty()) {
+                    Toast.makeText(AdminAddFoodActivity.this, "Please enter a food category.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                AlertDialog alertDialog = getAlertDialog(categoryToBeAdded);
+                alertDialog.show();
+            }
+        });
+    }
+
+    private AlertDialog getAlertDialog(String categoryToBeAdded) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminAddFoodActivity.this);
+        builder.setMessage("You are about to add the category: " + categoryToBeAdded);
+        builder.setTitle("Confirmation on adding food category");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirm", (dialog, which) -> {
+            addCategoryToDb(categoryToBeAdded);
+        });
+        return builder.create();
+    }
+
+    private void addCategoryToDb(String category) {
+        db.collection(Constants.KEY_LOCATIONS).document(preferenceManager.getString(Constants.KEY_LOCATION_ID))
+                .update(Constants.KEY_FOOD_CATEGORIES, FieldValue.arrayUnion(category))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        foodCategories.add(category);
+                        popupMenu.getMenu().add(category);
+
+                        binding.imageAdminAddFoodHideCategory.setVisibility(View.GONE);
+                        binding.imageAdminAddFoodAddCategory.setVisibility(View.VISIBLE);
+                        binding.layoutAdminAddFoodAddFoodCategory.setVisibility(View.GONE);
+                        addCategory = false;
+                    }
+                });
     }
 
     private void getAllFoodCategories() {
@@ -316,7 +378,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Log.d("Upload JPG File", "Upload Successfully");
 
-                        Intent intent = new Intent(AdminAddFoodActivity.this, ); //TODO
+                        Intent intent = new Intent(AdminAddFoodActivity.this, AdminAddFoodSuccessActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -436,6 +498,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(getApplicationContext());
         wantModelUpload = false;
         generatedFoodId = new String[1];
+        addCategory = false;
     }
 
     private void initActivityResultLaunchers() {

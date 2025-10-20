@@ -115,43 +115,112 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
-                    android:id="@+id/buttonAdminAddFoodFoodCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    android:background="@drawable/bg_chip"
-                    android:paddingStart="@dimen/_12sdp"
-                    android:paddingEnd="@dimen/_8sdp"
-                    android:paddingTop="@dimen/_2sdp"
-                    android:paddingBottom="@dimen/_4sdp"
                     android:layout_marginBottom="@dimen/_12sdp">
 
-                    <TextView
-                        android:id="@+id/textAdminAddFoodFoodCategory"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/buttonAdminAddFoodFoodCategory"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:text="All menu"
-                        android:fontFamily="@font/alata"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="@color/primary_text" />
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:background="@drawable/bg_chip"
+                        android:paddingStart="@dimen/_12sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textAdminAddFoodFoodCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="All menu"
+                            android:fontFamily="@font/alata"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/primary_text" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            app:layout_constraintTop_toTopOf="@+id/textHomeFoodCategory"
+                            app:layout_constraintStart_toEndOf="@id/textHomeFoodCategory"
+                            app:layout_constraintBottom_toBottomOf="@+id/textHomeFoodCategory"
+                            android:src="@drawable/baseline_keyboard_arrow_right_24"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:background="@drawable/bg_chip"
+                            android:backgroundTint="@color/bg_dark"
+                            android:layout_marginStart="@dimen/_4sdp"/>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/buttonAdminAddFoodAddCategory"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:visibility="visible">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_chip"/>
+
+                        <ImageView
+                            android:id="@+id/imageAdminAddFoodAddCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/plus"
+                            android:padding="@dimen/_8sdp"/>
+
+                        <ImageView
+                            android:id="@+id/imageAdminAddFoodHideCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/arrow_down_24"
+                            android:padding="@dimen/_8sdp"
+                            android:visibility="gone"/>
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutAdminAddFoodAddFoodCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Food Category"
+                        app:boxStrokeColor="@color/grey"
+                        app:hintTextColor="@color/hintColor"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAdminAddFoodAddCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:fontFamily="@font/alata"
+                            android:textColor="@color/primary_text"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        app:layout_constraintTop_toTopOf="@+id/textHomeFoodCategory"
-                        app:layout_constraintStart_toEndOf="@id/textHomeFoodCategory"
-                        app:layout_constraintBottom_toBottomOf="@+id/textHomeFoodCategory"
-                        android:src="@drawable/baseline_keyboard_arrow_right_24"
-                        android:layout_marginTop="@dimen/_2sdp"
+                        android:id="@+id/buttonAdminAddFoodAddCategoryConfirm"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
                         android:background="@drawable/bg_chip"
-                        android:backgroundTint="@color/bg_dark"
-                        android:layout_marginStart="@dimen/_4sdp"/>
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:src="@drawable/plus"
+                        android:padding="@dimen/_8sdp"/>
                 </LinearLayout>
 
                 <TextView
