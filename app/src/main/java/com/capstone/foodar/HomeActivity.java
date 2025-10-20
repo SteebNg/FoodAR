@@ -128,7 +128,6 @@ public class HomeActivity extends AppCompatActivity {
                             if (task.isSuccessful() && !task.getResult().isEmpty()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     if (document.exists()) {
-                                        allMenuFoods = new ArrayList<>();
                                         loadAllMenuList(document);
                                     }
                                 }
@@ -303,6 +302,7 @@ public class HomeActivity extends AppCompatActivity {
         currentFoodCategory = Constants.KEY_ALL_MENU;
         filteredAllMenu = new ArrayList<>();
         preferenceManager.clearString(Constants.KEY_TABLE_NUM);
+        allMenuFoods = new ArrayList<>();
 
         isLoggedIn = isLoggedIn();
 

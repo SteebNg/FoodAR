@@ -141,8 +141,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
                     foodOption.individualOptions = getDoubleMap((Map<?, ?>) individualOptionsObject);
                 }
 
-                foodOption.isCompulsory = (boolean) option.get(Constants.KEY_IS_COMPULSORY);
-
                 foodOptions.add(foodOption);
             }
             setFoodOptionRecycler();

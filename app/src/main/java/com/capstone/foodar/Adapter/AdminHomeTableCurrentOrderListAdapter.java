@@ -18,7 +18,6 @@ public class AdminHomeTableCurrentOrderListAdapter extends RecyclerView.Adapter<
 
     private ArrayList<CurrentOrder> orders;
     private Context context;
-    private OnItemClickListener onItemClickListener;
 
     public AdminHomeTableCurrentOrderListAdapter(ArrayList<CurrentOrder> orders, Context context) {
         this.orders = orders;
@@ -45,12 +44,6 @@ public class AdminHomeTableCurrentOrderListAdapter extends RecyclerView.Adapter<
         } else {
             holder.tableNum.setText(order.destination);
         }
-        holder.more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onClick(order);
-            }
-        });
 
         AdminHomeIndiCurrentOrderListAdapter adapter = new AdminHomeIndiCurrentOrderListAdapter(context, order.foods);
         holder.orders.setAdapter(adapter);
@@ -73,13 +66,5 @@ public class AdminHomeTableCurrentOrderListAdapter extends RecyclerView.Adapter<
             orders = itemView.findViewById(R.id.recyclerLayoutAdminHomeTableCurrentOrder);
             more = itemView.findViewById(R.id.textLayoutOrderHistoryTableItemMore);
         }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public interface OnItemClickListener {
-        void onClick(CurrentOrder order);
     }
 }

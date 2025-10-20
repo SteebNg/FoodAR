@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AdminHomeCurrentOrderFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textAdminHomeTitle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/_16ssp"
+            android:fontFamily="@font/alata"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_8sdp"/>
+
+        <ImageView
+            android:id="@+id/buttonAdminHomeShowNav"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:src="@drawable/moreoption"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textAdminHomeTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeTitle"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_2sdp"/>
+
+        <View
+            android:id="@+id/dividerAdminHome1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            app:layout_constraintTop_toBottomOf="@+id/textAdminHomeTitle"
+            android:background="@color/hintColor"
+            android:layout_marginTop="@dimen/_12sdp"/>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/swipeRefreshAdminHome"
+            android:paddingBottom="@dimen/_8sdp"
+            app:layout_constraintTop_toBottomOf="@+id/dividerAdminHome1">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textAdminHomeLocationTitle"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Current Location:"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_16ssp"
+                        android:fontFamily="@font/alata"
+                        android:textStyle="bold"
+                        android:gravity="start"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginStart="@dimen/_16sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeLocation"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeLocationTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeLocationTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="@dimen/_13ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start" />
+
+                    <View
+                        android:id="@+id/dividerAdminHome2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeLocation"
+                        android:background="@color/hintColor"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_12sdp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerAdminHomeCurrentOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerAdminHome2"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        tools:listitem="@layout/layout_admin_current_order_item_list" />
+
+                    <View
+                        android:id="@+id/dividerAdminHome3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        app:layout_constraintTop_toBottomOf="@+id/recyclerAdminHomeCurrentOrder"
+                        android:background="@color/hintColor"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueReportTitle"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeLocation"
+                        app:layout_constraintTop_toBottomOf="@+id/dividerAdminHome3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Revenue Report"
+                        android:textColor="@color/primary_text"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_15ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginTop="@dimen/_8sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueReportMore"
+                        app:layout_constraintTop_toTopOf="@+id/textAdminHomeRevenueReportTitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeRevenueReportTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="More"
+                        android:textColor="@color/blueText"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="end"
+                        android:layout_marginEnd="@dimen/_20sdp"/>
+
+                    <View
+                        android:id="@+id/bgAdminHomeRevenueMonthly"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_100sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueReportTitle"
+                        android:background="@drawable/bg_rectangle_rounded_corner"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:backgroundTint="@color/pinkishGreyBlue" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTitle"
+                        app:layout_constraintStart_toStartOf="@+id/bgAdminHomeRevenueMonthly"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueMonthly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Monthly Revenue"
+                        android:textColor="@color/primary_text"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_15ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+
+                    <View
+                        android:id="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_56sdp"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueMonthlyTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueMonthlyTitle"
+                        android:background="@drawable/bg_rectangle_outlined_rounded_corner"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:backgroundTint="@color/pinkishGreyBlueSecondary" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTotalRevenueSubtitle"
+                        app:layout_constraintStart_toStartOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Revenue"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTotalRevenueBody"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueMonthlyTotalRevenueSubtitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueMonthlyTotalRevenueSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Generated"
+                        android:textColor="@color/hintColor"
+                        android:textSize="@dimen/_7ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/graph"
+                        app:layout_constraintTop_toTopOf="@+id/textAdminHomeRevenueMonthlyTotalRevenueSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeRevenueMonthlyTotalRevenueBody"
+                        app:layout_constraintEnd_toEndOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        android:layout_marginEnd="@dimen/_6sdp" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTotalRevenueNum"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueMonthlyTotalRevenueSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RM 4123"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginBottom="@dimen/_4sdp"/>
+
+                    <View
+                        android:id="@+id/bgAdminHomeRevenueMonthlyTotalCustomers"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_56sdp"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        app:layout_constraintBottom_toBottomOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        app:layout_constraintStart_toEndOf="@+id/bgAdminHomeRevenueMonthlyTotalRevenue"
+                        android:background="@drawable/bg_rectangle_outlined_rounded_corner"
+                        android:backgroundTint="@color/pinkishGreyBlueSecondary"
+                        android:layout_marginStart="@dimen/_13sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTotalCustomersSubtitle"
+                        app:layout_constraintStart_toStartOf="@+id/bgAdminHomeRevenueMonthlyTotalCustomers"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueMonthlyTotalCustomers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Customers"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTotalCustomersBody"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueMonthlyTotalCustomersSubtitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueMonthlyTotalCustomersSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ordered"
+                        android:textColor="@color/hintColor"
+                        android:textSize="@dimen/_7ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/account_circle_24"
+                        app:layout_constraintTop_toTopOf="@+id/textAdminHomeRevenueMonthlyTotalCustomersSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeRevenueMonthlyTotalCustomersBody"
+                        app:layout_constraintEnd_toEndOf="@+id/bgAdminHomeRevenueMonthlyTotalCustomers"
+                        android:layout_marginEnd="@dimen/_6sdp" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueMonthlyTotalCustomersNum"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueMonthlyTotalCustomersSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/bgAdminHomeRevenueMonthlyTotalCustomers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="250"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginBottom="@dimen/_4sdp"/>
+
+                    <View
+                        android:id="@+id/bgAdminHomeRevenueYearly"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_100sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/bgAdminHomeRevenueMonthly"
+                        android:background="@drawable/bg_rectangle_rounded_corner"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_marginEnd="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:backgroundTint="@color/GreenishGrey" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTitle"
+                        app:layout_constraintStart_toStartOf="@+id/bgAdminHomeRevenueYearly"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueYearly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yearly Revenue"
+                        android:textColor="@color/primary_text"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/_15ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+
+                    <View
+                        android:id="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_56sdp"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueYearlyTitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueYearlyTitle"
+                        android:background="@drawable/bg_rectangle_outlined_rounded_corner"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:backgroundTint="@color/GreenishGreySecondary" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTotalRevenueSubtitle"
+                        app:layout_constraintStart_toStartOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Revenue"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTotalRevenueBody"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueYearlyTotalRevenueSubtitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueYearlyTotalRevenueSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Generated"
+                        android:textColor="@color/hintColor"
+                        android:textSize="@dimen/_7ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTotalRevenueNum"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueYearlyTotalRevenueSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RM 61023"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginBottom="@dimen/_4sdp"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/graph"
+                        app:layout_constraintTop_toTopOf="@+id/textAdminHomeRevenueYearlyTotalRevenueSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeRevenueYearlyTotalRevenueBody"
+                        app:layout_constraintEnd_toEndOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        android:layout_marginEnd="@dimen/_6sdp" />
+
+                    <View
+                        android:id="@+id/bgAdminHomeRevenueYearlyTotalCustomers"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_56sdp"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        app:layout_constraintBottom_toBottomOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        app:layout_constraintStart_toEndOf="@+id/bgAdminHomeRevenueYearlyTotalRevenue"
+                        android:background="@drawable/bg_rectangle_outlined_rounded_corner"
+                        android:backgroundTint="@color/GreenishGreySecondary"
+                        android:layout_marginStart="@dimen/_13sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTotalCustomersSubtitle"
+                        app:layout_constraintStart_toStartOf="@+id/bgAdminHomeRevenueYearlyTotalCustomers"
+                        app:layout_constraintTop_toTopOf="@+id/bgAdminHomeRevenueYearlyTotalCustomers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Customers"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_4sdp"/>
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTotalCustomersBody"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueYearlyTotalCustomersSubtitle"
+                        app:layout_constraintTop_toBottomOf="@+id/textAdminHomeRevenueYearlyTotalCustomersSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ordered"
+                        android:textColor="@color/hintColor"
+                        android:textSize="@dimen/_7ssp"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_24sdp"
+                        android:layout_height="@dimen/_24sdp"
+                        android:src="@drawable/account_circle_24"
+                        app:layout_constraintTop_toTopOf="@+id/textAdminHomeRevenueYearlyTotalCustomersSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeRevenueYearlyTotalCustomersBody"
+                        app:layout_constraintEnd_toEndOf="@+id/bgAdminHomeRevenueYearlyTotalCustomers"
+                        android:layout_marginEnd="@dimen/_6sdp" />
+
+                    <TextView
+                        android:id="@+id/textAdminHomeRevenueYearlyTotalCustomersNum"
+                        app:layout_constraintStart_toStartOf="@+id/textAdminHomeRevenueYearlyTotalCustomersSubtitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/bgAdminHomeRevenueYearlyTotalCustomers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2530"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/_12ssp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/alata"
+                        android:gravity="start"
+                        android:layout_marginBottom="@dimen/_4sdp"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
