@@ -30,6 +30,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -110,7 +111,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     }
 
     private void setCurrentOrdersListener() {
-        currentOrdersQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        currentOrdersQuery.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -119,6 +120,13 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                 }
 
                 if (value != null) {
+                    if (value.getMetadata().isFromCache()) {
+                        Log.d("Read Source", "Cache");
+                        return;
+                    } else {
+                        Log.d("Read Source", "Server");
+                    }
+
                     int[] orderProcessed = {0};
                     for (QueryDocumentSnapshot document : value) {
                         CurrentOrder order = new CurrentOrder();
