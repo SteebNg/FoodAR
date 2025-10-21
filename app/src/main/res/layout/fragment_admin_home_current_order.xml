@@ -25,17 +25,6 @@
             android:gravity="center"
             android:layout_marginTop="@dimen/_8sdp"/>
 
-        <ImageView
-            android:id="@+id/buttonAdminHomeShowNav"
-            android:layout_width="@dimen/_28sdp"
-            android:layout_height="@dimen/_28sdp"
-            android:src="@drawable/moreoption"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textAdminHomeTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeTitle"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_2sdp"/>
-
         <View
             android:id="@+id/dividerAdminHome1"
             android:layout_width="match_parent"
