@@ -58,9 +58,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/_20sdp"
         android:text="Confirm"
+        android:fontFamily="@font/alata"
         android:background="@drawable/bg_rectangle_white"
         android:backgroundTint="@color/lightGreen"
         android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp" />
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:textAllCaps="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

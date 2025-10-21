@@ -3,15 +3,20 @@ package com.capstone.foodar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.capstone.foodar.Adapter.AdminHomeTableCurrentOrderListAdapter;
@@ -23,6 +28,8 @@ import com.capstone.foodar.databinding.ActivityAdminHomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -38,12 +45,6 @@ import java.util.Map;
 public class AdminHomeActivity extends AppCompatActivity {
 
     ActivityAdminHomeBinding binding;
-    private FirebaseFirestore db;
-    private PreferenceManager preferenceManager;
-    private ArrayList<CurrentOrder> orders;
-    private StorageReference storageRef;
-    private AdminHomeTableCurrentOrderListAdapter adapter;
-    private final int CURRENT_ORDER_ACTIVITY_RESULT = 7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,151 +58,36 @@ public class AdminHomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        init();
-        setListeners();
-        setLocation();
-        getCurrentOrders();
-        //getRevenueInfo(); TODO
-    }
+        final Fragment fragmentCurrentOrder = new AdminHomeCurrentOrderFragment();
+        final Fragment fragmentManageMenu = new AdminHomeManagerMenuFragment();
+        final Fragment fragmentRevenueStats = new AdminHomeRevenueStatsFragement();
+        final FragmentManager fragmentManager = getSupportFragmentManager();
 
-    private void getCurrentOrders() {
-        db.collection(Constants.KEY_CURRENT_ORDERS)
-                .whereEqualTo(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID))
-                .orderBy(Constants.KEY_TIMESTAMP, Query.Direction.DESCENDING)
-                .limit(2)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            return;
-                        }
-                        int[] orderProcessed = {0};
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            if (document.getString(Constants.KEY_ORDER_STATUS).equals(Constants.KEY_COMPLETED)) {
-                                CurrentOrder order = new CurrentOrder();
-                                order.currentOrderId = document.getId();
-                                order.destination = document.getString(Constants.KEY_DESTINATION);
-                                order.tableNum = document.getString(Constants.KEY_TABLE_NUM);
+        final Fragment[] activeFragment = {fragmentCurrentOrder};
 
-                                List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
+        fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentCurrentOrder, "1").commit();
+        fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentManageMenu, "2").hide(fragmentManageMenu).commit();
+        fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentRevenueStats, "3").hide(fragmentRevenueStats).commit();
 
-                                if (cartItems != null) {
-                                    int [] foodsProcessed = {0};
-                                    for (int i = 0; i < 2; i++) {
-                                        Map<String, Object> cartItem = cartItems.get(i);
-                                        FoodInCart food = new FoodInCart();
-
-                                        food.FoodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
-                                        food.FoodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
-                                        food.FoodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
-                                        food.FoodAmount = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
-                                        food.FoodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
-                                        food.Remarks = cartItem.get(Constants.KEY_REMARKS).toString();
-                                        getFoodImage(orderProcessed, foodsProcessed, task.getResult().size(), cartItems.size(), food, order);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void getFoodImage(int[] orderProcessed, int[] foodProcessed, int expectedOrderSize, int expectedFoodsSize, FoodInCart food, CurrentOrder order) {
-        storageRef.child(Constants.KEY_FOODS
-                + "/"
-                + food.FoodId
-                + "/"
-                + Constants.KEY_FOOD_IMAGE + ".jpeg")
-                .getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        food.foodImage = uri;
-                        order.foods.add(food);
-                        foodProcessed[0]++;
-
-                        if (foodProcessed[0] == expectedFoodsSize) {
-                            orders.add(order);
-                            orderProcessed[0]++;
-                            if (orderProcessed[0] == expectedOrderSize) {
-                                addOrderToRecycler();
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void addOrderToRecycler() {
-        adapter = getAdminHomeTableAdapter();
-        binding.recyclerAdminHomeCurrentOrder.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    private AdminHomeTableCurrentOrderListAdapter getAdminHomeTableAdapter() {
-        AdminHomeTableCurrentOrderListAdapter tableAdapter = new AdminHomeTableCurrentOrderListAdapter(orders, AdminHomeActivity.this);
-
-        tableAdapter.setOnItemClickListener(new AdminHomeTableCurrentOrderListAdapter.OnItemClickListener() {
+        binding.naviAdminHome.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(CurrentOrder order) {
-                Intent intent = new Intent(AdminHomeActivity.this, AdminCurrentOrderActivity.class);
-                intent.putExtra(Constants.KEY_ORDER_ID, order.currentOrderId);
-                startActivityForResult(intent, CURRENT_ORDER_ACTIVITY_RESULT);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int selectedItemId = item.getItemId();
+
+                if (selectedItemId == R.id.revenueAdmin) {
+                    fragmentManager.beginTransaction().hide(activeFragment[0]).show(fragmentRevenueStats).commit();
+                    activeFragment[0] = fragmentRevenueStats;
+                    return true;
+                } else if (selectedItemId == R.id.manageMenuAdmin) {
+                    fragmentManager.beginTransaction().hide(activeFragment[0]).show(fragmentManageMenu).commit();
+                    activeFragment[0] = fragmentManageMenu;
+                    return true;
+                } else {
+                    fragmentManager.beginTransaction().hide(activeFragment[0]).show(fragmentCurrentOrder).commit();
+                    activeFragment[0] = fragmentCurrentOrder;
+                    return true;
+                }
             }
         });
-
-        return tableAdapter;
-    }
-
-    private void setLocation() {
-        db.collection(Constants.KEY_LOCATIONS).document(preferenceManager.getString(Constants.KEY_LOCATION_ID))
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String locationName = document.getString(Constants.KEY_LOCATION_NAME);
-                                binding.textAdminHomeLocation.setText(locationName);
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void setListeners() {
-        binding.textAdminHomeManageMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
-        binding.main.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                init();
-                setListeners();
-                setLocation();
-                getCurrentOrders();
-                //TODO getRevenueInfo();
-                binding.main.setRefreshing(false);
-            }
-        });
-    }
-
-    private void init() {
-        db = FirebaseFirestore.getInstance();
-        preferenceManager = new PreferenceManager(getApplicationContext());
-        orders = new ArrayList<>();
-        storageRef = FirebaseStorage.getInstance().getReference();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CURRENT_ORDER_ACTIVITY_RESULT && resultCode == RESULT_OK) {
-            getCurrentOrders();
-        }
     }
 }

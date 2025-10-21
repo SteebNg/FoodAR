@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="bg_darker">#D9D8D8</color>
+    <color name="bg_darker_er">#C1C1C1</color>
+    <color name="bg_darker_er_er">#A4A4A4</color>
     <color name="bg_dark">#FFe6e6e6</color>
     <color name="bg">#FFf2f2f2</color>
     <color name="bg_light">#FFFFFFFF</color>
@@ -13,6 +15,7 @@
     <color name="hintColor">#909090</color>
     <color name="borderStroke">#ABABAB</color>
     <color name="lightGreen">#60E99C</color>
+    <color name="lighterGreen">#93E4B4</color>
     <color name="warningRed">#cc0202</color>
     <color name="grey">#88888888</color>
     <color name="blueText">#007AFF</color>

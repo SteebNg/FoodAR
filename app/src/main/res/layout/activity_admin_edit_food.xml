@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/bg_dark">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/_16sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+            <ImageView
+                android:id="@+id/buttonAdminEditFoodBack"
+                android:layout_width="@dimen/_28sdp"
+                android:layout_height="@dimen/_28sdp"
+                android:src="@drawable/arrow_back_24"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/_2sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Update Food Item"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_text"
+                android:fontFamily="@font/alata"
+                android:layout_weight="10"
+                android:layout_marginStart="@dimen/_4sdp"/>
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="@dimen/_2sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Basic Information"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/alata"
+                    android:textColor="@color/primary_text"
+                    android:layout_marginBottom="@dimen/_12sdp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Food Name"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    app:boxStrokeColor="@color/grey"
+                    app:hintTextColor="@color/hintColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAdminEditFoodFoodName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/alata"
+                        android:textColor="@color/primary_text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Food Description"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    app:boxStrokeColor="@color/grey"
+                    app:hintTextColor="@color/hintColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAdminEditFoodFoodDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:gravity="top"
+                        android:fontFamily="@font/alata"
+                        android:textColor="@color/primary_text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Food Price"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    app:boxStrokeColor="@color/grey"
+                    app:hintTextColor="@color/hintColor"
+                    app:prefixText="RM">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAdminEditFoodFoodPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberDecimal"
+                        android:fontFamily="@font/alata"
+                        android:textColor="@color/primary_text"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="@dimen/_12sdp">
+
+                    <LinearLayout
+                        android:id="@+id/buttonAdminEditFoodFoodCategory"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:background="@drawable/bg_chip"
+                        android:paddingStart="@dimen/_12sdp"
+                        android:paddingEnd="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_4sdp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/textAdminEditFoodFoodCategory"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="All menu"
+                            android:fontFamily="@font/alata"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="@color/primary_text" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            app:layout_constraintTop_toTopOf="@+id/textHomeFoodCategory"
+                            app:layout_constraintStart_toEndOf="@id/textHomeFoodCategory"
+                            app:layout_constraintBottom_toBottomOf="@+id/textHomeFoodCategory"
+                            android:src="@drawable/baseline_keyboard_arrow_right_24"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:background="@drawable/bg_chip"
+                            android:backgroundTint="@color/bg_dark"
+                            android:layout_marginStart="@dimen/_4sdp"/>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/buttonAdminEditFoodAddCategory"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:visibility="visible">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_chip"/>
+
+                        <ImageView
+                            android:id="@+id/imageAdminEditFoodAddCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/plus"
+                            android:padding="@dimen/_8sdp"/>
+
+                        <ImageView
+                            android:id="@+id/imageAdminEditFoodHideCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/arrow_down_24"
+                            android:padding="@dimen/_8sdp"
+                            android:visibility="gone"/>
+                    </FrameLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutAdminEditFoodAddFoodCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_12sdp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Food Category"
+                        app:boxStrokeColor="@color/grey"
+                        app:hintTextColor="@color/hintColor"
+                        android:layout_weight="1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAdminEditFoodAddCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:fontFamily="@font/alata"
+                            android:textColor="@color/primary_text"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/buttonAdminEditFoodAddCategoryConfirm"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/bg_chip"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:src="@drawable/plus"
+                        android:padding="@dimen/_8sdp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Food Image/Thumbnail"
+                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/hintColor"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:fontFamily="@font/alata"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/imageAdminEditFoodFoodThumbnail"
+                        android:layout_width="@dimen/_64sdp"
+                        android:layout_height="@dimen/_64sdp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_placeholder"
+                        android:background="@android:color/transparent"
+                        android:contentDescription="Food thumbnail preview" />
+
+                    <Button
+                        android:id="@+id/buttonAdminEditFoodUploadImage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Upload Image"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:textColor="@color/blueText"
+                        android:fontFamily="@font/alata"
+                        style="@style/Widget.Material3.Button.OutlinedButton" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="@dimen/_2sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/_12sdp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Food Options"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_text"
+                        android:fontFamily="@font/alata"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonAdminEditFoodAddOption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+ Add Option"
+                        android:textSize="@dimen/_10ssp"
+                        android:fontFamily="@font/alata"
+                        style="@style/Widget.Material3.Button.TonalButton" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutAdminEditFoodOptionsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        app:cardCornerRadius="@dimen/_8sdp"
+                        app:cardBackgroundColor="@color/bg"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/grey">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_12sdp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:hint="Option Name (e.g., Size)">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="text"
+                                        android:fontFamily="@font/alata"
+                                        android:textColor="@color/primary_text"/>
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <ImageButton
+                                    android:layout_width="@dimen/_36sdp"
+                                    android:layout_height="@dimen/_36sdp"
+                                    android:src="@drawable/delete_forever_24"
+                                    android:background="?attr/selectableItemBackgroundBorderless"
+                                    android:layout_marginStart="@dimen/_8sdp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_marginTop="@dimen/_8sdp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical"
+                                    android:layout_marginBottom="@dimen/_8sdp">
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:hint="Sub-option Name">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="text"
+                                            android:fontFamily="@font/alata"
+                                            android:textColor="@color/primary_text"/>
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <com.google.android.material.textfield.TextInputLayout
+                                        android:layout_width="@dimen/_80sdp"
+                                        android:layout_height="wrap_content"
+                                        android:hint="Price"
+                                        android:layout_marginStart="8dp"
+                                        app:prefixText="RM">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="numberDecimal"
+                                            android:fontFamily="@font/alata"
+                                            android:textColor="@color/primary_text"/>
+                                    </com.google.android.material.textfield.TextInputLayout>
+
+                                    <ImageButton
+                                        android:layout_width="@dimen/_36sdp"
+                                        android:layout_height="@dimen/_36sdp"
+                                        android:src="@drawable/delete_forever_24"
+                                        android:background="?attr/selectableItemBackgroundBorderless"
+                                        android:layout_marginStart="@dimen/_4sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="+ Add Sub-option"
+                                android:textSize="@dimen/_10ssp"
+                                android:textColor="@color/hintColor"
+                                style="@style/Widget.Material3.Button.TextButton" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView> -->
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="@dimen/_2sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_16sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3D Model Files"
+                    android:textSize="@dimen/_14ssp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_text"
+                    android:fontFamily="@font/alata"
+                    android:layout_marginBottom="@dimen/_16sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/_12sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OBJ File"
+                        android:textSize="@dimen/_11ssp"
+                        android:textColor="@color/hintColor"
+                        android:fontFamily="@font/alata"
+                        android:layout_marginBottom="@dimen/_8sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="@dimen/_12sdp">
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:src="@drawable/file_24" />
+
+                        <TextView
+                            android:id="@+id/textAdminEditFoodObjFileName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No file selected"
+                            android:textColor="@color/hintColor"
+                            android:fontFamily="@font/alata"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:singleLine="true"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/buttonAdminEditFoodUploadObj"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Browse"
+                            android:fontFamily="@font/alata"
+                            android:textColor="@color/blueText"
+                            android:textSize="@dimen/_10ssp"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/_12sdp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MTL File"
+                        android:textSize="@dimen/_11ssp"
+                        android:textColor="@color/hintColor"
+                        android:fontFamily="@font/alata"
+                        android:layout_marginBottom="@dimen/_8sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:src="@drawable/file_24" />
+
+                        <TextView
+                            android:id="@+id/textAdminEditFoodMtlFileName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No file selected"
+                            android:textColor="@color/hintColor"
+                            android:fontFamily="@font/alata"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:singleLine="true"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/buttonAdminEditFoodUploadMtl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Browse"
+                            android:textColor="@color/blueText"
+                            android:fontFamily="@font/alata"
+                            android:textSize="@dimen/_10ssp"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="JPG Texture File"
+                        android:textSize="@dimen/_11ssp"
+                        android:textColor="@color/hintColor"
+                        android:layout_marginBottom="@dimen/_8sdp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_12sdp"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:src="@drawable/file_24" />
+
+                        <TextView
+                            android:id="@+id/textAdminEditFoodJpgFileName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No file selected"
+                            android:textColor="@color/hintColor"
+                            android:fontFamily="@font/alata"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:singleLine="true"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/buttonAdminEditFoodUploadJpg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Browse"
+                            android:textSize="@dimen/_10ssp"
+                            android:textColor="@color/blueText"
+                            android:fontFamily="@font/alata"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAdminEditFoodSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48sdp"
+                android:text="Submit Food Item"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/blueText"
+                android:fontFamily="@font/alata"
+                android:background="@drawable/bg_chip"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:textAllCaps="false"
+                android:visibility="visible"/>
+
+            <ProgressBar
+                android:id="@+id/progressAdminEditFood"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/black"
+                android:visibility="gone"/>
+        </FrameLayout>
+    </LinearLayout>
+</ScrollView>
