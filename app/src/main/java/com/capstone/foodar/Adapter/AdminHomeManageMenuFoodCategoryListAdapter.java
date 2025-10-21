@@ -21,6 +21,8 @@ public class AdminHomeManageMenuFoodCategoryListAdapter extends RecyclerView.Ada
     private Context context;
     private OnItemClickListener onItemClickListener;
 
+    private int selectedPosition = 0;
+
     public AdminHomeManageMenuFoodCategoryListAdapter(ArrayList<String> foodCategories, Context context) {
         this.foodCategories = foodCategories;
         this.context = context;
@@ -41,18 +43,23 @@ public class AdminHomeManageMenuFoodCategoryListAdapter extends RecyclerView.Ada
         String foodCategory = foodCategories.get(position);
         holder.foodCategory.setText(foodCategory);
 
-        if (position == 0) {
+        if (position == selectedPosition) {
             holder.bg.setBackgroundTintList(
                     ContextCompat.getColorStateList(context, R.color.bg_darker)
             );
+        } else {
+            holder.bg.setBackgroundTintList(null);
+            holder.bg.setBackgroundResource(R.drawable.bg_admin_home_manage_menu_food_category);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.bg.setBackgroundTintList(
-                        ContextCompat.getColorStateList(context, R.color.bg_darker)
-                );
+                int previousSelectedPos = selectedPosition;
+                selectedPosition = holder.getAdapterPosition();
+                notifyItemChanged(previousSelectedPos);
+                notifyItemChanged(selectedPosition);
+
                 onItemClickListener.onClick(foodCategory);
             }
         });
