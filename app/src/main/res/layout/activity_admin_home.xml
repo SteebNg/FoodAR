@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/bg"
         app:menu="@menu/navigation_admin_home"
-        android:theme="@style/Theme.Navigation"/>
+        android:theme="@style/Theme.Navigation"
+        app:itemTextColor="@color/secondary_text"/>
 
     <FrameLayout
         android:id="@+id/frameAdminHome"
