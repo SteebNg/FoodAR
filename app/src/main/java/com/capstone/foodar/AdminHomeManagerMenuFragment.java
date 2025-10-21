@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -108,6 +109,16 @@ public class AdminHomeManagerMenuFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AdminAddFoodActivity.class);
                 startActivity(intent);
+            }
+        });
+        binding.swipeRefreshAdminHomeManageMenu.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                init();
+                getFoodCategory();
+                getFoods();
+                setListeners();
+                binding.swipeRefreshAdminHomeManageMenu.setRefreshing(false);
             }
         });
     }
