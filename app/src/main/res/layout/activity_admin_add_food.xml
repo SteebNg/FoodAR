@@ -112,6 +112,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
                         android:fontFamily="@font/alata"
+                        android:text="0.00"
                         android:textColor="@color/primary_text"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -209,7 +210,7 @@
                             android:id="@+id/etAdminAddFoodAddCategory"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
+                            android:inputType="text"
                             android:fontFamily="@font/alata"
                             android:textColor="@color/primary_text"/>
                     </com.google.android.material.textfield.TextInputLayout>
@@ -303,7 +304,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layoutOptionsContainer"
+                    android:id="@+id/layoutAdminAddFoodOptionsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -596,17 +597,31 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonAdminAddFoodSubmit"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
-            android:text="Submit Food Item"
-            android:textSize="@dimen/_12ssp"
-            android:textColor="@color/blueText"
-            android:fontFamily="@font/alata"
-            android:background="@drawable/bg_chip"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:textAllCaps="false"/>
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonAdminAddFoodSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_48sdp"
+                android:text="Submit Food Item"
+                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/blueText"
+                android:fontFamily="@font/alata"
+                android:background="@drawable/bg_chip"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:textAllCaps="false"
+                android:visibility="visible"/>
+
+            <ProgressBar
+                android:id="@+id/progressAdminAddFood"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/black"
+                android:visibility="gone"/>
+        </FrameLayout>
     </LinearLayout>
 </ScrollView>

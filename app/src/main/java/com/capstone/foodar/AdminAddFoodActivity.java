@@ -4,13 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -49,6 +52,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -56,6 +61,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -126,7 +132,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         binding.buttonAdminAddFoodUploadMtl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFilePicker(mtlFileLauncher, "/");
+                openFilePicker(mtlFileLauncher, "*/*");
             }
         });
         binding.buttonAdminAddFoodUploadJpg.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +151,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 submitToDb();
+                isLoading(true);
             }
         });
         binding.buttonAdminAddFoodAddCategory.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +196,8 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                 finish();
             }
         });
+        binding.etAdminAddFoodFoodPrice.addTextChangedListener(
+                new DecimalDigitsInputFilter(2, binding.etAdminAddFoodFoodPrice));
     }
 
     private AlertDialog getAlertDialog(String categoryToBeAdded) {
@@ -200,6 +209,18 @@ public class AdminAddFoodActivity extends AppCompatActivity {
             addCategoryToDb(categoryToBeAdded);
         });
         return builder.create();
+    }
+
+    private void isLoading(boolean loading) {
+        if (loading) {
+            binding.buttonAdminAddFoodSubmit.setVisibility(View.GONE);
+            binding.buttonAdminAddFoodSubmit.setEnabled(false);
+            binding.progressAdminAddFood.setVisibility(View.VISIBLE);
+        } else {
+            binding.buttonAdminAddFoodSubmit.setVisibility(View.VISIBLE);
+            binding.buttonAdminAddFoodSubmit.setEnabled(true);
+            binding.progressAdminAddFood.setVisibility(View.GONE);
+        }
     }
 
     private void addCategoryToDb(String category) {
@@ -246,6 +267,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         popupMenu.getMenuInflater().inflate(R.menu.menu_food_categories, popupMenu.getMenu());
 
         binding.textAdminAddFoodFoodCategory.setText(foodCategories.get(0));
+        currentFoodCategory = foodCategories.get(0);
 
         for (String categories : foodCategories) {
             popupMenu.getMenu().add(categories);
@@ -269,23 +291,27 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         if (foodName.isEmpty()) {
             binding.etAdminAddFoodFoodName.setError("Food name is required");
             binding.etAdminAddFoodFoodName.requestFocus();
+            isLoading(false);
             return;
         }
 
         if (foodDesc.isEmpty()) {
             binding.etAdminAddFoodFoodDescription.setError("Food description is required");
             binding.etAdminAddFoodFoodDescription.requestFocus();
+            isLoading(false);
             return;
         }
 
         if (foodPrice.isEmpty()) {
             binding.etAdminAddFoodFoodPrice.setError("Food price is required");
             binding.etAdminAddFoodFoodPrice.requestFocus();
+            isLoading(false);
             return;
         }
 
         if (foodImageUri == null) {
             Toast.makeText(this, "Please upload a food image", Toast.LENGTH_SHORT).show();
+            isLoading(false);
             return;
         }
 
@@ -295,6 +321,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                         , "OBJ file requires MTL and JPG file to be uploaded too."
                         , Snackbar.LENGTH_LONG);
                 snackbar.show();
+                isLoading(false);
                 return;
             } else {
                 wantModelUpload = true;
@@ -311,45 +338,107 @@ public class AdminAddFoodActivity extends AppCompatActivity {
             food.put(Constants.KEY_FOOD_CATEGORY, currentFoodCategory);
             food.put(Constants.KEY_FOODS_RATING, 0.0);
 
-            db.collection(Constants.KEY_FOODS).add(food)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            documentReference.update(Constants.KEY_LOCATION_ID, FieldValue.arrayUnion(preferenceManager.getString(Constants.KEY_LOCATION_ID)));
-                            generatedFoodId[0] = documentReference.getId();
-                        }
-                    });
+            ArrayList<String> locations = new ArrayList<>();
+            locations.add(preferenceManager.getString(Constants.KEY_LOCATION_ID));
+            food.put(Constants.KEY_LOCATION_ID, locations);
 
-            Map<String, Object> foodOptionsToBeSentToDb = new HashMap<>();
-            for (FoodOption option : foodOptions) {
-                foodOptionsToBeSentToDb.put(option.optionTitle, option.individualOptions);
-            }
-
-            db.collection(Constants.KEY_FOOD_OPTIONS).document(generatedFoodId[0]).set(foodOptionsToBeSentToDb)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d("Upload Food Option", "Uploaded Successfully.");
-                        }
-                    });
-
-            storageRef.child(Constants.KEY_FOODS
-                    + "/"
-                    + generatedFoodId[0]
-                    + "/"
-                    + Constants.KEY_FOOD_IMAGE + ".jpeg")
-                    .putFile(foodImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Log.d("Food Image Upload", "Successfully Uploaded");
-                        }
-                    });
-
-            if (wantModelUpload) {
-                uploadObjFileToDb();
-            }
+            checkIfSameFoodInDb(food);
+        } else {
+            isLoading(false);
         }
+    }
+
+    private void checkIfSameFoodInDb(Map<String, Object> food) {
+        db.collection(Constants.KEY_FOODS)
+                .whereEqualTo(Constants.KEY_FOOD_NAME, food.get(Constants.KEY_FOOD_NAME))
+                .whereEqualTo(Constants.KEY_FOOD_CATEGORIES, food.get(Constants.KEY_FOOD_CATEGORY))
+                .whereEqualTo(Constants.KEY_FOOD_PRICE, food.get(Constants.KEY_FOOD_PRICE))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            isLoading(false);
+                            return;
+                        }
+                        if (task.getResult().isEmpty()) {
+                            registerFood(food);
+                        } else {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                db.collection(Constants.KEY_FOODS)
+                                        .document(document.getId())
+                                        .update(Constants.KEY_LOCATION_ID, FieldValue.arrayUnion(preferenceManager.getString(Constants.KEY_LOCATION_ID)))
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Intent intent = new Intent(AdminAddFoodActivity.this, AdminAddFoodSuccessActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void registerFood(Map<String, Object> food) {
+        db.collection(Constants.KEY_FOODS).add(food)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        generatedFoodId[0] = documentReference.getId();
+                        sendFoodOptionsToDb();
+                    }
+                });
+    }
+
+    private void sendFoodOptionsToDb() {
+        Map<String, Object> foodOptionsToBeSentToDb = getStringObjectMap();
+
+        db.collection(Constants.KEY_FOOD_OPTIONS).document(generatedFoodId[0]).set(foodOptionsToBeSentToDb)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Upload Food Option", "Uploaded Successfully.");
+                        uploadFoodImage();
+                    }
+                });
+    }
+
+    @NonNull
+    private Map<String, Object> getStringObjectMap() {
+        Map<String, Object> foodOptionsToBeSentToDb = new HashMap<>();
+
+        for (FoodOption option : foodOptions) {
+            Map<String, Double> subOptionsToBeSentToDb = option.individualOptions;
+            Map<String, Object> allSubOptions = new HashMap<>();
+            allSubOptions.put(Constants.KEY_FOOD_INDIVIDUAL_OPTIONS, subOptionsToBeSentToDb);
+            foodOptionsToBeSentToDb.put(option.optionTitle, allSubOptions);
+        }
+        return foodOptionsToBeSentToDb;
+    }
+
+    private void uploadFoodImage() {
+        storageRef.child(Constants.KEY_FOODS
+                        + "/"
+                        + generatedFoodId[0]
+                        + "/"
+                        + Constants.KEY_FOOD_IMAGE + ".jpeg")
+                .putFile(foodImageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Food Image Upload", "Successfully Uploaded");
+                        if (wantModelUpload) {
+                            uploadObjFileToDb();
+                        } else {
+                            Intent intent = new Intent(AdminAddFoodActivity.this, AdminAddFoodSuccessActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
     }
 
     private void uploadObjFileToDb() {
@@ -401,10 +490,10 @@ public class AdminAddFoodActivity extends AppCompatActivity {
     }
 
     private boolean collectOptionsData() {
-        boolean isSuccessful = false;
+        boolean isSuccessful = binding.layoutAdminAddFoodOptionsContainer.getChildCount() < 1;
 
-        for (int i = 0; i < binding.layoutOptionsContainer.getChildCount(); i++) {
-            View optionView = binding.layoutOptionsContainer.getChildAt(i);
+        for (int i = 0; i < binding.layoutAdminAddFoodOptionsContainer.getChildCount(); i++) {
+            View optionView = binding.layoutAdminAddFoodOptionsContainer.getChildAt(i);
             TextInputEditText etOptionName = optionView.findViewById(R.id.etLayoutAdminAddFoodOptionName);
             LinearLayout layoutSubOptionsContainer = optionView.findViewById(R.id.layoutAdminAddFoodSubOptionsContainer);
             Map<String, Double> foodSubOptions = new HashMap<>();
@@ -425,7 +514,6 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                     try {
                         subOption.price = Double.parseDouble(priceString);
                         foodSubOptions.put(subOption.name, subOption.price);
-                        subOptions.remove(subOption);
 
                         isSuccessful = true;
                     } catch (NumberFormatException e) {
@@ -434,6 +522,14 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                 }
             }
             foodOption.individualOptions = foodSubOptions;
+
+            for (Map.Entry<String, Double> entry : foodOption.individualOptions.entrySet()) {
+                SubOption subOptionToRemove = new SubOption();
+                subOptionToRemove.name = entry.getKey();
+                subOptionToRemove.price = entry.getValue();
+
+                subOptions.remove(subOptionToRemove);
+            }
         }
         return isSuccessful;
     }
@@ -444,7 +540,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
 
         View optionView = LayoutInflater.from(this)
                 .inflate(R.layout.layout_admin_add_food_item_food_option
-                        , binding.layoutOptionsContainer
+                        , binding.layoutAdminAddFoodOptionsContainer
                         , false);
 
         TextInputEditText etOptionName = optionView.findViewById(R.id.etLayoutAdminAddFoodOptionName);
@@ -455,7 +551,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         btnRemoveOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                binding.layoutOptionsContainer.removeView(optionView);
+                binding.layoutAdminAddFoodOptionsContainer.removeView(optionView);
                 foodOptions.remove(foodOption);
             }
         });
@@ -467,7 +563,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
             }
         });
 
-        binding.layoutOptionsContainer.addView(optionView);
+        binding.layoutAdminAddFoodOptionsContainer.addView(optionView);
     }
 
     private void addNewSubOption(LinearLayout container, FoodOption foodOption) {
@@ -535,7 +631,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
 
                         String mimeType = getApplicationContext().getContentResolver().getType(objFileUri);
 
-                        if (mimeType != null && (mimeType.equals("model/obj") || mimeType.equals("application/octet-stream") || isObjFile(objFileUri))) {
+                        if (mimeType != null && isObjFile(objFileUri)) {
                             binding.textAdminAddFoodObjFileName.setText(getFileName(objFileUri));
                             binding.textAdminAddFoodObjFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
                         } else {
@@ -581,36 +677,69 @@ public class AdminAddFoodActivity extends AppCompatActivity {
 
     private boolean isObjFile(Uri uri) {
         String fileName = getFileName(uri);
-        if (fileName != null) {
-            return fileName.toLowerCase(Locale.ROOT).endsWith(".obj");
-        }
-        return false;
+        return fileName.toLowerCase(Locale.ROOT).endsWith(".obj");
     }
 
     private boolean isMtlFile(Uri uri) {
         String fileName = getFileName(uri);
-        if (fileName != null) {
-            return fileName.toLowerCase(Locale.ROOT).endsWith(".mtl");
-        }
-        return false;
+        return fileName.toLowerCase(Locale.ROOT).endsWith(".mtl");
     }
 
     private void loadImageIntoView(Uri imageUri, ImageView imageView) {
         Glide.with(AdminAddFoodActivity.this).load(imageUri).into(imageView);
     }
 
+//    private String getFileName(Uri uri) {
+//        String fileName = "Unnamed File";
+//        if (uri != null) {
+//            String path = uri.getPath();
+//            if (path != null) {
+//                int cut = path.lastIndexOf("/");
+//                if (cut != -1) {
+//                    fileName = path.substring(cut + 1);
+//                }
+//            }
+//        }
+//        return fileName;
+//    }
+
     private String getFileName(Uri uri) {
-        String fileName = "Unnamed File";
-        if (uri != null) {
+        if (uri == null) {
+            return "Unnamed File";
+        }
+
+        String result = null;
+
+        if (uri.getScheme().equals("content")) {
+            ContentResolver contentResolver = getContentResolver();
+
+            try (Cursor cursor = contentResolver.query(uri, null, null, null, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (nameIndex != -1) {
+                        result = cursor.getString(nameIndex);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("ContentResolver", "Failed");
+            }
+        }
+
+        if (result == null && uri.getScheme().equals("file")) {
+            result = uri.getLastPathSegment();
+        }
+
+        if (result == null) {
             String path = uri.getPath();
             if (path != null) {
                 int cut = path.lastIndexOf("/");
                 if (cut != -1) {
-                    fileName = path.substring(cut + 1);
+                    result = path.substring(cut + 1);
                 }
             }
         }
-        return fileName;
+
+        return (result != null) ? result : "Unnamed File";
     }
 
     private static class SubOption {
