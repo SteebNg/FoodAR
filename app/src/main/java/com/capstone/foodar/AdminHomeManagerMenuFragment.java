@@ -114,7 +114,7 @@ public class AdminHomeManagerMenuFragment extends Fragment {
 
     private void getFoods() {
         db.collection(Constants.KEY_FOODS)
-                .whereEqualTo(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID))
+                .whereArrayContains(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -178,7 +178,9 @@ public class AdminHomeManagerMenuFragment extends Fragment {
         adapter.setOnItemClickListener(new HomeAllMenuListAdapter.OnItemClickListener() {
             @Override
             public void onClick(Food food) {
-                // TODO
+                Intent intent = new Intent(getContext(), AdminEditFoodActivity.class);
+                intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
+                startActivity(intent);
             }
         });
 
@@ -201,7 +203,7 @@ public class AdminHomeManagerMenuFragment extends Fragment {
                             return;
                         }
 
-                        Object foodCategoriesFromDb = document.get(Constants.KEY_FOOD_CATEGORY);
+                        Object foodCategoriesFromDb = document.get(Constants.KEY_FOOD_CATEGORIES);
                         if (foodCategoriesFromDb instanceof List) {
                             try {
                                 List<?> foodCategoriesCheckedTemp = (List<?>) foodCategoriesFromDb;
@@ -242,19 +244,21 @@ public class AdminHomeManagerMenuFragment extends Fragment {
     }
 
     private void filterFood() {
-        ArrayList<Food> foodsToBeInFiltered = new ArrayList<>();
+        if (foodAdapter != null) {
+            ArrayList<Food> foodsToBeInFiltered = new ArrayList<>();
 
-        if (currentFoodCategory.equalsIgnoreCase(ALL)) {
-            filteredFoods = foods;
-        } else {
-            for (Food food : filteredFoods) {
-                if (food.foodCategory.equalsIgnoreCase(currentFoodCategory)) {
-                    foodsToBeInFiltered.add(food);
+            if (currentFoodCategory.equalsIgnoreCase(ALL)) {
+                foodsToBeInFiltered = foods;
+            } else {
+                for (Food food : filteredFoods) {
+                    if (food.foodCategory.equalsIgnoreCase(currentFoodCategory)) {
+                        foodsToBeInFiltered.add(food);
+                    }
                 }
             }
-        }
 
-        foodAdapter.filterAllMenuList(foodsToBeInFiltered);
+            foodAdapter.filterAllMenuList(foodsToBeInFiltered);
+        }
     }
 
     private void init() {
@@ -265,5 +269,6 @@ public class AdminHomeManagerMenuFragment extends Fragment {
         currentFoodCategory = "All";
         foods = new ArrayList<>();
         filteredFoods = new ArrayList<>();
+        preferenceManager.putString(Constants.KEY_LOCATION_ID, "locationIdTest");
     }
 }
