@@ -38,6 +38,7 @@ import com.capstone.foodar.Model.Food;
 import com.capstone.foodar.Model.FoodOption;
 import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.PreferenceManager.PreferenceManager;
+import com.capstone.foodar.Utility.DecimalDigitsInputFilter;
 import com.capstone.foodar.databinding.ActivityAdminAddFoodBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -98,6 +99,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         init();
         initActivityResultLaunchers();
         getAllFoodCategories();
+        addNewOption();
         setListeners();
         checkForStoragePermission();
     }
@@ -130,7 +132,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         binding.buttonAdminAddFoodUploadJpg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFilePicker(mtlFileLauncher, "image/*");
+                openFilePicker(jpgFileLauncher, "image/*");
             }
         });
         binding.buttonAdminAddFoodAddOption.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +175,18 @@ public class AdminAddFoodActivity extends AppCompatActivity {
 
                 AlertDialog alertDialog = getAlertDialog(categoryToBeAdded);
                 alertDialog.show();
+            }
+        });
+        binding.buttonAdminAddFoodFoodCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupMenu.show();
+            }
+        });
+        binding.buttonAdminAddFoodBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -322,7 +336,8 @@ public class AdminAddFoodActivity extends AppCompatActivity {
             storageRef.child(Constants.KEY_FOODS
                     + "/"
                     + generatedFoodId[0]
-                    + "/")
+                    + "/"
+                    + Constants.KEY_FOOD_IMAGE + ".jpeg")
                     .putFile(foodImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -410,6 +425,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                     try {
                         subOption.price = Double.parseDouble(priceString);
                         foodSubOptions.put(subOption.name, subOption.price);
+                        subOptions.remove(subOption);
 
                         isSuccessful = true;
                     } catch (NumberFormatException e) {
@@ -439,7 +455,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         btnRemoveOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layoutSubOptionsContainer.removeView(optionView);
+                binding.layoutOptionsContainer.removeView(optionView);
                 foodOptions.remove(foodOption);
             }
         });
@@ -451,7 +467,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
             }
         });
 
-        layoutSubOptionsContainer.addView(optionView);
+        binding.layoutOptionsContainer.addView(optionView);
     }
 
     private void addNewSubOption(LinearLayout container, FoodOption foodOption) {
@@ -465,6 +481,8 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         TextInputEditText etSubOptionName = subOptionView.findViewById(R.id.etLayoutAdminAddFoodSubOptionName);
         TextInputEditText etSubOptionPrice = subOptionView.findViewById(R.id.etLayoutAdminAddFoodSubOptionPrice);
         ImageButton btnRemoveSubOption = subOptionView.findViewById(R.id.buttonLayoutAdminAddFoodRemoveSubOption);
+
+        etSubOptionPrice.addTextChangedListener(new DecimalDigitsInputFilter(2, etSubOptionPrice));
 
         btnRemoveSubOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -499,6 +517,7 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         wantModelUpload = false;
         generatedFoodId = new String[1];
         addCategory = false;
+        subOptions = new ArrayList<>();
     }
 
     private void initActivityResultLaunchers() {

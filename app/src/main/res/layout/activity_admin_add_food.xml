@@ -20,6 +20,7 @@
             android:layout_marginBottom="@dimen/_20sdp">
 
             <ImageView
+                android:id="@+id/buttonAdminAddFoodBack"
                 android:layout_width="@dimen/_28sdp"
                 android:layout_height="@dimen/_28sdp"
                 android:src="@drawable/arrow_back_24"
@@ -307,7 +308,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.google.android.material.card.MaterialCardView
+                    <!-- <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_12sdp"
@@ -411,7 +412,7 @@
                                 android:textColor="@color/hintColor"
                                 style="@style/Widget.Material3.Button.TextButton" />
                         </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
+                    </com.google.android.material.card.MaterialCardView> -->
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
