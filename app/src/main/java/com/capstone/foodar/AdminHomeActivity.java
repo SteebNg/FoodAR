@@ -61,6 +61,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         final Fragment fragmentCurrentOrder = new AdminHomeCurrentOrderFragment();
         final Fragment fragmentManageMenu = new AdminHomeManagerMenuFragment();
         final Fragment fragmentRevenueStats = new AdminHomeRevenueStatsFragement();
+        final Fragment fragmentGenTableQr = new AdminGenerateTableQrFragment();
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         final Fragment[] activeFragment = {fragmentCurrentOrder};
@@ -68,6 +69,8 @@ public class AdminHomeActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentCurrentOrder, "1").commit();
         fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentManageMenu, "2").hide(fragmentManageMenu).commit();
         fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentRevenueStats, "3").hide(fragmentRevenueStats).commit();
+        fragmentManager.beginTransaction().add(R.id.frameAdminHome, fragmentGenTableQr, "3").hide(fragmentGenTableQr).commit();
+
 
         binding.naviAdminHome.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -81,6 +84,10 @@ public class AdminHomeActivity extends AppCompatActivity {
                 } else if (selectedItemId == R.id.manageMenuAdmin) {
                     fragmentManager.beginTransaction().hide(activeFragment[0]).show(fragmentManageMenu).commit();
                     activeFragment[0] = fragmentManageMenu;
+                    return true;
+                } else if (selectedItemId == R.id.genTableQrAdmin){
+                    fragmentManager.beginTransaction().hide(activeFragment[0]).show(fragmentGenTableQr).commit();
+                    activeFragment[0] = fragmentGenTableQr;
                     return true;
                 } else {
                     fragmentManager.beginTransaction().hide(activeFragment[0]).show(fragmentCurrentOrder).commit();
