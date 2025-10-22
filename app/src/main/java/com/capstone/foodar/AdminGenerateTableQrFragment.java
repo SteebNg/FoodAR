@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.print.PrintHelper;
 
 import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.PreferenceManager.PreferenceManager;
@@ -65,6 +66,12 @@ public class AdminGenerateTableQrFragment extends Fragment {
                 saveImageToStorage();
             }
         });
+        binding.qrPrintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                printQrCode();
+            }
+        });
     }
 
     private void init() {
@@ -88,19 +95,39 @@ public class AdminGenerateTableQrFragment extends Fragment {
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeData, BarcodeFormat.QR_CODE, 300, 300);
+            BitMatrix bitMatrix = multiFormatWriter.encode(qrCodeData, BarcodeFormat.QR_CODE, 600, 600);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             binding.qrImageView.setImageBitmap(bitmap);
-            binding.qrDownloadButton.setVisibility(View.VISIBLE);
+            binding.buttonsLayout.setVisibility(View.VISIBLE);
         } catch (WriterException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Error generating QR code", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void printQrCode() {
+        if (PrintHelper.systemSupportsPrint()) {
+            BitmapDrawable drawable = (BitmapDrawable) binding.qrImageView.getDrawable();
+            if (drawable == null) {
+                Toast.makeText(getContext(), "QR code image not found.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Bitmap bitmap = drawable.getBitmap();
+            PrintHelper printHelper = new PrintHelper(requireActivity());
+            printHelper.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+            printHelper.printBitmap("Table " + binding.qrTableNumEditText.getText().toString() + " QR Code", bitmap);
+        } else {
+            Toast.makeText(getContext(), "Printing is not supported on this device.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void saveImageToStorage() {
         BitmapDrawable drawable = (BitmapDrawable) binding.qrImageView.getDrawable();
+        if (drawable == null) {
+            Toast.makeText(getContext(), "QR code image not found.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Bitmap bitmap = drawable.getBitmap();
 
         OutputStream fos;
