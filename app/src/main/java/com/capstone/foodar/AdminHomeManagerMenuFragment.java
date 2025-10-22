@@ -282,4 +282,10 @@ public class AdminHomeManagerMenuFragment extends Fragment {
         filteredFoods = new ArrayList<>();
         preferenceManager.putString(Constants.KEY_LOCATION_ID, "locationIdTest");
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

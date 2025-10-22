@@ -319,4 +319,10 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
         super.onDestroy();
         stopListeningForCurrentOrders();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

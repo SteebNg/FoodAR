@@ -13,6 +13,10 @@
             android:title="Manage Menu"
             android:icon="@drawable/menu"/>
 
+        <item android:id="@+id/genTableQrAdmin"
+            android:title="Generate Table QR"
+            android:icon="@drawable/qr_code_24"/>
+
         <item android:id="@+id/revenueAdmin"
             android:title="Revenue Overview"
             android:icon="@drawable/attach_money_24"/>
