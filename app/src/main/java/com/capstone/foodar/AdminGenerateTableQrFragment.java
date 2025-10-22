@@ -76,6 +76,10 @@ public class AdminGenerateTableQrFragment extends Fragment {
 
     private void init() {
         preferenceManager = new PreferenceManager(requireContext());
+
+        // Initially show empty state and hide QR display
+        binding.emptyStateLayout.setVisibility(View.VISIBLE);
+        binding.qrDisplayCard.setVisibility(View.GONE);
     }
 
     private void generateQrCode() {
@@ -99,7 +103,14 @@ public class AdminGenerateTableQrFragment extends Fragment {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             binding.qrImageView.setImageBitmap(bitmap);
-            binding.buttonsLayout.setVisibility(View.VISIBLE);
+
+            binding.qrTableNameText.setText(tableNum);
+
+            binding.emptyStateLayout.setVisibility(View.GONE);
+            binding.qrDisplayCard.setVisibility(View.VISIBLE);
+
+            Toast.makeText(getContext(), "QR Code generated successfully!", Toast.LENGTH_SHORT).show();
+
         } catch (WriterException e) {
             e.printStackTrace();
             Toast.makeText(getContext(), "Error generating QR code", Toast.LENGTH_SHORT).show();
@@ -154,5 +165,11 @@ public class AdminGenerateTableQrFragment extends Fragment {
             e.printStackTrace();
             Toast.makeText(getContext(), "Error saving QR code", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
