@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.capstone.foodar.Model.FoodInCart;
 import com.capstone.foodar.R;
+import com.capstone.foodar.Utility.DecimalDigitsInputFilter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdminHomeIndiCurrentOrderListAdapter extends RecyclerView.Adapter<AdminHomeIndiCurrentOrderListAdapter.ViewHolder>{
 
@@ -50,8 +52,8 @@ public class AdminHomeIndiCurrentOrderListAdapter extends RecyclerView.Adapter<A
         holder.foodOptions.setText(foodOptionsCombined);
 
         holder.foodRemark.setText(food.Remarks);
-        holder.foodPrice.setText(String.valueOf(food.FoodPrice));
-        holder.foodAmount.setText(String.valueOf(food.FoodAmount));
+        holder.foodPrice.setText(String.format(Locale.ROOT, "RM %.2f", food.FoodPrice) );
+        holder.foodAmount.setText("x" + food.FoodAmount);
     }
 
     @Override

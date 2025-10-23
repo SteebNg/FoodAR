@@ -111,7 +111,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     }
 
     private void setCurrentOrdersListener() {
-        currentOrdersQuery.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<QuerySnapshot>() {
+        currentOrdersQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -122,7 +122,6 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                 if (value != null) {
                     if (value.getMetadata().isFromCache()) {
                         Log.d("Read Source", "Cache");
-                        return;
                     } else {
                         Log.d("Read Source", "Server");
                     }
@@ -131,10 +130,13 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                     for (QueryDocumentSnapshot document : value) {
                         CurrentOrder order = new CurrentOrder();
                         order.currentOrderId = document.getId();
+                        order.servingMethod = document.getString(Constants.KEY_SERVING_METHOD);
                         order.destination = document.getString(Constants.KEY_DESTINATION);
+                        order.paymentMethod = document.getString(Constants.KEY_PAYMENT_METHOD);
                         order.tableNum = document.getString(Constants.KEY_TABLE_NUM);
                         order.orderTotalPrice = document.getDouble(Constants.KEY_ORDER_PRICE);
                         order.status = document.getString(Constants.KEY_ORDER_STATUS);
+                        order.foods = new ArrayList<>();
 
                         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
 
@@ -146,7 +148,11 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                                 food.FoodOptions = (ArrayList<String>) cartItem.get(Constants.KEY_FOOD_OPTIONS);
                                 food.FoodId = cartItem.get(Constants.KEY_FOOD_ID).toString();
                                 food.FoodPrice = (double) cartItem.get(Constants.KEY_FOOD_PRICE);
-                                food.FoodAmount = (int) cartItem.get(Constants.KEY_FOOD_AMOUNT);
+                                Long foodAmount = (Long) cartItem.get(Constants.KEY_FOOD_AMOUNT);
+                                if (foodAmount != null) {
+                                    long lFoodAmount = foodAmount;
+                                    food.FoodAmount = (int) lFoodAmount;
+                                }
                                 food.FoodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
                                 food.Remarks = cartItem.get(Constants.KEY_REMARKS).toString();
 

@@ -40,8 +40,9 @@ public class OrderHistoryParentRecyclerListAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderHistoryFoodParent foodsOnThatDate = orderHistoryFoodParents.get(position);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy - HH:mm", Locale.getDefault());
         holder.date.setText(sdf.format(firebaseToJavaUtilTimestamp(foodsOnThatDate.timestamp)));
+        holder.location.setText(foodsOnThatDate.location);
 
         OrderHistoryChildRecyclerListAdapter adapter = new OrderHistoryChildRecyclerListAdapter(orderHistoryFoodParents.get(position).foodsInCart, context);
         holder.recyclerIndiFoodsHistory.setAdapter(adapter);
@@ -68,12 +69,13 @@ public class OrderHistoryParentRecyclerListAdapter extends RecyclerView.Adapter<
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView date;
+        TextView date, location;
         RecyclerView recyclerIndiFoodsHistory;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            location = itemView.findViewById(R.id.textLayoutHistoryLocation);
             date = itemView.findViewById(R.id.textLayoutHistoryDate);
             recyclerIndiFoodsHistory = itemView.findViewById(R.id.recyclerLayoutHistoryFoods);
         }

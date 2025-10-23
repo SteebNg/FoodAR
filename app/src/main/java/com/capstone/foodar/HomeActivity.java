@@ -404,6 +404,14 @@ public class HomeActivity extends AppCompatActivity {
                 startActivityForResult(intent, QR_CODE_ACTIVITY_RESULT);
             }
         });
+
+        binding.buttonHomeGoToAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void checkIfCurrentOrderExists() {
@@ -519,10 +527,33 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
+            init();
+//        getDeepLinkData();
+            // cause for some reason (searched the internet but no answers), google doesnt allow direct
+            // edit to the hint fonts in the XML file. I dont know. Ask them.
+            // changeSearchHintFont();
+            setListeners();
+            if (isLoggedIn) {
+                //loadOrderAgain(); TODO
+            } else {
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            }
             loadAllMenu();
-        } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             loadLocation();
+        } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
+            init();
+//        getDeepLinkData();
+            // cause for some reason (searched the internet but no answers), google doesnt allow direct
+            // edit to the hint fonts in the XML file. I dont know. Ask them.
+            // changeSearchHintFont();
+            setListeners();
+            if (isLoggedIn) {
+                //loadOrderAgain(); TODO
+            } else {
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            }
             loadAllMenu();
+            loadLocation();
         }
     }
 }

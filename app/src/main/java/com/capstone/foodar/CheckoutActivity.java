@@ -333,7 +333,10 @@ public class CheckoutActivity extends AppCompatActivity {
                 order.put(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID));
                 order.put(Constants.KEY_CARTS, foodsInCart);
                 order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                order.put(Constants.KEY_ORDER_PRICE, binding.textCheckoutBottomTotalAmount.getText().toString());
+
+                String numericOrderPrice = binding.textCheckoutBottomTotalAmount.getText().toString().replaceAll("[^0-9.]", "");
+                order.put(Constants.KEY_ORDER_PRICE, Float.parseFloat(numericOrderPrice));
+
                 order.put(Constants.KEY_PAYMENT_METHOD, paymentMethod);
                 order.put(Constants.KEY_SERVING_METHOD, servingMode);
                 order.put(Constants.KEY_TIMESTAMP, Timestamp.now());

@@ -231,7 +231,7 @@
                         app:strokeColor="@color/lightGreen"
                         app:strokeWidth="@dimen/_2sdp"
                         style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:enabled="false"/>
+                        android:enabled="false" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/qrPrintButton"

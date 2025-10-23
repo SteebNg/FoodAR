@@ -17,6 +17,7 @@ import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<AdminCurrentOrderTableListAdapter.ViewHolder>{
 
@@ -44,14 +45,14 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CurrentOrder order = orders.get(position);
         holder.paymentMethod.setText(order.paymentMethod);
-        holder.orderTotalPrice.setText("RM " + order.orderTotalPrice);
+        holder.orderTotalPrice.setText(String.format(Locale.ROOT, "RM %.2f", order.orderTotalPrice));
         holder.orderStatus.setText(order.status);
         setProgress(order.status, holder.orderProgress, holder.orderStatus, holder.buttonStatusProgressing);
 
         if (order.tableNum != null) {
-            holder.tableNum.setText(order.tableNum);
+            holder.tableNum.setText("Table: " + order.tableNum);
         } else {
-            holder.tableNum.setText(order.destination);
+            holder.tableNum.setText("Destination: " + order.destination);
         }
 
         holder.buttonStatusProgressing.setOnClickListener(new View.OnClickListener() {

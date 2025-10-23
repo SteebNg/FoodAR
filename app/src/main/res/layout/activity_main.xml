@@ -46,13 +46,23 @@
             android:maxLines="3"
             android:textStyle="bold"/>
 
+        <!-- TODO REMOVE FOR TESTING PURPOSES -->
+        <ImageView
+            android:id="@+id/buttonHomeGoToAdmin"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_28sdp"
+            android:src="@drawable/warning_24"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_weight="0.8"/>
+
         <ImageView
             android:id="@+id/buttonHomeShoppingCart"
             android:layout_width="@dimen/_32sdp"
             android:layout_height="@dimen/_28sdp"
             android:src="@drawable/shopping_cart"
             android:layout_marginStart="@dimen/_8sdp"
-            android:layout_weight="0.8"/>
+            android:layout_weight="0.8"
+            android:layout_marginEnd="@dimen/_4sdp"/>
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/buttonHomeProfile"
