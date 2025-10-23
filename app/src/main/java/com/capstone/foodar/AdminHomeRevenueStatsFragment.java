@@ -275,8 +275,8 @@ public class AdminHomeRevenueStatsFragment extends Fragment {
 
     private void setupPaymentPieChart(double cashSales, double bankSales) {
         List<PieEntry> entries = new ArrayList<>();
-        entries.add(new PieEntry((float) cashSales, "Cash"));
-        entries.add(new PieEntry((float) bankSales, "Bank"));
+        entries.add(new PieEntry((float) cashSales, Constants.KEY_CASH));
+        entries.add(new PieEntry((float) bankSales, Constants.KEY_BANKING));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(new int[]{
