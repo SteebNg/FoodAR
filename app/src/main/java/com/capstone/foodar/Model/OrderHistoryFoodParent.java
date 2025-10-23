@@ -8,5 +8,6 @@ import java.util.ArrayList;
 
 public class OrderHistoryFoodParent {
     public ArrayList<FoodInCart> foodsInCart;
+    public String location;
     public Timestamp timestamp;
 }

@@ -1,46 +1,19 @@
 package com.capstone.foodar;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
-import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.capstone.foodar.Adapter.AdminHomeTableCurrentOrderListAdapter;
-import com.capstone.foodar.Model.CurrentOrder;
-import com.capstone.foodar.Model.FoodInCart;
-import com.capstone.foodar.PreferenceManager.Constants;
-import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.databinding.ActivityAdminHomeBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
@@ -60,7 +33,7 @@ public class AdminHomeActivity extends AppCompatActivity {
 
         final Fragment fragmentCurrentOrder = new AdminHomeCurrentOrderFragment();
         final Fragment fragmentManageMenu = new AdminHomeManagerMenuFragment();
-        final Fragment fragmentRevenueStats = new AdminHomeRevenueStatsFragement();
+        final Fragment fragmentRevenueStats = new AdminHomeRevenueStatsFragment();
         final Fragment fragmentGenTableQr = new AdminGenerateTableQrFragment();
         final FragmentManager fragmentManager = getSupportFragmentManager();
 

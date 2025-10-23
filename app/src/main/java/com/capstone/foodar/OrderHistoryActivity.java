@@ -2,6 +2,7 @@ package com.capstone.foodar;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -21,12 +22,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -59,47 +62,54 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private void getFoodHistories() {
         db.collection(Constants.KEY_ORDER_HISTORY)
                 .whereEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
+                .orderBy(Constants.KEY_TIMESTAMP, Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (!task.getResult().isEmpty()) {
-                                binding.layoutOrderHistoryEmpty.setVisibility(View.GONE);
-                                binding.recyclerOrderHistory.setVisibility(View.VISIBLE);
-                                int[] orderProcessed = {0};
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    OrderHistoryFoodParent order = new OrderHistoryFoodParent();
-                                    order.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+                        if (!task.isSuccessful()) {
+                            Log.e("Firestore Get", "Failed: " + task.getException());
+                            return;
+                        }
+                        if (!task.getResult().isEmpty()) {
+                            binding.layoutOrderHistoryEmpty.setVisibility(View.GONE);
+                            binding.recyclerOrderHistory.setVisibility(View.VISIBLE);
 
-                                    List<Map<String, Object>> foodsInCartData = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
-                                    if (foodsInCartData != null) {
-                                        int[] foodProcessed = {0};
-                                        ArrayList<FoodInCart> foodsInCart = new ArrayList<>();
-                                        for (Map<String, Object> foodMap : foodsInCartData) {
-                                            FoodInCart foodInCart = new FoodInCart();
-                                            foodInCart.CartId = foodMap.get(Constants.KEY_CART_ID).toString();
-                                            foodInCart.FoodId = (String) foodMap.get(Constants.KEY_FOOD_ID);
-                                            foodInCart.FoodOptions = (ArrayList<String>) foodMap.get(Constants.KEY_FOOD_OPTIONS);
-                                            foodInCart.FoodPrice = (double) foodMap.get(Constants.KEY_FOOD_PRICE);
-                                            foodInCart.LocationId = (String) foodMap.get(Constants.KEY_LOCATION_ID);
-                                            foodInCart.Remarks = (String) foodMap.get(Constants.KEY_REMARKS);
-                                            foodInCart.FoodAmount = Math.toIntExact((long) foodMap.get(Constants.KEY_FOOD_AMOUNT));
-                                            foodInCart.FoodName = (String) foodMap.get(Constants.KEY_FOOD_NAME);
-                                            getFoodsImage(foodsInCart, foodInCart, foodProcessed, order, orderProcessed, task.getResult().size());
-                                        }
+                            int[] orderProcessed = {0};
+                            for (QueryDocumentSnapshot document : task.getResult()) { // every order
+                                OrderHistoryFoodParent order = new OrderHistoryFoodParent();
+                                order.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+
+                                List<Map<String, Object>> foodsInCartData = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
+                                if (foodsInCartData != null) {
+                                    ArrayList<FoodInCart> foodsInCart = new ArrayList<>();
+                                    int[] foodProcessed = {0};
+                                    for (Map<String, Object> foodMap : foodsInCartData) { // every food
+                                        FoodInCart foodInCart = new FoodInCart();
+                                        foodInCart.CartId = foodMap.get(Constants.KEY_CART_ID).toString();
+                                        foodInCart.FoodId = (String) foodMap.get(Constants.KEY_FOOD_ID);
+                                        foodInCart.FoodOptions = (ArrayList<String>) foodMap.get(Constants.KEY_FOOD_OPTIONS);
+                                        foodInCart.FoodPrice = (double) foodMap.get(Constants.KEY_FOOD_PRICE);
+                                        foodInCart.LocationId = (String) foodMap.get(Constants.KEY_LOCATION_ID);
+                                        order.location = (String) foodMap.get(Constants.KEY_LOCATION_ID);
+                                        foodInCart.Remarks = (String) foodMap.get(Constants.KEY_REMARKS);
+                                        foodInCart.FoodAmount = Math.toIntExact((long) foodMap.get(Constants.KEY_FOOD_AMOUNT));
+                                        foodInCart.FoodName = (String) foodMap.get(Constants.KEY_FOOD_NAME);
+                                        getFoodsImage(foodsInCart, foodInCart, order, orderProcessed, task.getResult().size(), foodProcessed, foodsInCartData.size());
                                     }
                                 }
-                            } else {
-                                binding.layoutOrderHistoryEmpty.setVisibility(View.VISIBLE);
-                                binding.recyclerOrderHistory.setVisibility(View.GONE);
                             }
+                        } else {
+                            binding.layoutOrderHistoryEmpty.setVisibility(View.VISIBLE);
+                            binding.recyclerOrderHistory.setVisibility(View.GONE);
                         }
                     }
                 });
     }
 
-    private void getFoodsImage(ArrayList<FoodInCart> foodsInCart, FoodInCart foodInCart, int[] foodProcessed, OrderHistoryFoodParent order, int[] orderProcessed, int totalOrders) {
+    private void getFoodsImage(ArrayList<FoodInCart> foodsInCart, FoodInCart foodInCart, OrderHistoryFoodParent order,
+                               int[] orderProcessed, int orderAmount,
+                               int[] foodProcessed, int foodAmount) {
         storageRef.child(Constants.KEY_FOODS
                 + "/"
                 + foodInCart.FoodId
@@ -111,13 +121,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         foodInCart.foodImage = uri;
                         foodsInCart.add(foodInCart);
+                        order.foodsInCart = foodsInCart;
                         foodProcessed[0]++;
-                        if (foodProcessed[0] == foodsInCart.size()) {
-                            order.foodsInCart = foodsInCart;
+                        if (foodProcessed[0] == foodAmount) {
+                            orderHistoryFoodParents.add(order);
                             orderProcessed[0]++;
                         }
-                        if (orderProcessed[0] == totalOrders) {
-                            orderHistoryFoodParents.add(order);
+                        if (orderProcessed[0] == orderAmount) {
                             setOrderHistoryRecycler();
                         }
                     }
@@ -125,9 +135,23 @@ public class OrderHistoryActivity extends AppCompatActivity {
     }
 
     private void setOrderHistoryRecycler() {
+        sortOrdersHistories(orderHistoryFoodParents);
         parentAdapter = getParentAdapter();
         binding.recyclerOrderHistory.setAdapter(parentAdapter);
         parentAdapter.notifyDataSetChanged();
+    }
+
+    private void sortOrdersHistories(ArrayList<OrderHistoryFoodParent> orderHistories) {
+        orderHistories.sort(new Comparator<OrderHistoryFoodParent>() {
+            @Override
+            public int compare(OrderHistoryFoodParent o1, OrderHistoryFoodParent o2) {
+                if (o1.timestamp == null || o2.timestamp == null) {
+                    return 0;
+                }
+
+                return o2.timestamp.compareTo(o1.timestamp);
+            }
+        });
     }
 
     private OrderHistoryParentRecyclerListAdapter getParentAdapter() {

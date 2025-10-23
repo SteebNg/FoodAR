@@ -15,6 +15,7 @@ import com.capstone.foodar.Model.FoodInCart;
 import com.capstone.foodar.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class OrderHistoryChildRecyclerListAdapter extends RecyclerView.Adapter<OrderHistoryChildRecyclerListAdapter.ViewHolder>{
 
@@ -56,8 +57,7 @@ public class OrderHistoryChildRecyclerListAdapter extends RecyclerView.Adapter<O
             holder.remarks.setText("Remarks: " + remarks);
         }
 
-        String formattedTotalPrice = "Total: RM " + food.FoodPrice;
-        holder.foodTotalPrice.setText(formattedTotalPrice);
+        holder.foodTotalPrice.setText(String.format(Locale.ROOT, "Total: RM %.2f", food.FoodPrice));
 
         Glide.with(context).load(food.foodImage).into(holder.foodImage);
     }

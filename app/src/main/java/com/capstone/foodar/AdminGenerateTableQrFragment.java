@@ -80,6 +80,8 @@ public class AdminGenerateTableQrFragment extends Fragment {
         // Initially show empty state and hide QR display
         binding.emptyStateLayout.setVisibility(View.VISIBLE);
         binding.qrDisplayCard.setVisibility(View.GONE);
+        binding.qrDownloadButton.setVisibility(View.GONE);
+        binding.qrPrintButton.setVisibility(View.GONE);
     }
 
     private void generateQrCode() {
@@ -128,6 +130,11 @@ public class AdminGenerateTableQrFragment extends Fragment {
             PrintHelper printHelper = new PrintHelper(requireActivity());
             printHelper.setScaleMode(PrintHelper.SCALE_MODE_FIT);
             printHelper.printBitmap("Table " + binding.qrTableNumEditText.getText().toString() + " QR Code", bitmap);
+
+            binding.qrPrintButton.setEnabled(true);
+            binding.qrDownloadButton.setEnabled(true);
+            binding.qrPrintButton.setVisibility(View.VISIBLE);
+            binding.qrDownloadButton.setVisibility(View.VISIBLE);
         } else {
             Toast.makeText(getContext(), "Printing is not supported on this device.", Toast.LENGTH_SHORT).show();
         }
