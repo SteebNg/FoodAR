@@ -25,7 +25,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageVerification"
         app:layout_constraintStart_toStartOf="@+id/imageVerification"
         app:layout_constraintEnd_toEndOf="@+id/imageVerification"
-        android:text="Registration Successful"
+        android:text="Check your email"
         android:textSize="@dimen/_16ssp"
         android:layout_marginTop="@dimen/_36sdp"
         android:fontFamily="@font/alata"
@@ -37,16 +37,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/textVerificationTitle"
-        app:layout_constraintStart_toStartOf="@+id/textVerificationTitle"
-        app:layout_constraintEnd_toEndOf="@+id/textVerificationTitle"
-        android:text="Your registration is successful. Login to enjoy some delightful meals."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="We sent a verification email to you. Be sure to check your spam inbox. "
         android:textSize="@dimen/_12ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:fontFamily="@font/alata"
         android:textColor="@color/primary_text"
         android:gravity="center"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"/>
+        android:paddingStart="@dimen/_20sdp"
+        android:paddingEnd="@dimen/_20sdp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonVerification"

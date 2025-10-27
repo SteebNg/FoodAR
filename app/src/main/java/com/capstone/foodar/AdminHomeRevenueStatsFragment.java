@@ -195,9 +195,9 @@ public class AdminHomeRevenueStatsFragment extends Fragment {
             if (orderPrice != null) {
                 totalSales += orderPrice;
 
-                if ("Cash".equals(paymentMethod)) {
+                if (Constants.KEY_CASH.equals(paymentMethod)) {
                     cashSales += orderPrice;
-                } else if ("Bank".equals(paymentMethod)) {
+                } else if (Constants.KEY_BANKING.equals(paymentMethod)) {
                     bankSales += orderPrice;
                 }
 

@@ -121,7 +121,6 @@ public class RegisterActivity extends AppCompatActivity {
                                         });
 
                                 sendVerificationEmail();
-                                firebaseAuth.signOut();
                             }
                         }
                     });
@@ -140,6 +139,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Intent intent = new Intent(RegisterActivity.this, VerificationActivity.class);
                         startActivity(intent);
+                        firebaseAuth.signOut();
                         finish();
                     }
                 });
@@ -195,6 +195,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 currentUser.delete();
+                firebaseAuth.signOut();
                 showToast("There is a problem with the internet connection. Please try again.");
                 Log.d("Send Verification Email", "Message: " + e);
             }

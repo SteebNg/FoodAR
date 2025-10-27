@@ -92,6 +92,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        binding.textLoginForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void signInUser() {
@@ -105,15 +112,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     currentUser = firebaseAuth.getCurrentUser();
 
-//                    if (currentUser.isEmailVerified()) {
-//                        preferenceManager.putString(Constants.KEY_EMAIL, email);
-//                        preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
-//                        preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
-//
-//                        finish();
-//                    } else {
-//                        showError("Please verify your email first.");
-//                    }
+                    if (currentUser.isEmailVerified()) {
+                        preferenceManager.putString(Constants.KEY_EMAIL, email);
+                        preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
+                        preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
+
+                        finish();
+                    } else {
+                        showError("Please verify your email first.");
+                        firebaseAuth.signOut();
+                    }
 
                     preferenceManager.putString(Constants.KEY_EMAIL, email);
                     preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());

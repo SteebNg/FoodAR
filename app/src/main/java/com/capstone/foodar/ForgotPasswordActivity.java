@@ -37,6 +37,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         init();
+        setListeners();
     }
 
     private void init() {
