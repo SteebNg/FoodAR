@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.buttonRegisterShowPassword.setVisibility(View.VISIBLE);
                 binding.buttonRegisterHidePassword.setVisibility(View.GONE);
-                binding.etRegisterPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                binding.etRegisterPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
             }
         });
         binding.buttonRegisterShowPassword.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +88,23 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.buttonRegisterShowPassword.setVisibility(View.GONE);
                 binding.buttonRegisterHidePassword.setVisibility(View.VISIBLE);
-                binding.etRegisterPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                binding.etRegisterPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }
+        });
+        binding.buttonRegisterHideConfirmPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.buttonRegisterShowConfirmPassword.setVisibility(View.VISIBLE);
+                binding.buttonRegisterHideConfirmPassword.setVisibility(View.GONE);
+                binding.etRegisterConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        });
+        binding.buttonRegisterShowConfirmPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.buttonRegisterShowConfirmPassword.setVisibility(View.GONE);
+                binding.buttonRegisterHideConfirmPassword.setVisibility(View.VISIBLE);
+                binding.etRegisterConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             }
         });
         binding.buttonRegister.setOnClickListener(new View.OnClickListener() {
@@ -238,10 +254,10 @@ public class RegisterActivity extends AppCompatActivity {
             showErrorMessage("Please enter a valid email.");
             return false;
         } else if (password.isEmpty()) {
-            showErrorMessage("Please enter your password with at least 6 characters.");
+            showErrorMessage("Please enter your password.");
             return false;
-        } else if (password.length() < 6) {
-            showErrorMessage("Your password must contain at least 6 characters.");
+        } else if (password.length() < 8) {
+            showErrorMessage("Your password must contain at least 8 characters.");
             return false;
         } else if (!password.equals(binding.etRegisterConfirmPassword.getText().toString())) {
             showErrorMessage("The password and confirmed password is not the same");
