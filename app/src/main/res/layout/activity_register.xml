@@ -130,7 +130,7 @@
             android:id="@+id/textRegisterPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password (Minimum 6 Characters Long)"
+            android:text="Password (Minimum 8 Characters Long)"
             android:fontFamily="@font/alata"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintTop_toBottomOf="@+id/etRegisterEmail"

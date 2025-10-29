@@ -5,6 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/_4sdp">
 
+
+    <ImageView
+        android:id="@+id/imageLayoutLocationItem"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/house_24"
+        android:layout_marginStart="@dimen/_4sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <TextView
         android:id="@+id/textLayoutLocationItemName"
         android:layout_width="0dp"
@@ -17,24 +28,24 @@
         android:maxLines="3"
         android:textStyle="bold"
         android:gravity="start"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageLayoutLocationItem"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginStart="@dimen/_16sdp"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/_16sdp"/>
 
     <TextView
         android:id="@+id/textLayoutLocationItemAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Location Address"
+        android:text="Location Address gf f f f f f f f f f f f f f f f f f fg f f f f f f f f f f f f f f f f f f"
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/_10ssp"
         android:fontFamily="@font/alata"
-        android:maxLines="4"
         android:gravity="start"
         app:layout_constraintStart_toStartOf="@+id/textLayoutLocationItemName"
         app:layout_constraintTop_toBottomOf="@+id/textLayoutLocationItemName"
-        android:layout_marginEnd="@dimen/_16sdp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_16sdp" />
 
     <View
         android:layout_width="match_parent"

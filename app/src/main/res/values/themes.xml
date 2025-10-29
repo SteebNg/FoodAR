@@ -6,7 +6,7 @@
         <item name="colorSecondary">@color/bg</item>
         <item name="colorTertiary">@color/bg_light</item>
     </style>
-    
+
     <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar">
         <item name="android:progressDrawable">@drawable/custom_ratingbar</item>
         <item name="minHeight">15dp</item>
@@ -14,7 +14,8 @@
     </style>
 
     <style name="FoodDetailsFoodBg" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Cut
+        </item>
     </style>
 
 
@@ -30,10 +31,10 @@
         <item name="colorControlNormal">@color/grey</item>
         <item name="colorControlActivated">@color/duskYellow</item>
     </style>
-    
+
     <style name="Theme.Navigation" parent="Base.Theme.FoodAR">
         <item name="colorControlHighlight">@android:color/transparent</item>
     </style>
-    
+
     <style name="Theme.FoodAR" parent="Base.Theme.FoodAR" />
 </resources>

@@ -56,6 +56,7 @@ public class Constants {
     public static final String KEY_SERVING = "Serving";
     public static final String KEY_COMPLETED = "Completed";
     public static final String KEY_FOOD_CATEGORIES = "FoodCategories";
+    public static final String KEY_ADMIN = "Admin";
 
     public static final String KEY_POSITION = "Position";
 

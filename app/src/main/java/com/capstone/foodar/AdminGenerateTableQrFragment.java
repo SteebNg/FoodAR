@@ -87,7 +87,7 @@ public class AdminGenerateTableQrFragment extends Fragment {
     private void generateQrCode() {
         String tableNum = binding.qrTableNumEditText.getText().toString().trim();
         if (tableNum.isEmpty()) {
-            Toast.makeText(getContext(), "Please enter a table number", Toast.LENGTH_SHORT).show();
+            binding.qrTableNumEditText.setError("Enter a table num");
             return;
         }
 

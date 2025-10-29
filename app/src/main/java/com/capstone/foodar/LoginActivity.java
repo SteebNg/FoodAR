@@ -26,6 +26,7 @@ import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -92,6 +93,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        binding.textLoginForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void signInUser() {
@@ -105,24 +113,21 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     currentUser = firebaseAuth.getCurrentUser();
 
-//                    if (currentUser.isEmailVerified()) {
-//                        preferenceManager.putString(Constants.KEY_EMAIL, email);
-//                        preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
-//                        preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
-//
-//                        finish();
-//                    } else {
-//                        showError("Please verify your email first.");
-//                    }
-
-                    preferenceManager.putString(Constants.KEY_EMAIL, email);
-                    preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
-                    preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
-
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (currentUser.isEmailVerified()) {
+                        preferenceManager.putString(Constants.KEY_EMAIL, email);
+                        preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
+                        preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
+                        showError("Please verify your email first. Be sure to check spam inbox too.");
+                        firebaseAuth.signOut();
+                        isLoginButtonLoading(false);
+                    }
                 } else {
+                    Snackbar snackbar = Snackbar.make(
+                            binding.main, "Login Failed. Make sure the login credentials are correct.", Snackbar.LENGTH_LONG);
+                    snackbar.show();
                     isLoginButtonLoading(false);
                 }
             }
@@ -147,8 +152,8 @@ public class LoginActivity extends AppCompatActivity {
         } else if (password.isEmpty()) {
             showError("Please enter your password");
             return false;
-        } else if (password.length() < 6) {
-            showError("The password is at least 6 characters long");
+        } else if (password.length() < 8) {
+            showError("The password is at least 8 characters long");
             return false;
         } else {
             return true;
