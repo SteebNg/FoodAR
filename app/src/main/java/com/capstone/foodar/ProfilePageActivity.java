@@ -1,12 +1,20 @@
 package com.capstone.foodar;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
@@ -27,6 +36,9 @@ public class ProfilePageActivity extends AppCompatActivity {
     private StorageReference storageRef;
     private FirebaseAuth auth;
     private PreferenceManager preferenceManager;
+    private ActivityResultLauncher<Intent> profilePicLauncher;
+    private Uri profilePicUri;
+    private int REQUEST_STORAGE_PERMISSION = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +55,29 @@ public class ProfilePageActivity extends AppCompatActivity {
         init();
         setProfile();
         setListeners();
+        setLaunchers();
+    }
+
+    private void setLaunchers() {
+        profilePicLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        profilePicUri = result.getData().getData();
+                        storageRef.child(Constants.KEY_USERS_LIST
+                                + "/"
+                                + preferenceManager.getString(Constants.KEY_USER_ID)
+                                + "/"
+                                + Constants.KEY_PROFILE_IMAGE)
+                                .putFile(profilePicUri)
+                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        init();
+                                        setProfile();
+                                    }
+                                });
+                    }
+                });
     }
 
     private void setListeners() {
@@ -51,6 +86,7 @@ public class ProfilePageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 preferenceManager.clearString(Constants.KEY_USER_ID);
                 preferenceManager.clearString(Constants.KEY_EMAIL);
+                preferenceManager.clearString(Constants.KEY_USERNAME);
                 auth.signOut();
                 finish();
             }
@@ -68,6 +104,25 @@ public class ProfilePageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        binding.buttonProfileChangeProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImagePicker();
+            }
+        });
+    }
+
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        profilePicLauncher.launch(intent);
+    }
+
+    private void checkForStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+        }
     }
 
     private void setProfile() {
@@ -75,7 +130,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                 + "/"
                 + userId
                 + "/"
-                + Constants.KEY_PROFILE_IMAGE + ".jpeg")
+                + Constants.KEY_PROFILE_IMAGE)
                 .getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
