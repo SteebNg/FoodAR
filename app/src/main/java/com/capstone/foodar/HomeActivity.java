@@ -404,7 +404,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.refreshHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                init();
+                allMenuFoods.clear();
                 setListeners();
                 if (isLoggedIn) {
                     // loadOrderAgain(); TODO
@@ -560,47 +560,15 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
-            init();
-            getDeepLinkData();
-            // cause for some reason (searched the internet but no answers), google doesnt allow direct
-            // edit to the hint fonts in the XML file. I dont know. Ask them.
-            // changeSearchHintFont();
-            setListeners();
-            if (isLoggedIn) {
-                //loadOrderAgain(); TODO
-            } else {
-                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
-            }
+            allMenuFoods.clear();
             loadAllMenu();
             loadLocation();
         } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
-            init();
-            getDeepLinkData();
-            // cause for some reason (searched the internet but no answers), google doesnt allow direct
-            // edit to the hint fonts in the XML file. I dont know. Ask them.
-            // changeSearchHintFont();
-            setListeners();
-            if (isLoggedIn) {
-                //loadOrderAgain(); TODO
-                checkAdmin();
-            } else {
-                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
-            }
+            allMenuFoods.clear();
             loadAllMenu();
             loadLocation();
         } else if (requestCode == PROFILE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
-            init();
-            getDeepLinkData();
-            // cause for some reason (searched the internet but no answers), google doesnt allow direct
-            // edit to the hint fonts in the XML file. I dont know. Ask them.
-            // changeSearchHintFont();
-            setListeners();
-            if (isLoggedIn) {
-                //loadOrderAgain(); TODO
-                checkAdmin();
-            } else {
-                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
-            }
+            allMenuFoods.clear();
             loadAllMenu();
             loadLocation();
         }
