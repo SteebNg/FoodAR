@@ -61,6 +61,7 @@ public class HomeActivity extends AppCompatActivity {
     private String currentFoodCategory;
     private final int LOCATION_ACTIVITY_RESULT = 1;
     private final int QR_CODE_ACTIVITY_RESULT = 5;
+    private final int PROFILE_ACTIVITY_RESULT = 12;
     private ArrayList<Food> filteredAllMenu;
 
     @Override
@@ -77,13 +78,15 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         init();
-//        getDeepLinkData();
-        // cause for some reason (searched the internet but no answers), google doesnt allow direct
-        // edit to the hint fonts in the XML file. I dont know. Ask them.
+        getDeepLinkData();
+//         cause for some reason (searched the internet but no answers), google doesnt allow direct
+//         edit to the hint fonts in the XML file. I dont know. Ask them.
         // changeSearchHintFont();
         setListeners();
         if (isLoggedIn) {
             //loadOrderAgain(); TODO
+            binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            checkAdmin();
         } else {
             binding.layoutHomeOrderAgain.setVisibility(View.GONE);
         }
@@ -91,17 +94,40 @@ public class HomeActivity extends AppCompatActivity {
         loadLocation();
     }
 
-//    private void getDeepLinkData() {
-//        Uri uri = getIntent().getData();
-//
-//        if (uri != null) {
-//            List<String> params = uri.getPathSegments();
-//            preferenceManager.putString(Constants.KEY_LOCATION_ID, params.get(0));
-//            if (params.size() == 2) {
-//                preferenceManager.putString(Constants.KEY_TABLE_NUM, params.get(1));
-//            }
-//        }
-//    }
+    private void checkAdmin() {
+        db.collection(Constants.KEY_USERS_LIST).document(preferenceManager.getString(Constants.KEY_USER_ID))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            String admin = document.getString(Constants.KEY_ADMIN);
+                            if (admin != null) {
+                                Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void getDeepLinkData() {
+        Uri uri = getIntent().getData();
+
+        if (uri != null) {
+            List<String> params = uri.getPathSegments();
+            preferenceManager.putString(Constants.KEY_LOCATION_ID, params.get(0));
+            if (params.size() == 2) {
+                preferenceManager.putString(Constants.KEY_TABLE_NUM, params.get(1));
+            }
+        }
+    }
 
     private void loadLocation() {
         if (preferenceManager.contains(Constants.KEY_LOCATION_ID)) {
@@ -303,6 +329,7 @@ public class HomeActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         currentFoodCategory = Constants.KEY_ALL_MENU;
         filteredAllMenu = new ArrayList<>();
+        preferenceManager.clearString(Constants.KEY_LOCATION_ID);
         preferenceManager.clearString(Constants.KEY_TABLE_NUM);
         allMenuFoods = new ArrayList<>();
 
@@ -317,7 +344,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadUserProfileImage() {
-        storageRef.child(Constants.KEY_USER_ID + "/" + Constants.KEY_PROFILE_IMAGE)
+        storageRef.child(Constants.KEY_USERS_LIST
+                        + "/"
+                        + preferenceManager.getString(Constants.KEY_USER_ID)
+                        + "/"
+                        + Constants.KEY_PROFILE_IMAGE)
                 .getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -341,7 +372,7 @@ public class HomeActivity extends AppCompatActivity {
                 } else {
                     intent = new Intent(HomeActivity.this, LoginActivity.class);
                 }
-                startActivity(intent);
+                startActivityForResult(intent, PROFILE_ACTIVITY_RESULT);
             }
         });
         binding.searchBarHome.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -407,13 +438,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        binding.buttonHomeGoToAdmin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
-                startActivity(intent);
-            }
-        });
+//        binding.buttonHomeGoToAdmin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void checkIfCurrentOrderExists() {
@@ -530,7 +561,7 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
             init();
-//        getDeepLinkData();
+            getDeepLinkData();
             // cause for some reason (searched the internet but no answers), google doesnt allow direct
             // edit to the hint fonts in the XML file. I dont know. Ask them.
             // changeSearchHintFont();
@@ -544,13 +575,29 @@ public class HomeActivity extends AppCompatActivity {
             loadLocation();
         } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             init();
-//        getDeepLinkData();
+            getDeepLinkData();
             // cause for some reason (searched the internet but no answers), google doesnt allow direct
             // edit to the hint fonts in the XML file. I dont know. Ask them.
             // changeSearchHintFont();
             setListeners();
             if (isLoggedIn) {
                 //loadOrderAgain(); TODO
+                checkAdmin();
+            } else {
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            }
+            loadAllMenu();
+            loadLocation();
+        } else if (requestCode == PROFILE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
+            init();
+            getDeepLinkData();
+            // cause for some reason (searched the internet but no answers), google doesnt allow direct
+            // edit to the hint fonts in the XML file. I dont know. Ask them.
+            // changeSearchHintFont();
+            setListeners();
+            if (isLoggedIn) {
+                //loadOrderAgain(); TODO
+                checkAdmin();
             } else {
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
             }
