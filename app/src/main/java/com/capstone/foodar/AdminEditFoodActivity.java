@@ -920,9 +920,8 @@ public class AdminEditFoodActivity extends AppCompatActivity {
         if (requestCode == REQUEST_STORAGE_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Storage Permission Granted", Toast.LENGTH_SHORT).show();
-            } else {
+            } else if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 Toast.makeText(this, "Storage Permission is required to upload files.", Toast.LENGTH_SHORT).show();
-                finish();
             }
         }
     }
