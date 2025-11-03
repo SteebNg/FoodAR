@@ -8,13 +8,16 @@
 
     <TextView
         android:id="@+id/textLayoutHistoryLocation"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/alata"
         android:text="McDonalds"
-        android:textColor="@color/secondary_text"
-        android:textSize="@dimen/_12ssp"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="start"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -24,18 +27,17 @@
         android:fontFamily="@font/alata"
         android:text="2-01-2025"
         android:textColor="@color/secondary_text"
-        android:textSize="@dimen/_12ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutHistoryDestination"
+        app:layout_constraintBottom_toBottomOf="@+id/textLayoutHistoryDestination"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <View
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/hintColor"
-        app:layout_constraintTop_toTopOf="@+id/textLayoutHistoryDate"
-        app:layout_constraintBottom_toBottomOf="@+id/textLayoutHistoryDate"
-        app:layout_constraintEnd_toStartOf="@+id/textLayoutHistoryDate"
-        app:layout_constraintStart_toEndOf="@+id/textLayoutHistoryLocation"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutHistoryTotalPrice"
+        android:layout_marginTop="@dimen/_12sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_8sdp"/>
 
@@ -43,10 +45,47 @@
         android:id="@+id/recyclerLayoutHistoryFoods"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutHistoryDate"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutHistoryDestination"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/layout_order_history_food_item_list"
         tools:itemCount="3"
         android:layout_marginTop="@dimen/_4sdp"/>
+
+    <TextView
+        android:id="@+id/textLayoutHistoryServingMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata"
+        android:text="Serving Mode: Delivery"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutHistoryTotalPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/textLayoutHistoryTotalPrice"/>
+
+    <TextView
+        android:id="@+id/textLayoutHistoryDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata"
+        android:text="Destination: Jelutong"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/_4sdp"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutHistoryLocation"/>
+
+    <TextView
+        android:id="@+id/textLayoutHistoryTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/alata"
+        android:text="Total Price: RM 25.30"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_13ssp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_4sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerLayoutHistoryFoods"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

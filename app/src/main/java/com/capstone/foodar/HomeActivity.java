@@ -108,6 +108,7 @@ public class HomeActivity extends AppCompatActivity {
                         if (document != null && document.exists()) {
                             String admin = document.getString(Constants.KEY_ADMIN);
                             if (admin != null) {
+                                preferenceManager.putString(Constants.KEY_LOCATION_ID, document.getString(Constants.KEY_LOCATION_ID));
                                 Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -406,6 +407,13 @@ public class HomeActivity extends AppCompatActivity {
             public void onRefresh() {
                 allMenuFoods.clear();
                 setListeners();
+                isLoggedIn = isLoggedIn();
+                if (isLoggedIn) {
+                    loadUserProfileImage();
+                } else {
+                    Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                    binding.buttonHomeProfile.setImageDrawable(drawable);
+                }
                 if (isLoggedIn) {
                     // loadOrderAgain(); TODO
                 } else {
@@ -561,14 +569,56 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
             allMenuFoods.clear();
+            isLoggedIn = isLoggedIn();
+            if (isLoggedIn) {
+                loadUserProfileImage();
+            } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
+            }
+            if (isLoggedIn) {
+                //loadOrderAgain(); TODO
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+                checkAdmin();
+            } else {
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            }
             loadAllMenu();
             loadLocation();
         } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             allMenuFoods.clear();
+            isLoggedIn = isLoggedIn();
+            if (isLoggedIn) {
+                loadUserProfileImage();
+            } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
+            }
+            if (isLoggedIn) {
+                //loadOrderAgain(); TODO
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+                checkAdmin();
+            } else {
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            }
             loadAllMenu();
             loadLocation();
         } else if (requestCode == PROFILE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             allMenuFoods.clear();
+            isLoggedIn = isLoggedIn();
+            if (isLoggedIn) {
+                loadUserProfileImage();
+            } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
+            }
+            if (isLoggedIn) {
+                //loadOrderAgain(); TODO
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+                checkAdmin();
+            } else {
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+            }
             loadAllMenu();
             loadLocation();
         }

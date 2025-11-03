@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="@dimen/_8sdp">
+    android:layout_margin="@dimen/_4sdp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/layoutFoodDetailsItemProfilePic"
@@ -15,6 +15,21 @@
         android:scaleType="centerCrop"
         app:riv_corner_radius="100dp" />
 
+    <TextView
+        android:id="@+id/textFoodDetailsItemUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/layoutFoodDetailsItemProfilePic"
+        app:layout_constraintTop_toTopOf="@+id/layoutFoodDetailsItemProfilePic"
+        android:text="Steeb Ng"
+        android:fontFamily="@font/alata"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/primary_text"
+        android:textStyle="bold"
+        android:maxLines="2"
+        android:maxLength="60"
+        android:layout_marginStart="@dimen/_4sdp"/>
+
     <RatingBar
         android:id="@+id/ratingReviewFoodDetailsItem"
         android:layout_width="@dimen/_59sdp"
@@ -23,16 +38,16 @@
         android:rating="3.5"
         android:scaleY="0.7"
         android:scaleX="0.7"
-        app:layout_constraintTop_toTopOf="@+id/layoutFoodDetailsItemProfilePic"
-        app:layout_constraintStart_toEndOf="@+id/layoutFoodDetailsItemProfilePic"
-        android:layout_marginStart="@dimen/_4sdp" />
+        app:layout_constraintTop_toTopOf="@+id/textFoodDetailsItemUsername"
+        app:layout_constraintStart_toEndOf="@+id/textFoodDetailsItemUsername"
+        android:layout_marginTop="@dimen/_2sdp"/>
 
     <TextView
         android:id="@+id/textFoodDetailsItemComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/ratingReviewFoodDetailsItem"
-        app:layout_constraintTop_toBottomOf="@+id/ratingReviewFoodDetailsItem"
+        app:layout_constraintStart_toStartOf="@id/textFoodDetailsItemUsername"
+        app:layout_constraintTop_toBottomOf="@+id/textFoodDetailsItemUsername"
         android:text="This food is succulent. The beef is cooked to perfect and is juicy. The sauce is sweet and bitter. Overall, highly recommend it. "
         android:fontFamily="@font/alata"
         android:textSize="@dimen/_8ssp"

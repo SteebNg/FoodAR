@@ -1,5 +1,7 @@
 package com.capstone.foodar;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.bumptech.glide.Glide;
 import com.capstone.foodar.Adapter.AdminCurrentOrderTableListAdapter;
 import com.capstone.foodar.Adapter.AdminHomeTableCurrentOrderListAdapter;
 import com.capstone.foodar.Model.CurrentOrder;
@@ -94,6 +97,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     private AdminCurrentOrderTableListAdapter adapter;
     private Query currentOrdersQuery;
     private ListenerRegistration currentOrdersListener;
+    private final int ACTIVITY_PROFILE = 21;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,13 +109,31 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
         setListeners();
         setLocation();
         setCurrentOrdersListener();
+        setProfile();
 
         // Inflate the layout for this fragment
         return view;
     }
 
+    private void setProfile() {
+        binding.textAdminHomeProfileName.setText(preferenceManager.getString(Constants.KEY_USERNAME));
+
+        storageRef.child(Constants.KEY_USERS_LIST
+                + "/"
+                + preferenceManager.getString(Constants.KEY_USER_ID)
+                + "/"
+                + Constants.KEY_PROFILE_IMAGE)
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(getContext()).load(uri).into(binding.imageAdminHomeProfilePic);
+                    }
+                });
+    }
+
     private void setCurrentOrdersListener() {
-        currentOrdersQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
+         currentOrdersListener = currentOrdersQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -126,6 +148,16 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                         Log.d("Read Source", "Server");
                     }
 
+                    orders.clear();
+
+                    List<CurrentOrder> newOrders = new ArrayList<>();
+
+                    int totalOrders = value.size();
+                    if (totalOrders == 0) {
+                        addOrderToRecycler();
+                        return;
+                    }
+
                     int[] orderProcessed = {0};
                     for (QueryDocumentSnapshot document : value) {
                         CurrentOrder order = new CurrentOrder();
@@ -137,11 +169,15 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                         order.orderTotalPrice = document.getDouble(Constants.KEY_ORDER_PRICE);
                         order.status = document.getString(Constants.KEY_ORDER_STATUS);
                         order.foods = new ArrayList<>();
+                        order.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+
+                        newOrders.add(order);
 
                         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
 
                         if (cartItems != null) {
                             int [] foodsProcessed = {0};
+                            int expectedFoodsSize = cartItems.size();
                             for (Map<String, Object> cartItem : cartItems) {
                                 FoodInCart food = new FoodInCart();
 
@@ -156,7 +192,13 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                                 food.FoodName = cartItem.get(Constants.KEY_FOOD_NAME).toString();
                                 food.Remarks = cartItem.get(Constants.KEY_REMARKS).toString();
 
-                                getFoodImage(orderProcessed, foodsProcessed, value.size(), cartItems.size(), food, order);
+                                getFoodImage(orderProcessed, foodsProcessed, totalOrders, expectedFoodsSize, food, order, newOrders);
+                            }
+                        } else {
+                            orderProcessed[0]++;
+                            if (orderProcessed[0] == totalOrders) {
+                                orders.addAll(newOrders);
+                                addOrderToRecycler();
                             }
                         }
                     }
@@ -206,7 +248,8 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
 //                });
 //    }
 
-    private void getFoodImage(int[] orderProcessed, int[] foodProcessed, int expectedOrderSize, int expectedFoodsSize, FoodInCart food, CurrentOrder order) {
+    private void getFoodImage(int[] orderProcessed, int[] foodProcessed, int expectedOrderSize, int expectedFoodsSize,
+                              FoodInCart food, CurrentOrder order, List<CurrentOrder> newOrders) {
         storageRef.child(Constants.KEY_FOODS
                         + "/"
                         + food.FoodId
@@ -221,9 +264,10 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                         foodProcessed[0]++;
 
                         if (foodProcessed[0] == expectedFoodsSize) {
-                            orders.add(order);
+//                            orders.add(order);
                             orderProcessed[0]++;
                             if (orderProcessed[0] == expectedOrderSize) {
+                                orders.addAll(newOrders);
                                 addOrderToRecycler();
                             }
                         }
@@ -293,11 +337,20 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
         binding.swipeRefreshAdminHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                stopListeningForCurrentOrders();
                 init();
                 setListeners();
                 setLocation();
                 setCurrentOrdersListener();
+                setProfile();
                 binding.swipeRefreshAdminHome.setRefreshing(false);
+            }
+        });
+        binding.imageAdminHomeProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ProfilePageActivity.class);
+                startActivityForResult(intent, ACTIVITY_PROFILE);
             }
         });
     }
@@ -310,7 +363,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
 
         currentOrdersQuery = db.collection(Constants.KEY_CURRENT_ORDERS)
                 .whereEqualTo(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID))
-                .orderBy(Constants.KEY_TIMESTAMP, Query.Direction.DESCENDING);
+                .orderBy(Constants.KEY_TIMESTAMP, Query.Direction.ASCENDING);
     }
 
     private void stopListeningForCurrentOrders() {
@@ -330,5 +383,15 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ACTIVITY_PROFILE && resultCode == RESULT_OK) {
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        }
     }
 }

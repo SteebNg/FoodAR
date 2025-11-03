@@ -1,13 +1,12 @@
 package com.capstone.foodar.Model;
 
-import android.net.Uri;
-
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 
 public class OrderHistoryFoodParent {
     public ArrayList<FoodInCart> foodsInCart;
-    public String location;
+    public String locationId, servingMode, destination, locationName;
     public Timestamp timestamp;
+    public double orderPrice;
 }

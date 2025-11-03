@@ -56,6 +56,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         setProfile();
         setListeners();
         setLaunchers();
+        checkForStoragePermission();
     }
 
     private void setLaunchers() {
@@ -88,6 +89,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                 preferenceManager.clearString(Constants.KEY_EMAIL);
                 preferenceManager.clearString(Constants.KEY_USERNAME);
                 auth.signOut();
+                setResult(RESULT_OK);
                 finish();
             }
         });

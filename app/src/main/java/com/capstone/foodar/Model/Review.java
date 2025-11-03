@@ -2,7 +2,7 @@ package com.capstone.foodar.Model;
 
 import android.net.Uri;
 
-import com.google.firebase.Timestamp;
+import java.sql.Timestamp;
 
 public class Review {
     public Uri profileImage;

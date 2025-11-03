@@ -24,9 +24,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,6 +47,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
     private int ORDER_PENDING = 25, PREPARING = 50, DELIVERING = 75, SERVING = 75, COMPLETED = 100;
     private CurrentOrder currentOrder;
     private StorageReference storageRef;
+    private ListenerRegistration orderStatusListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +112,8 @@ public class OrderStatusClientActivity extends AppCompatActivity {
 //    }
 
     private void setCurrentOrderListener() {
-        binding.buttonClientStatusConfirmReceive.setEnabled(false);
-        db.collection(Constants.KEY_CURRENT_ORDERS)
+         binding.buttonClientStatusConfirmReceive.setEnabled(false);
+         orderStatusListener = db.collection(Constants.KEY_CURRENT_ORDERS)
                 .whereEqualTo(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -189,6 +192,18 @@ public class OrderStatusClientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (binding.buttonClientStatusConfirmReceive.getText().toString().equals("Order Received")) {
+                    db.collection(Constants.KEY_CURRENT_ORDERS).document(currentOrder.currentOrderId)
+                            .update(Constants.KEY_ORDER_STATUS, Constants.KEY_COMPLETED)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    removeListener();
+                                    init();
+                                    setCurrentOrderListener();
+                                    setListeners();
+                                }
+                            });
+                } else if (binding.buttonClientStatusConfirmReceive.getText().toString().equals("Confirm")) {
                     Map<String, Object> order = new HashMap<>();
                     order.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
                     order.put(Constants.KEY_LOCATION_ID, currentOrder.locationId);
@@ -200,12 +215,21 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                     order.put(Constants.KEY_TABLE_NUM, currentOrder.tableNum);
                     order.put(Constants.KEY_DESTINATION, currentOrder.destination);
 
-                    db.collection(Constants.KEY_ORDER_HISTORY)
-                            .add(order)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    db.collection(Constants.KEY_LOCATIONS).document(currentOrder.locationId)
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    removeCurrentOrder();
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.e("Get Location Name: ", String.valueOf(task.getException()));
+                                        return;
+                                    }
+
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        order.put(Constants.KEY_LOCATION_NAME, document.getString(Constants.KEY_LOCATION_NAME));
+                                        addCurrentOrderToDb(order);
+                                    }
                                 }
                             });
                 }
@@ -217,6 +241,17 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void addCurrentOrderToDb(Map<String, Object> order) {
+        db.collection(Constants.KEY_ORDER_HISTORY)
+                .add(order)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        removeCurrentOrder();
+                    }
+                });
     }
 
     private void removeCurrentOrder() {
@@ -261,17 +296,30 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 binding.progressClientStatus.setProgress(SERVING);
                 binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
-                binding.buttonClientStatusConfirmReceive.setText("Received");
+                binding.buttonClientStatusConfirmReceive.setText("Order Received");
                 break;
             case Constants.KEY_COMPLETED:
                 binding.textClientStatusStatusBody.setText("Your order as arrived. Click the below button to confirm.");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.verified).into(binding.imageClientStatusMain);
                 binding.progressClientStatus.setProgress(COMPLETED);
-                binding.buttonClientStatusConfirmReceive.setText("Order Received");
+                binding.buttonClientStatusConfirmReceive.setText("Confirm");
                 binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
                 break;
         }
+    }
+
+    private void removeListener() {
+        if (orderStatusListener != null) {
+            orderStatusListener.remove();
+            orderStatusListener = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        removeListener();
     }
 
     private void init() {

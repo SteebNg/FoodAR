@@ -42,6 +42,7 @@ public class FoodDetailsReviewListAdapter extends RecyclerView.Adapter<FoodDetai
         Review review = reviews.get(position);
 
         holder.comment.setText(review.comment);
+        holder.username.setText(review.userName);
         Glide.with(context).load(review.profileImage).into(holder.profileImage);
         holder.ratingBar.setRating((float) review.rating);
     }
@@ -55,7 +56,7 @@ public class FoodDetailsReviewListAdapter extends RecyclerView.Adapter<FoodDetai
 
         ImageView profileImage;
         RatingBar ratingBar;
-        TextView comment;
+        TextView comment, username;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,6 +64,7 @@ public class FoodDetailsReviewListAdapter extends RecyclerView.Adapter<FoodDetai
             profileImage = itemView.findViewById(R.id.layoutFoodDetailsItemProfilePic);
             ratingBar = itemView.findViewById(R.id.ratingReviewFoodDetailsItem);
             comment = itemView.findViewById(R.id.textFoodDetailsItemComment);
+            username = itemView.findViewById(R.id.textFoodDetailsItemUsername);
         }
     }
 }

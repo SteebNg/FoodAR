@@ -79,6 +79,16 @@ public class OrderHistoryActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) { // every order
                                 OrderHistoryFoodParent order = new OrderHistoryFoodParent();
                                 order.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+                                order.locationId = document.getString(Constants.KEY_LOCATION_ID);
+                                order.servingMode = document.getString(Constants.KEY_SERVING_METHOD);
+                                order.orderPrice = (double) document.get(Constants.KEY_ORDER_PRICE);
+                                order.locationName = document.getString(Constants.KEY_LOCATION_NAME);
+
+                                if (order.servingMode.equals(Constants.KEY_DINE_IN_MODE)) {
+                                    order.destination = document.getString(Constants.KEY_TABLE_NUM);
+                                } else if (order.servingMode.equals(Constants.KEY_DELIVERY_MODE)) {
+                                    order.destination = document.getString(Constants.KEY_DESTINATION);
+                                }
 
                                 List<Map<String, Object>> foodsInCartData = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
                                 if (foodsInCartData != null) {
@@ -91,7 +101,6 @@ public class OrderHistoryActivity extends AppCompatActivity {
                                         foodInCart.FoodOptions = (ArrayList<String>) foodMap.get(Constants.KEY_FOOD_OPTIONS);
                                         foodInCart.FoodPrice = (double) foodMap.get(Constants.KEY_FOOD_PRICE);
                                         foodInCart.LocationId = (String) foodMap.get(Constants.KEY_LOCATION_ID);
-                                        order.location = (String) foodMap.get(Constants.KEY_LOCATION_ID);
                                         foodInCart.Remarks = (String) foodMap.get(Constants.KEY_REMARKS);
                                         foodInCart.FoodAmount = Math.toIntExact((long) foodMap.get(Constants.KEY_FOOD_AMOUNT));
                                         foodInCart.FoodName = (String) foodMap.get(Constants.KEY_FOOD_NAME);

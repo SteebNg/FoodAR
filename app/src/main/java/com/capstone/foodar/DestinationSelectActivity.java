@@ -104,8 +104,8 @@ public class DestinationSelectActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (checkIfGpsIsEnabled()) {
-                LocationRequest locationRequest = new LocationRequest.Builder(10000)
-                        .setMinUpdateIntervalMillis(5000)
+                LocationRequest locationRequest = new LocationRequest.Builder(5000)
+                        .setMinUpdateIntervalMillis(2000)
                         .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
                         .build();
 
@@ -120,7 +120,6 @@ public class DestinationSelectActivity extends AppCompatActivity {
                                     if (addresses != null && !addresses.isEmpty()) {
                                         setLocationInfo(addresses);
                                         fusedLocationProviderClient.removeLocationUpdates(this);
-                                        setLocationInfo(addresses);
                                         return;
                                     }
                                 } catch (IOException e) {

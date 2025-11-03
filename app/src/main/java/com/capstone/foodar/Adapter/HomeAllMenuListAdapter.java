@@ -49,6 +49,7 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
         holder.foodRating.setRating((float) food.foodRating);
         Glide.with(context).load(food.foodImage).into(holder.foodImage);
         holder.itemView.setOnClickListener(v -> onItemClickListener.onClick(foods.get(position)));
+        holder.foodCategory.setText(food.foodCategory);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView foodImage;
-        TextView foodName, foodPrice;
+        TextView foodName, foodPrice, foodCategory;
         RatingBar foodRating;
 
         public ViewHolder(@NonNull View itemView) {
@@ -68,6 +69,7 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
             foodName = itemView.findViewById(R.id.textAllMenuFoodName);
             foodPrice = itemView.findViewById(R.id.textAllMenuFoodPrice);
             foodRating = itemView.findViewById(R.id.ratingAllMenuFood);
+            foodCategory = itemView.findViewById(R.id.textAllMenuFoodCategory);
         }
     }
 

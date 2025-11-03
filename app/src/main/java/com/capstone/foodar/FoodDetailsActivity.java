@@ -33,17 +33,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.unity3d.player.UnityPlayerGameActivity;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -170,7 +173,14 @@ public class FoodDetailsActivity extends AppCompatActivity {
         optionListAdapter = getOptionListAdapter();
         binding.recyclerFoodDetailFoodOption.setAdapter(optionListAdapter);
         optionListAdapter.notifyDataSetChanged();
-        calculateTotalPrice();
+        optionListAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                calculateTotalPrice();
+                optionListAdapter.unregisterAdapterDataObserver(this);
+            }
+        });
     }
 
     private FoodDetailsOptionListAdapter getOptionListAdapter() {
@@ -189,21 +199,24 @@ public class FoodDetailsActivity extends AppCompatActivity {
     private void setReviews() {
         db.collection(Constants.KEY_REVIEWS)
                 .whereEqualTo(Constants.KEY_FOOD_ID, foodId)
+                .orderBy(Constants.KEY_TIMESTAMP, Query.Direction.DESCENDING)
                 .limit(2)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            QuerySnapshot document = task.getResult();
-                            if (!document.isEmpty()) {
-                                putReviewsInRecycler(document);
-                            } else {
-                                binding.recyclerFoodDetailsReviews.setVisibility(View.INVISIBLE);
-                                binding.textFoodDetailsNoReviews.setVisibility(View.VISIBLE);
-                                binding.textFoodDetailsReviewMore.setVisibility(View.INVISIBLE);
-                                binding.textFoodDetailsReviewMore.setEnabled(false);
-                            }
+                        if (!task.isSuccessful()) {
+                            Log.e("Firebase Get Reviews", "Failed: " + task.getException());
+                            return;
+                        }
+                        QuerySnapshot document = task.getResult();
+                        if (!document.isEmpty()) {
+                            putReviewsInRecycler(document);
+                        } else {
+                            binding.recyclerFoodDetailsReviews.setVisibility(View.INVISIBLE);
+                            binding.textFoodDetailsNoReviews.setVisibility(View.VISIBLE);
+                            binding.textFoodDetailsReviewMore.setVisibility(View.INVISIBLE);
+                            binding.textFoodDetailsReviewMore.setEnabled(false);
                         }
                     }
                 });
@@ -215,14 +228,15 @@ public class FoodDetailsActivity extends AppCompatActivity {
             Review review = new Review();
             review.comment = document.getString(Constants.KEY_COMMENT);
             review.rating = document.getDouble(Constants.KEY_FOODS_RATING);
-            review.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+            review.timestamp = convertFirebaseTimestamp(Objects.requireNonNull(document.getTimestamp(Constants.KEY_TIMESTAMP)));
             review.userId = document.getString(Constants.KEY_USER_ID);
+            review.userName = document.getString(Constants.KEY_USERNAME);
 
             storageRef.child(Constants.KEY_USERS_LIST
                     + "/"
                     + review.userId
                     + "/"
-                    + Constants.KEY_PROFILE_IMAGE + ".jpeg")
+                    + Constants.KEY_PROFILE_IMAGE)
                     .getDownloadUrl()
                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
@@ -237,6 +251,17 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private Timestamp convertFirebaseTimestamp(com.google.firebase.Timestamp firebaseTime) {
+        long seconds = firebaseTime.getSeconds();
+        long nanoSeconds = firebaseTime.getNanoseconds();
+
+        long milliseconds = seconds * 1000;
+
+        long totalMilliseconds = milliseconds + (nanoSeconds / 1000000);
+
+        return new Timestamp(totalMilliseconds);
     }
 
     private void setReviewRecycler() {
