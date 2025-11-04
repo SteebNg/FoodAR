@@ -28,6 +28,7 @@ import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.databinding.ActivityFoodDetailsBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,6 +38,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.unity3d.player.UnityPlayerGameActivity;
 
@@ -88,23 +90,71 @@ public class FoodDetailsActivity extends AppCompatActivity {
         setOptions();
     }
 
+//    private void checkIf3DModelExists() {
+//        storageRef.child(Constants.KEY_FOODS
+//                + "/"
+//                + foodId
+//                + "/"
+//                + "3DModel.obj")
+//                .getDownloadUrl()
+//                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                    @Override
+//                    public void onSuccess(Uri uri) {
+//                        int arAvailableDrawable = R.drawable.video_camera_back_24;
+//
+//                        binding.buttonFoodDetailsAR.setEnabled(true);
+//                        Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
+//                        binding.bgFoodDetailsAr.setBackgroundTintList(
+//                                ContextCompat.getColorStateList(FoodDetailsActivity.this, R.color.lightGreen)
+//                        );
+//                    }
+//                });
+//    }
+
     private void checkIf3DModelExists() {
         storageRef.child(Constants.KEY_FOODS
-                + "/"
-                + foodId
-                + "/"
-                + "3DModel.obj")
-                .getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        + "/"
+                        + foodId
+                        + "/")
+                .listAll()
+                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        int arAvailableDrawable = R.drawable.video_camera_back_24;
+                    public void onSuccess(ListResult listResult) {
+                        boolean objExists = false;
+                        boolean mtlExists = false;
+                        boolean jpgExists = false;
 
-                        binding.buttonFoodDetailsAR.setEnabled(true);
-                        Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
-                        binding.bgFoodDetailsAr.setBackgroundTintList(
-                                ContextCompat.getColorStateList(FoodDetailsActivity.this, R.color.lightGreen)
-                        );
+                        for (StorageReference file : listResult.getItems()) {
+                            String fileName = file.getName();
+
+                            switch (fileName) {
+                                case "3DModel.obj":
+                                    objExists = true;
+                                    break;
+                                case "3DModel.mtl":
+                                    mtlExists = true;
+                                    break;
+                                case "3DModel.jpg":
+                                    jpgExists = true;
+                                    break;
+                            }
+
+                            if (objExists && mtlExists && jpgExists) {
+                                int arAvailableDrawable = R.drawable.video_camera_back_24;
+
+                                binding.buttonFoodDetailsAR.setEnabled(true);
+                                Glide.with(FoodDetailsActivity.this).load(arAvailableDrawable).into(binding.imageFoodDetailsAr);
+                                binding.bgFoodDetailsAr.setBackgroundTintList(
+                                        ContextCompat.getColorStateList(FoodDetailsActivity.this, R.color.lightGreen));
+
+                                break;
+                            }
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Check 3D Model Exists in DB", "Failed: " + e);
                     }
                 });
     }
