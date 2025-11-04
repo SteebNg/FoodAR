@@ -198,7 +198,7 @@ public class ReviewsActivity extends AppCompatActivity {
     private void checkUserOrdered() {
         db.collection(Constants.KEY_ORDER_HISTORY)
                 .whereEqualTo(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID))
-                .whereEqualTo(Constants.KEY_FOOD_ID, foodId)
+                .whereArrayContains(Constants.KEY_FOODS, foodId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

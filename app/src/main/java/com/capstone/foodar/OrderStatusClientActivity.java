@@ -214,6 +214,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                     order.put(Constants.KEY_SERVING_METHOD, currentOrder.servingMethod);
                     order.put(Constants.KEY_TABLE_NUM, currentOrder.tableNum);
                     order.put(Constants.KEY_DESTINATION, currentOrder.destination);
+                    order.put(Constants.KEY_FOODS, getFoodIdArray());
 
                     db.collection(Constants.KEY_LOCATIONS).document(currentOrder.locationId)
                             .get()
@@ -241,6 +242,22 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private ArrayList<String> getFoodIdArray() {
+        if (currentOrder == null) {
+            return null;
+        }
+
+        ArrayList<String> foodIds = new ArrayList<>();
+        ArrayList<FoodInCart> foodsInCart = currentOrder.foods;
+        for (FoodInCart food : foodsInCart) {
+            if (!foodIds.contains(food.FoodId)) {
+                foodIds.add(food.FoodId);
+            }
+        }
+
+        return foodIds;
     }
 
     private void addCurrentOrderToDb(Map<String, Object> order) {
@@ -288,7 +305,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 binding.progressClientStatus.setProgress(DELIVERING);
                 binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
-                binding.buttonClientStatusConfirmReceive.setText("Received");
+                binding.buttonClientStatusConfirmReceive.setText("Order Received");
                 break;
             case Constants.KEY_SERVING:
                 binding.textClientStatusStatusBody.setText("Waiting for waiter to serve...");
