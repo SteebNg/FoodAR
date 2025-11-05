@@ -406,6 +406,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 allMenuFoods.clear();
+                filteredAllMenu.clear();
                 setListeners();
                 isLoggedIn = isLoggedIn();
                 if (isLoggedIn) {
@@ -489,18 +490,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void filterAllMenu(String query) {
-        if (query.isEmpty() && allMenuAdapter != null) {
-            allMenuAdapter.filterAllMenuList(allMenuFoods);
-            filteredAllMenu = allMenuFoods;
-        } else if (allMenuFoods != null && !allMenuFoods.isEmpty()){
-            filteredAllMenu = new ArrayList<>();
-            for (Food food : allMenuFoods) {
-                if (food.foodName.toLowerCase().contains(query.toLowerCase())) {
-                    filteredAllMenu.add(food);
+        ArrayList<Food> queriedFood = new ArrayList<>();
+
+        if (query.isEmpty()) {
+            queriedFood.addAll(filteredAllMenu);
+        } else if (filteredAllMenu != null && !filteredAllMenu.isEmpty()) {
+            String lowerCaseQuery = query.toLowerCase();
+            for (Food food : filteredAllMenu) {
+                if (food.foodName.toLowerCase().contains(lowerCaseQuery)) {
+                    queriedFood.add(food);
                 }
             }
+        }
 
-            allMenuAdapter.filterAllMenuList(filteredAllMenu);
+        if (allMenuAdapter != null) {
+            allMenuAdapter.filterAllMenuList(queriedFood);
         }
     }
 
@@ -527,19 +531,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void filterMenuAccordingToCategory(String category) {
-        ArrayList<Food> foodFiltered = new ArrayList<>();
+        filteredAllMenu.clear();
 
         if (category.equals(Constants.KEY_ALL_MENU)) {
-            foodFiltered = allMenuFoods;
+            filteredAllMenu.addAll(allMenuFoods);
         } else {
-            for (Food food : filteredAllMenu) {
+            for (Food food : allMenuFoods) {
                 if (food.foodCategory.equals(category)) {
-                    foodFiltered.add(food);
+                    filteredAllMenu.add(food);
                 }
             }
         }
 
-        allMenuAdapter.filterAllMenuList(foodFiltered);
+        allMenuAdapter.filterAllMenuList(filteredAllMenu);
     }
 
     private ArrayList<String> getAllFoodCategories() {
@@ -569,6 +573,7 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
             allMenuFoods.clear();
+            filteredAllMenu.clear();
             isLoggedIn = isLoggedIn();
             if (isLoggedIn) {
                 loadUserProfileImage();
@@ -587,6 +592,7 @@ public class HomeActivity extends AppCompatActivity {
             loadLocation();
         } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             allMenuFoods.clear();
+            filteredAllMenu.clear();
             isLoggedIn = isLoggedIn();
             if (isLoggedIn) {
                 loadUserProfileImage();
@@ -605,6 +611,7 @@ public class HomeActivity extends AppCompatActivity {
             loadLocation();
         } else if (requestCode == PROFILE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             allMenuFoods.clear();
+            filteredAllMenu.clear();
             isLoggedIn = isLoggedIn();
             if (isLoggedIn) {
                 loadUserProfileImage();
