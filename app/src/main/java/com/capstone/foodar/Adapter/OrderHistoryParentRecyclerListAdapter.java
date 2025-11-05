@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.capstone.foodar.Model.OrderHistoryFoodParent;
+import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.R;
 
 import java.sql.Timestamp;
@@ -40,9 +41,23 @@ public class OrderHistoryParentRecyclerListAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         OrderHistoryFoodParent foodsOnThatDate = orderHistoryFoodParents.get(position);
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy - HH:mm", Locale.getDefault());
         holder.date.setText(sdf.format(firebaseToJavaUtilTimestamp(foodsOnThatDate.timestamp)));
-        holder.location.setText(foodsOnThatDate.location);
+        holder.location.setText(foodsOnThatDate.locationName);
+        holder.totalPrice.setText(String.format(Locale.ROOT, "Total Price: RM%.2f", foodsOnThatDate.orderPrice));
+
+        if (foodsOnThatDate.servingMode.equals(Constants.KEY_DINE_IN_MODE)) {
+            holder.servingMode.setText("Dine In");
+        } else if (foodsOnThatDate.servingMode.equals(Constants.KEY_DELIVERY_MODE)) {
+            holder.servingMode.setText("Delivery");
+        }
+
+        if (foodsOnThatDate.servingMode.equals(Constants.KEY_DINE_IN_MODE)) {
+            holder.destination.setText("Table Num: " + foodsOnThatDate.destination);
+        } else if (foodsOnThatDate.servingMode.equals(Constants.KEY_DELIVERY_MODE)) {
+            holder.destination.setText("Destination: " + foodsOnThatDate.destination);
+        }
 
         OrderHistoryChildRecyclerListAdapter adapter = new OrderHistoryChildRecyclerListAdapter(orderHistoryFoodParents.get(position).foodsInCart, context);
         holder.recyclerIndiFoodsHistory.setAdapter(adapter);
@@ -69,7 +84,7 @@ public class OrderHistoryParentRecyclerListAdapter extends RecyclerView.Adapter<
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView date, location;
+        TextView date, location, servingMode, destination, totalPrice;
         RecyclerView recyclerIndiFoodsHistory;
 
         public ViewHolder(@NonNull View itemView) {
@@ -78,6 +93,9 @@ public class OrderHistoryParentRecyclerListAdapter extends RecyclerView.Adapter<
             location = itemView.findViewById(R.id.textLayoutHistoryLocation);
             date = itemView.findViewById(R.id.textLayoutHistoryDate);
             recyclerIndiFoodsHistory = itemView.findViewById(R.id.recyclerLayoutHistoryFoods);
+            servingMode = itemView.findViewById(R.id.textLayoutHistoryServingMode);
+            destination = itemView.findViewById(R.id.textLayoutHistoryDestination);
+            totalPrice = itemView.findViewById(R.id.textLayoutHistoryTotalPrice);
         }
     }
 }

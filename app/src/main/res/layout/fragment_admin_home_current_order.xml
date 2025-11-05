@@ -11,6 +11,34 @@
         android:layout_height="match_parent"
         android:background="@color/bg_dark">
 
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imageAdminHomeProfilePic"
+            android:scaleType="centerCrop"
+            app:riv_corner_radius="@dimen/_100sdp"
+            android:layout_width="@dimen/_28sdp"
+            android:layout_height="@dimen/_28sdp"
+            app:layout_constraintEnd_toStartOf="@+id/textAdminHomeProfileName"
+            app:layout_constraintTop_toTopOf="@+id/textAdminHomeTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeTitle"
+            android:src="@drawable/account_circle_24"
+            android:layout_marginEnd="@dimen/_8sdp"/>
+
+        <TextView
+            android:id="@+id/textAdminHomeProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/alata"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/textAdminHomeTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/textAdminHomeTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:maxLength="20"
+            android:maxLines="1"/>
+
         <TextView
             android:id="@+id/textAdminHomeTitle"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +67,8 @@
             android:layout_height="0dp"
             android:id="@+id/swipeRefreshAdminHome"
             android:paddingBottom="@dimen/_8sdp"
-            app:layout_constraintTop_toBottomOf="@+id/dividerAdminHome1">
+            app:layout_constraintTop_toBottomOf="@+id/dividerAdminHome1"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ScrollView
                 android:layout_width="match_parent"

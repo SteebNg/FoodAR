@@ -3,6 +3,7 @@ import org.gradle.internal.impldep.bsh.commands.dir
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -63,6 +64,8 @@ dependencies {
     implementation("com.google.zxing:core:3.5.0")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.firebase:firebase-perf:22.0.3")
+    implementation("com.github.ahmmedrejowan.CuteToast:CuteToast:1.2")
 
     implementation(project(":unityLibrary"))
     implementation(fileTree(project.projectDir.toString() + "/unityLibrary/libs") { include("*.jar") })

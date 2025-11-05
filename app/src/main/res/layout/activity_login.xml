@@ -196,6 +196,7 @@
         android:textColor="@color/warningRed"
         android:layout_marginTop="@dimen/_4sdp"
         android:textSize="@dimen/_12ssp"
+        android:gravity="center"
         android:visibility="invisible"/>
 
     <TextView

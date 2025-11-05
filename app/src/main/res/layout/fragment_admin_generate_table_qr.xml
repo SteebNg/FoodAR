@@ -11,7 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/_24sdp">
+        android:paddingBottom="@dimen/_24sdp"
+        android:clipToPadding="false">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/headerCard"
@@ -189,7 +190,7 @@
                             android:layout_width="@dimen/_240sdp"
                             android:layout_height="@dimen/_240sdp"
                             android:background="@android:color/white"
-                            android:contentDescription="Generated QR Code" />
+                            android:layout_gravity="center"/>
 
                     </FrameLayout>
 
@@ -230,8 +231,7 @@
                         app:cornerRadius="@dimen/_12sdp"
                         app:strokeColor="@color/lightGreen"
                         app:strokeWidth="@dimen/_2sdp"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:enabled="false" />
+                        style="@style/Widget.Material3.Button.OutlinedButton" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/qrPrintButton"
@@ -246,8 +246,7 @@
                         app:backgroundTint="@color/lightGreen"
                         app:iconGravity="textStart"
                         app:iconTint="@android:color/white"
-                        app:cornerRadius="@dimen/_12sdp"
-                        android:enabled="false"/>
+                        app:cornerRadius="@dimen/_12sdp" />
 
                 </LinearLayout>
 

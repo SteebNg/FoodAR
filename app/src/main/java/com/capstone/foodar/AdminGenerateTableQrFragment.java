@@ -97,7 +97,7 @@ public class AdminGenerateTableQrFragment extends Fragment {
             return;
         }
 
-        String qrCodeData = tableNum + ", " + locationId;
+        String qrCodeData = locationId + ", " + tableNum;
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
@@ -110,6 +110,8 @@ public class AdminGenerateTableQrFragment extends Fragment {
 
             binding.emptyStateLayout.setVisibility(View.GONE);
             binding.qrDisplayCard.setVisibility(View.VISIBLE);
+            binding.qrDownloadButton.setVisibility(View.VISIBLE);
+            binding.qrPrintButton.setVisibility(View.VISIBLE);
 
             Toast.makeText(getContext(), "QR Code generated successfully!", Toast.LENGTH_SHORT).show();
 

@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/_16sdp">
+    android:padding="@dimen/_12sdp">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/imageLayoutReviewUserImage"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:riv_corner_radius="@dimen/_100sdp"
+        android:scaleType="centerCrop"
         android:src="@drawable/account_circle_24" />
 
     <LinearLayout
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="Combo Deluxe"
             android:textColor="@color/primary_text"
-            android:textSize="@dimen/_8ssp"
+            android:textSize="@dimen/_12ssp"
             android:fontFamily="@font/alata"
             android:gravity="start"
             android:paddingBottom="@dimen/_2sdp" />
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="13 September 2025 13:45"
                 android:textColor="@color/secondary_text"
-                android:textSize="@dimen/_6ssp"
+                android:textSize="@dimen/_7ssp"
                 android:fontFamily="@font/alata"
                 android:gravity="start"
                 android:paddingBottom="@dimen/_2sdp"
@@ -76,9 +77,17 @@
         app:layout_constraintStart_toStartOf="@+id/imageLayoutReviewUserImage"
         android:text="Consequat velit qui adipisicing sunt do rependerit ad laborum tempor ullamco exercitation. Ullamco tempor adipisicing et voluptate duis sit esse aliqua"
         android:textColor="@color/secondary_text"
-        android:textSize="@dimen/_8ssp"
+        android:textSize="@dimen/_12ssp"
         android:fontFamily="@font/alata"
         android:gravity="start"
         android:paddingBottom="@dimen/_2sdp"
         android:layout_marginTop="@dimen/_8sdp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutReviewComment"
+        android:layout_marginTop="@dimen/_12sdp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

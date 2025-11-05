@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageAllMenuItem"
         android:text="Combo Deluxe"
-        android:textSize="@dimen/_10ssp"
+        android:textSize="@dimen/_11ssp"
         android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:fontFamily="@font/alata"
@@ -40,11 +40,25 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/textAllMenuFoodCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textAllMenuFoodName"
+        android:text="Burger"
+        android:textSize="@dimen/_9ssp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:fontFamily="@font/alata"
+        android:textColor="@color/secondary_text"
+        android:maxLines="2"
+        android:maxWidth="@dimen/_80sdp" />
+
+    <TextView
         android:id="@+id/textAllMenuFoodPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/textAllMenuFoodName"
-        app:layout_constraintTop_toBottomOf="@+id/textAllMenuFoodName"
+        app:layout_constraintTop_toBottomOf="@+id/textAllMenuFoodCategory"
         android:text="RM16.99"
         android:textSize="@dimen/_10ssp"
         android:layout_marginTop="@dimen/_16sdp"

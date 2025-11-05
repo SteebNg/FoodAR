@@ -16,7 +16,10 @@ import com.capstone.foodar.Model.CurrentOrder;
 import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.R;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<AdminCurrentOrderTableListAdapter.ViewHolder>{
@@ -48,6 +51,11 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
         holder.orderTotalPrice.setText(String.format(Locale.ROOT, "RM %.2f", order.orderTotalPrice));
         holder.orderStatus.setText(order.status);
         setProgress(order.status, holder.orderProgress, holder.orderStatus, holder.buttonStatusProgressing);
+        holder.servingMode.setText("Serving Mode: " + order.servingMethod);
+
+        Date date = order.timestamp.toDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm - dd MMM yyyy", Locale.ENGLISH);
+        holder.timestamp.setText(sdf.format(date));
 
         if (order.tableNum != null) {
             holder.tableNum.setText("Table: " + order.tableNum);
@@ -109,7 +117,7 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tableNum, paymentMethod, orderTotalPrice, orderStatus;
+        TextView tableNum, paymentMethod, orderTotalPrice, orderStatus, timestamp, servingMode;
         RecyclerView orders;
         ProgressBar orderProgress;
         Button buttonStatusProgressing;
@@ -124,6 +132,8 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
             orderStatus = itemView.findViewById(R.id.textLayoutAdminCurrentOrderTableCurrentStatusHeading);
             orderProgress = itemView.findViewById(R.id.progressBarLayoutAdminCurrentOrderTable);
             buttonStatusProgressing = itemView.findViewById(R.id.buttonLayoutAdminCurrentOrderTableStatusProgress);
+            timestamp = itemView.findViewById(R.id.textLayoutAdminCurrentOrderTableItemTime);
+            servingMode = itemView.findViewById(R.id.textLayoutAdminCurrentOrderTableServingMode);
         }
     }
 

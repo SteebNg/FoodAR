@@ -108,6 +108,7 @@ public class HomeActivity extends AppCompatActivity {
                         if (document != null && document.exists()) {
                             String admin = document.getString(Constants.KEY_ADMIN);
                             if (admin != null) {
+                                preferenceManager.putString(Constants.KEY_LOCATION_ID, document.getString(Constants.KEY_LOCATION_ID));
                                 Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -404,8 +405,16 @@ public class HomeActivity extends AppCompatActivity {
         binding.refreshHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                init();
+                allMenuFoods.clear();
+                filteredAllMenu.clear();
                 setListeners();
+                isLoggedIn = isLoggedIn();
+                if (isLoggedIn) {
+                    loadUserProfileImage();
+                } else {
+                    Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                    binding.buttonHomeProfile.setImageDrawable(drawable);
+                }
                 if (isLoggedIn) {
                     // loadOrderAgain(); TODO
                 } else {
@@ -481,18 +490,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void filterAllMenu(String query) {
-        if (query.isEmpty() && allMenuAdapter != null) {
-            allMenuAdapter.filterAllMenuList(allMenuFoods);
-            filteredAllMenu = allMenuFoods;
-        } else if (allMenuFoods != null && !allMenuFoods.isEmpty()){
-            filteredAllMenu = new ArrayList<>();
-            for (Food food : allMenuFoods) {
-                if (food.foodName.toLowerCase().contains(query.toLowerCase())) {
-                    filteredAllMenu.add(food);
+        ArrayList<Food> queriedFood = new ArrayList<>();
+
+        if (query.isEmpty()) {
+            queriedFood.addAll(filteredAllMenu);
+        } else if (filteredAllMenu != null && !filteredAllMenu.isEmpty()) {
+            String lowerCaseQuery = query.toLowerCase();
+            for (Food food : filteredAllMenu) {
+                if (food.foodName.toLowerCase().contains(lowerCaseQuery)) {
+                    queriedFood.add(food);
                 }
             }
+        }
 
-            allMenuAdapter.filterAllMenuList(filteredAllMenu);
+        if (allMenuAdapter != null) {
+            allMenuAdapter.filterAllMenuList(queriedFood);
         }
     }
 
@@ -519,19 +531,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void filterMenuAccordingToCategory(String category) {
-        ArrayList<Food> foodFiltered = new ArrayList<>();
+        filteredAllMenu.clear();
 
         if (category.equals(Constants.KEY_ALL_MENU)) {
-            foodFiltered = allMenuFoods;
+            filteredAllMenu.addAll(allMenuFoods);
         } else {
-            for (Food food : filteredAllMenu) {
+            for (Food food : allMenuFoods) {
                 if (food.foodCategory.equals(category)) {
-                    foodFiltered.add(food);
+                    filteredAllMenu.add(food);
                 }
             }
         }
 
-        allMenuAdapter.filterAllMenuList(foodFiltered);
+        allMenuAdapter.filterAllMenuList(filteredAllMenu);
     }
 
     private ArrayList<String> getAllFoodCategories() {
@@ -560,28 +572,37 @@ public class HomeActivity extends AppCompatActivity {
 
         if (requestCode == LOCATION_ACTIVITY_RESULT && resultCode == RESULT_OK) {
             binding.textHomeLocation.setText(preferenceManager.getString(Constants.KEY_LOCATION_NAME));
-            init();
-            getDeepLinkData();
-            // cause for some reason (searched the internet but no answers), google doesnt allow direct
-            // edit to the hint fonts in the XML file. I dont know. Ask them.
-            // changeSearchHintFont();
-            setListeners();
+            allMenuFoods.clear();
+            filteredAllMenu.clear();
+            isLoggedIn = isLoggedIn();
+            if (isLoggedIn) {
+                loadUserProfileImage();
+            } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
+            }
             if (isLoggedIn) {
                 //loadOrderAgain(); TODO
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
+                checkAdmin();
             } else {
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
             }
             loadAllMenu();
             loadLocation();
         } else if (requestCode == QR_CODE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
-            init();
-            getDeepLinkData();
-            // cause for some reason (searched the internet but no answers), google doesnt allow direct
-            // edit to the hint fonts in the XML file. I dont know. Ask them.
-            // changeSearchHintFont();
-            setListeners();
+            allMenuFoods.clear();
+            filteredAllMenu.clear();
+            isLoggedIn = isLoggedIn();
+            if (isLoggedIn) {
+                loadUserProfileImage();
+            } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
+            }
             if (isLoggedIn) {
                 //loadOrderAgain(); TODO
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
                 checkAdmin();
             } else {
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
@@ -589,14 +610,18 @@ public class HomeActivity extends AppCompatActivity {
             loadAllMenu();
             loadLocation();
         } else if (requestCode == PROFILE_ACTIVITY_RESULT && resultCode == RESULT_OK) {
-            init();
-            getDeepLinkData();
-            // cause for some reason (searched the internet but no answers), google doesnt allow direct
-            // edit to the hint fonts in the XML file. I dont know. Ask them.
-            // changeSearchHintFont();
-            setListeners();
+            allMenuFoods.clear();
+            filteredAllMenu.clear();
+            isLoggedIn = isLoggedIn();
+            if (isLoggedIn) {
+                loadUserProfileImage();
+            } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
+            }
             if (isLoggedIn) {
                 //loadOrderAgain(); TODO
+                binding.layoutHomeOrderAgain.setVisibility(View.GONE);
                 checkAdmin();
             } else {
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);

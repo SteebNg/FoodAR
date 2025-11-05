@@ -16,15 +16,28 @@
         android:textColor="@color/primary_text"
         android:textSize="@dimen/_13ssp"
         android:fontFamily="@font/alata"
-        android:maxLines="1"
+        android:maxLines="3"
         android:textStyle="bold"
+        android:gravity="start"/>
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableItemTime"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableItemTableNum"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="13:45 - 23 Dec 2025"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="3"
         android:gravity="start"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerLayoutAdminCurrentOrderCurrentOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableItemTableNum"
+        app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableItemTime"
         android:layout_marginTop="@dimen/_4sdp"
         tools:itemCount="2"
         tools:listitem="@layout/layout_admin_home_indi_current_order_item_list"
@@ -99,6 +112,21 @@
         android:textStyle="bold"
         android:gravity="start"
         android:layout_marginTop="@dimen/_4sdp"/>
+
+    <TextView
+        android:id="@+id/textLayoutAdminCurrentOrderTableServingMode"
+        app:layout_constraintTop_toTopOf="@+id/textLayoutAdminCurrentOrderTableItemTime"
+        app:layout_constraintBottom_toBottomOf="@+id/textLayoutAdminCurrentOrderTableItemTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Serving Mode: Dine In"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_9ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:gravity="start"
+        android:layout_marginEnd="@dimen/_2sdp"/>
 
     <Button
         android:id="@+id/buttonLayoutAdminCurrentOrderTableStatusProgress"

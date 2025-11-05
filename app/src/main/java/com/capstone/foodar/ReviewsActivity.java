@@ -3,6 +3,7 @@ package com.capstone.foodar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -27,8 +28,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ReviewsActivity extends AppCompatActivity {
 
@@ -56,7 +59,6 @@ public class ReviewsActivity extends AppCompatActivity {
         checkUserOrdered();
         setListeners();
         getReviewsFromDb();
-        calculateRating();
     }
 
     private void calculateRating() {
@@ -97,15 +99,15 @@ public class ReviewsActivity extends AppCompatActivity {
     }
 
     private void setCalculatedRating(double averageRating, int[] ratings) {
-        String formattedAverageRating = String.format(Locale.getDefault(), ".1f", averageRating);
+        String formattedAverageRating = String.format(Locale.getDefault(), "%.1f", averageRating);
         binding.textReviewFoodOverallRating.setText(formattedAverageRating);
-        binding.textReviewFoodOverallNumberOfReviews.setText(String.valueOf(reviews.size()));
+        binding.textReviewFoodOverallNumberOfReviews.setText(reviews.size() + " reviews");
 
-        binding.progressBarReview1Star.setProgress((ratings[0] / reviews.size()) * 100);
-        binding.progressBarReview2Star.setProgress((ratings[1] / reviews.size()) * 100);
-        binding.progressBarReview3Star.setProgress((ratings[2] / reviews.size()) * 100);
-        binding.progressBarReview4Star.setProgress((ratings[3] / reviews.size()) * 100);
-        binding.progressBarReview5Star.setProgress((ratings[4] / reviews.size()) * 100);
+        binding.progressBarReview1Star.setProgress((int) (((float) ratings[0] / reviews.size()) * 100));
+        binding.progressBarReview2Star.setProgress((int) (((float) ratings[1] / reviews.size()) * 100));
+        binding.progressBarReview3Star.setProgress((int) (((float) ratings[2] / reviews.size()) * 100));
+        binding.progressBarReview4Star.setProgress((int) (((float) ratings[3] / reviews.size()) * 100));
+        binding.progressBarReview5Star.setProgress((int) (((float) ratings[4] / reviews.size()) * 100));
     }
 
     private void getReviewsFromDb() {
@@ -121,22 +123,33 @@ public class ReviewsActivity extends AppCompatActivity {
                                 review.rating = Math.toIntExact(document.getLong(Constants.KEY_FOODS_RATING));
                                 review.comment = document.getString(Constants.KEY_COMMENT);
                                 review.userId = document.getString(Constants.KEY_USER_ID);
-                                review.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+                                review.timestamp = convertFirebaseTimestamp(Objects.requireNonNull(document.getTimestamp(Constants.KEY_TIMESTAMP)));
                                 review.userName = document.getString(Constants.KEY_USERNAME);
 
-                                getFoodImage(review);
+                                getProfileImage(review);
                             }
                         }
                     }
                 });
     }
 
-    private void getFoodImage(Review review) {
-        storageRef.child(Constants.KEY_FOODS
+    private Timestamp convertFirebaseTimestamp(com.google.firebase.Timestamp firebaseTime) {
+        long seconds = firebaseTime.getSeconds();
+        long nanoSeconds = firebaseTime.getNanoseconds();
+
+        long milliseconds = seconds * 1000;
+
+        long totalMilliseconds = milliseconds + (nanoSeconds / 1000000);
+
+        return new Timestamp(totalMilliseconds);
+    }
+
+    private void getProfileImage(Review review) {
+        storageRef.child(Constants.KEY_USERS_LIST
                 + "/"
-                + foodId
+                + review.userId
                 + "/"
-                + Constants.KEY_FOOD_IMAGE + ".jpeg")
+                + Constants.KEY_PROFILE_IMAGE)
                 .getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -152,6 +165,7 @@ public class ReviewsActivity extends AppCompatActivity {
         reviewListAdapter = getReviewListAdapter();
         binding.recyclerReview.setAdapter(reviewListAdapter);
         reviewListAdapter.notifyDataSetChanged();
+        calculateRating();
     }
 
     private ReviewListAdapter getReviewListAdapter() {
@@ -184,7 +198,7 @@ public class ReviewsActivity extends AppCompatActivity {
     private void checkUserOrdered() {
         db.collection(Constants.KEY_ORDER_HISTORY)
                 .whereEqualTo(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID))
-                .whereEqualTo(Constants.KEY_FOOD_ID, foodId)
+                .whereArrayContains(Constants.KEY_FOODS, foodId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
