@@ -89,6 +89,10 @@ public class FoodDetailsActivity extends AppCompatActivity {
         checkIf3DModelExists();
         setReviews();
         setOptions();
+
+        if (cartId != null) {
+            binding.buttonFoodDetailAddToCart.setText("Update Item");
+        }
     }
 
 //    private void checkIf3DModelExists() {
@@ -266,7 +270,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         } else {
                             binding.recyclerFoodDetailsReviews.setVisibility(View.INVISIBLE);
                             binding.textFoodDetailsNoReviews.setVisibility(View.VISIBLE);
-                            binding.textFoodDetailsReviewMore.setVisibility(View.INVISIBLE);
                             binding.textFoodDetailsReviewMore.setEnabled(false);
                         }
                     }
@@ -369,14 +372,16 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-//                                Toast.makeText(FoodDetailsActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
-                                CuteToast.ct(FoodDetailsActivity.this, "Order Added to Cart", CuteToast.LENGTH_LONG,
-                                        CuteToast.SUCCESS, true).show();
                                 if (cartId != null) {
                                     Intent intent = new Intent();
                                     intent.putExtra(Constants.KEY_CART_ID, cartId);
                                     intent.putExtra(Constants.KEY_POSITION, pos);
                                     setResult(RESULT_OK, intent);
+                                    CuteToast.ct(FoodDetailsActivity.this, "Order Updated", CuteToast.LENGTH_LONG,
+                                            CuteToast.SUCCESS, true).show();
+                                } else {
+                                    CuteToast.ct(FoodDetailsActivity.this, "Order Added to Cart", CuteToast.LENGTH_LONG,
+                                            CuteToast.SUCCESS, true).show();
                                 }
                                 finish();
                             }
@@ -406,7 +411,7 @@ public class FoodDetailsActivity extends AppCompatActivity {
 
                 if (checkedId != -1) {
                     RadioButton selectedRadioButton = view.findViewById(checkedId);
-                    String radioButtonText = extractOptionName(selectedRadioButton.getText().toString());
+                    String radioButtonText = extractOptionName(foodOptions.get(i).optionTitle, selectedRadioButton.getText().toString());
                     options.add(radioButtonText);
                 }
             }
@@ -414,9 +419,9 @@ public class FoodDetailsActivity extends AppCompatActivity {
         return options;
     }
 
-    private String extractOptionName(String optionName) {
+    private String extractOptionName(String optionTitle, String optionName) {
         String[] parts = optionName.split("\\s*[+-]\\s*RM");
-        return parts[0].trim();
+        return optionTitle + ": " + parts[0].trim();
     }
 
     private void setQuantity(int changes) {
