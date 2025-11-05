@@ -72,6 +72,7 @@ public class WriteReviewsActivity extends AppCompatActivity {
                 foodRating.put(Constants.KEY_COMMENT, binding.etWriteReviewComment.getText().toString());
                 foodRating.put(Constants.KEY_FOOD_ID, foodId);
                 foodRating.put(Constants.KEY_TIMESTAMP, Timestamp.now());
+                foodRating.put(Constants.KEY_USERNAME, preferenceManager.getString(Constants.KEY_USERNAME));
 
                 db.collection(Constants.KEY_REVIEWS).add(foodRating)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
