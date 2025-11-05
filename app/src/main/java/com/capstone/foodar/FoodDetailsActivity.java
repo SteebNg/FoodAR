@@ -40,6 +40,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
+import com.rejowan.cutetoast.CuteToast;
 import com.unity3d.player.UnityPlayerGameActivity;
 
 import java.sql.Timestamp;
@@ -368,7 +369,9 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(FoodDetailsActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(FoodDetailsActivity.this, "Order Added", Toast.LENGTH_SHORT).show();
+                                CuteToast.ct(FoodDetailsActivity.this, "Order Added to Cart", CuteToast.LENGTH_LONG,
+                                        CuteToast.SUCCESS, true).show();
                                 if (cartId != null) {
                                     Intent intent = new Intent();
                                     intent.putExtra(Constants.KEY_CART_ID, cartId);

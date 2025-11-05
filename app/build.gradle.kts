@@ -65,6 +65,7 @@ dependencies {
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.google.firebase:firebase-perf:22.0.3")
+    implementation("com.github.ahmmedrejowan.CuteToast:CuteToast:1.2")
 
     implementation(project(":unityLibrary"))
     implementation(fileTree(project.projectDir.toString() + "/unityLibrary/libs") { include("*.jar") })
