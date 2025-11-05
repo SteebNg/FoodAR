@@ -43,6 +43,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -186,8 +187,9 @@ public class CheckoutActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
-                        removeCart(pos, food, false);
+                        removeCart(pos, food);
                         calculateTotalPrice();
+                        Toast.makeText(CheckoutActivity.this, "Item Removed", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -207,7 +209,7 @@ public class CheckoutActivity extends AppCompatActivity {
         return adapter;
     }
 
-    private void removeCart(int pos, FoodInCart food, boolean isEdit) {
+    private void removeCart(int pos, FoodInCart food) {
         if (pos != -1) {
             db.collection(Constants.KEY_CARTS).document(food.CartId).delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -215,10 +217,6 @@ public class CheckoutActivity extends AppCompatActivity {
                         public void onSuccess(Void unused) {
                             foodCartListAdapter.removeCartId(food.CartId, pos);
                             foodsInCart.remove(food);
-
-                            if (isEdit) {
-                                getFoodList();
-                            }
                         }
                     });
         }
@@ -597,7 +595,9 @@ public class CheckoutActivity extends AppCompatActivity {
                     }
                 }
 
-                removeCart(pos, foodInCart, true);
+                removeCart(pos, foodInCart);
+                foodsInCart.clear();
+                getFoodList();
             }
         } else if (requestCode == DESTINATION_RESULT && resultCode == RESULT_OK && data != null) {
             if (!Objects.requireNonNull(data.getStringExtra(Constants.KEY_DESTINATION)).isEmpty()) {
