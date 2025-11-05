@@ -484,7 +484,6 @@ public class AdminEditFoodActivity extends AppCompatActivity {
         popupMenu = new PopupMenu(AdminEditFoodActivity.this, binding.buttonAdminEditFoodFoodCategory);
         popupMenu.getMenuInflater().inflate(R.menu.menu_food_categories, popupMenu.getMenu());
 
-        binding.textAdminEditFoodFoodCategory.setText(foodCategories.get(0));
         currentFoodCategory = foodCategories.get(0);
 
         for (String categories : foodCategories) {
