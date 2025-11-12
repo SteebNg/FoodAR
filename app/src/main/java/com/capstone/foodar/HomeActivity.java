@@ -66,10 +66,10 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -106,8 +106,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         DocumentSnapshot document = task.getResult();
                         if (document != null && document.exists()) {
-                            String admin = document.getString(Constants.KEY_ADMIN);
-                            if (admin != null) {
+                            boolean admin = Boolean.TRUE.equals(document.getBoolean(Constants.KEY_ADMIN));
+                            if (admin) {
                                 preferenceManager.putString(Constants.KEY_LOCATION_ID, document.getString(Constants.KEY_LOCATION_ID));
                                 Intent intent = new Intent(HomeActivity.this, AdminHomeActivity.class);
                                 startActivity(intent);
@@ -235,7 +235,7 @@ public class HomeActivity extends AppCompatActivity {
                     } else {
                         intent = new Intent(HomeActivity.this, LoginActivity.class);
                     }
-                    startActivity(intent);
+                    startActivityForResult(intent, PROFILE_ACTIVITY_RESULT);
                 } else {
                     Intent intent = new Intent(HomeActivity.this, LocationSelectActivity.class);
                     startActivityForResult(intent, LOCATION_ACTIVITY_RESULT);
@@ -584,7 +584,6 @@ public class HomeActivity extends AppCompatActivity {
             if (isLoggedIn) {
                 //loadOrderAgain(); TODO
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
-                checkAdmin();
             } else {
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
             }
@@ -603,7 +602,6 @@ public class HomeActivity extends AppCompatActivity {
             if (isLoggedIn) {
                 //loadOrderAgain(); TODO
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
-                checkAdmin();
             } else {
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
             }
@@ -615,15 +613,12 @@ public class HomeActivity extends AppCompatActivity {
             isLoggedIn = isLoggedIn();
             if (isLoggedIn) {
                 loadUserProfileImage();
-            } else {
-                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
-                binding.buttonHomeProfile.setImageDrawable(drawable);
-            }
-            if (isLoggedIn) {
                 //loadOrderAgain(); TODO
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
                 checkAdmin();
             } else {
+                Drawable drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.account_circle_24, null);
+                binding.buttonHomeProfile.setImageDrawable(drawable);
                 binding.layoutHomeOrderAgain.setVisibility(View.GONE);
             }
             loadAllMenu();
