@@ -42,6 +42,7 @@ public class ReviewsActivity extends AppCompatActivity {
     private PreferenceManager preferenceManager;
     private ArrayList<Review> reviews;
     private ReviewListAdapter reviewListAdapter;
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,22 +197,24 @@ public class ReviewsActivity extends AppCompatActivity {
     }
 
     private void checkUserOrdered() {
-        db.collection(Constants.KEY_ORDER_HISTORY)
-                .whereEqualTo(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID))
-                .whereArrayContains(Constants.KEY_FOODS, foodId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && task.getResult().isEmpty()) {
-                            binding.layoutReviewButtonWriteReview.setVisibility(View.INVISIBLE);
-                            binding.buttonReviewWriteReview.setEnabled(false);
-                        } else {
-                            binding.layoutReviewButtonWriteReview.setVisibility(View.VISIBLE);
-                            binding.buttonReviewWriteReview.setEnabled(true);
+        if (!isAdmin) {
+            db.collection(Constants.KEY_ORDER_HISTORY)
+                    .whereEqualTo(Constants.KEY_USER_ID,preferenceManager.getString(Constants.KEY_USER_ID))
+                    .whereArrayContains(Constants.KEY_FOODS, foodId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful() && task.getResult().isEmpty()) {
+                                binding.layoutReviewButtonWriteReview.setVisibility(View.INVISIBLE);
+                                binding.buttonReviewWriteReview.setEnabled(false);
+                            } else {
+                                binding.layoutReviewButtonWriteReview.setVisibility(View.VISIBLE);
+                                binding.buttonReviewWriteReview.setEnabled(true);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     private void init() {
@@ -220,5 +223,6 @@ public class ReviewsActivity extends AppCompatActivity {
         foodId = getIntent().getStringExtra(Constants.KEY_FOOD_ID);
         preferenceManager = new PreferenceManager(getApplicationContext());
         reviews = new ArrayList<>();
+        isAdmin = getIntent().getBooleanExtra(Constants.KEY_ADMIN, false);
     }
 }
