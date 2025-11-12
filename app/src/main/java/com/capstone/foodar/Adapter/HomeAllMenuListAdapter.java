@@ -17,6 +17,8 @@ import com.capstone.foodar.R;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuListAdapter.ViewHolder>{
     private ArrayList<Food> foods;
@@ -25,6 +27,12 @@ public class HomeAllMenuListAdapter extends RecyclerView.Adapter<HomeAllMenuList
     private static final DecimalFormat priceFormat = new DecimalFormat("0.00");
 
     public HomeAllMenuListAdapter(ArrayList<Food> foods, Context context) {
+        Collections.sort(foods, new Comparator<Food>() {
+            @Override
+            public int compare(Food o1, Food o2) {
+                return Double.compare(o2.foodRating, o1.foodRating);
+            }
+        });
         this.foods = foods;
         this.context = context;
     }
