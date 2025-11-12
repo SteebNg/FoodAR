@@ -1,6 +1,9 @@
 package com.capstone.foodar;
 
+import android.Manifest;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -16,8 +19,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.print.PrintHelper;
 
@@ -40,6 +47,14 @@ public class AdminGenerateTableQrFragment extends Fragment {
 
     private FragmentAdminGenerateTableQrBinding binding;
     private PreferenceManager preferenceManager;
+    private final ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (!isGranted) {
+                    Toast.makeText(getContext(), "Storage permission required to download QR code", Toast.LENGTH_SHORT).show();
+                } else {
+                    saveImageToStorage();
+                }
+            });
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +64,6 @@ public class AdminGenerateTableQrFragment extends Fragment {
 
         init();
         setListeners();
-
         return view;
     }
 
@@ -63,7 +77,7 @@ public class AdminGenerateTableQrFragment extends Fragment {
         binding.qrDownloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveImageToStorage();
+                checkAndRequestStoragePermission();
             }
         });
         binding.qrPrintButton.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +86,22 @@ public class AdminGenerateTableQrFragment extends Fragment {
                 printQrCode();
             }
         });
+    }
+
+    private void checkAndRequestStoragePermission() {
+        String permission;
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+            if (ContextCompat.checkSelfPermission(getContext(), permission) == PackageManager.PERMISSION_GRANTED) {
+                saveImageToStorage();
+            } else {
+                requestPermissionLauncher.launch(permission);
+            }
+        } else {
+            saveImageToStorage();
+        }
     }
 
     private void init() {
