@@ -362,6 +362,7 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialogBankInfo.dismiss();
+                otpNum = 0;
                 callback.onInfoValidated(false);
             }
         });
