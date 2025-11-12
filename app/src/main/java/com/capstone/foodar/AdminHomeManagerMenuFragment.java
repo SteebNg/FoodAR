@@ -1,6 +1,9 @@
 package com.capstone.foodar;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -189,9 +192,31 @@ public class AdminHomeManagerMenuFragment extends Fragment {
         adapter.setOnItemClickListener(new HomeAllMenuListAdapter.OnItemClickListener() {
             @Override
             public void onClick(Food food) {
-                Intent intent = new Intent(getContext(), AdminEditFoodActivity.class);
-                intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
-                startActivity(intent);
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.dialog_admin_manage_menu);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setCancelable(true);
+                dialog.show();
+
+                dialog.findViewById(R.id.buttonDialogAdminManageFoodReviews).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(getContext(), ReviewsActivity.class);
+                        intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
+                        intent.putExtra(Constants.KEY_ADMIN, true);
+                        startActivity(intent);
+                    }
+                });
+                dialog.findViewById(R.id.buttonDialogAdminManageFoodEdit).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(getContext(), AdminEditFoodActivity.class);
+                        intent.putExtra(Constants.KEY_FOOD_ID, food.foodId);
+                        startActivity(intent);
+                    }
+                });
             }
         });
 
