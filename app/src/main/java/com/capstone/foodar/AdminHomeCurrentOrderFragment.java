@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.capstone.foodar.Adapter.AdminCurrentOrderTableListAdapter;
@@ -28,6 +29,7 @@ import com.capstone.foodar.databinding.FragmentAdminHomeCurrentOrderBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -107,12 +109,43 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
 
         init();
         setListeners();
+        checkAdmin();
         setLocation();
         setCurrentOrdersListener();
         setProfile();
+        Log.d("TEST", "GOOD");
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void checkAdmin() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        db.collection(Constants.KEY_USERS_LIST).document(preferenceManager.getString(Constants.KEY_USER_ID))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Check for Admin error. Closing app.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        DocumentSnapshot document = task.getResult();
+                        if (document != null && document.exists()) {
+                            boolean admin = Boolean.TRUE.equals(document.getBoolean(Constants.KEY_ADMIN));
+                            if (!admin) {
+                                Toast.makeText(getContext(), "Check for Admin error. Closing app.", Toast.LENGTH_SHORT).show();
+                                auth.signOut();
+                                preferenceManager.clearString(Constants.KEY_USERNAME);
+                                preferenceManager.clearString(Constants.KEY_LOCATION_ID);
+                                preferenceManager.clearString(Constants.KEY_USER_ID);
+                                requireActivity().finishAndRemoveTask();
+                            }
+                        }
+                    }
+                });
     }
 
     private void setProfile() {
@@ -166,7 +199,16 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                         order.destination = document.getString(Constants.KEY_DESTINATION);
                         order.paymentMethod = document.getString(Constants.KEY_PAYMENT_METHOD);
                         order.tableNum = document.getString(Constants.KEY_TABLE_NUM);
-                        order.orderTotalPrice = document.getDouble(Constants.KEY_ORDER_PRICE);
+
+                        Number priceNumber = (Number) document.get(Constants.KEY_ORDER_PRICE);
+
+                        if (priceNumber != null) {
+                            order.orderTotalPrice = priceNumber.doubleValue();
+                        } else {
+                            // Handle the case where the field might be missing or null
+                            order.orderTotalPrice = 0.0;
+                        }
+
                         order.status = document.getString(Constants.KEY_ORDER_STATUS);
                         order.foods = new ArrayList<>();
                         order.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
