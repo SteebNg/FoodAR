@@ -270,7 +270,6 @@ public class FoodDetailsActivity extends AppCompatActivity {
                         } else {
                             binding.recyclerFoodDetailsReviews.setVisibility(View.INVISIBLE);
                             binding.textFoodDetailsNoReviews.setVisibility(View.VISIBLE);
-                            binding.textFoodDetailsReviewMore.setEnabled(false);
                         }
                     }
                 });
