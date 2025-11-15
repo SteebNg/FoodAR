@@ -39,6 +39,7 @@ import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.Utility.DecimalDigitsInputFilter;
 import com.capstone.foodar.databinding.ActivityAdminEditFoodBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -80,6 +81,8 @@ public class AdminEditFoodActivity extends AppCompatActivity {
     private boolean addCategory;
     private String foodIdFromPreviousActivity;
     private ArrayList<String> locations;
+    private double foodsRatingToBeSubmit;
+    private boolean deleteModelFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +126,15 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                                 String.format(Locale.ROOT, "%.2f", document.getDouble(Constants.KEY_FOOD_PRICE)));
                         binding.textAdminEditFoodFoodCategory.setText(document.getString(Constants.KEY_FOOD_CATEGORY));
 
+                        Object ratingObject = document.get(Constants.KEY_FOODS_RATING);
+                        if (ratingObject != null) {
+                            if (ratingObject instanceof Long) {
+                                foodsRatingToBeSubmit = ((Long) ratingObject).doubleValue();
+                            } else if (ratingObject instanceof Double) {
+                                foodsRatingToBeSubmit = (double) ratingObject;
+                            }
+                        }
+
                         List<Object> rawLocations = (List<Object>) document.get(Constants.KEY_LOCATION_ID);
 
                         if (rawLocations != null) {
@@ -164,6 +176,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         binding.textAdminEditFoodObjFileName.setText("(Exists)");
+                        binding.buttonAdminEditFoodDeleteObj.setVisibility(View.VISIBLE);
                         objFileUri = uri;
                         getMtl();
                     }
@@ -177,6 +190,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         binding.textAdminEditFoodMtlFileName.setText("(Exists)");
+                        binding.buttonAdminEditFoodDeleteMtl.setVisibility(View.VISIBLE);
                         mtlFileUri = uri;
                         getJpg();
                     }
@@ -190,6 +204,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         binding.textAdminEditFoodJpgFileName.setText("(Exists)");
+                        binding.buttonAdminEditFoodDeleteJpg.setVisibility(View.VISIBLE);
                         jpgFileUri = uri;
                     }
                 });
@@ -416,6 +431,39 @@ public class AdminEditFoodActivity extends AppCompatActivity {
         binding.etAdminEditFoodFoodPrice.addTextChangedListener(
                 new DecimalDigitsInputFilter(2, binding.etAdminEditFoodFoodPrice)
         );
+        binding.buttonAdminEditFoodDeleteObj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (objFileUri != null) {
+                    objFileUri = null;
+                    deleteModelFiles = true;
+                    binding.textAdminEditFoodObjFileName.setText("No file selected");
+                    binding.buttonAdminEditFoodDeleteObj.setVisibility(View.GONE);
+                }
+            }
+        });
+        binding.buttonAdminEditFoodDeleteMtl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mtlFileUri != null) {
+                    mtlFileUri = null;
+                    deleteModelFiles = true;
+                    binding.textAdminEditFoodMtlFileName.setText("No file selected");
+                    binding.buttonAdminEditFoodDeleteMtl.setVisibility(View.GONE);
+                }
+            }
+        });
+        binding.buttonAdminEditFoodDeleteJpg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (jpgFileUri != null) {
+                    jpgFileUri = null;
+                    deleteModelFiles = true;
+                    binding.textAdminEditFoodJpgFileName.setText("No file selected");
+                    binding.buttonAdminEditFoodDeleteJpg.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void isLoading(boolean loading) {
@@ -553,7 +601,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
             food.put(Constants.KEY_FOOD_DESC, foodDesc);
             food.put(Constants.KEY_FOOD_PRICE, Double.parseDouble(foodPrice));
             food.put(Constants.KEY_FOOD_CATEGORY, currentFoodCategory);
-            food.put(Constants.KEY_FOODS_RATING, 0.0);
+            food.put(Constants.KEY_FOODS_RATING, foodsRatingToBeSubmit);
             food.put(Constants.KEY_LOCATION_ID, locations);
 
             updateFood(food);
@@ -572,10 +620,7 @@ public class AdminEditFoodActivity extends AppCompatActivity {
     }
 
     private void updateFoodOptions(Map<String, Object> food) {
-        Map<String, Object> foodOptionsToBeSentToDb = new HashMap<>();
-        for (FoodOption option : foodOptions) {
-            foodOptionsToBeSentToDb.put(option.optionTitle, option.individualOptions);
-        }
+        Map<String, Object> foodOptionsToBeSentToDb = getStringObjectMap();
 
         db.collection(Constants.KEY_FOOD_OPTIONS).document(foodIdFromPreviousActivity).set(foodOptionsToBeSentToDb)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -585,6 +630,19 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                         updateFoodImage();
                     }
                 });
+    }
+
+    @NonNull
+    private Map<String, Object> getStringObjectMap() {
+        Map<String, Object> foodOptionsToBeSentToDb = new HashMap<>();
+
+        for (FoodOption option : foodOptions) {
+            Map<String, Double> subOptionsToBeSentToDb = option.individualOptions;
+            Map<String, Object> allSubOptions = new HashMap<>();
+            allSubOptions.put(Constants.KEY_FOOD_INDIVIDUAL_OPTIONS, subOptionsToBeSentToDb);
+            foodOptionsToBeSentToDb.put(option.optionTitle, allSubOptions);
+        }
+        return foodOptionsToBeSentToDb;
     }
 
     private void updateFoodImage() {
@@ -601,58 +659,125 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                     }
                 });
 
-        if (wantModelUpload) {
+        if (wantModelUpload && !deleteModelFiles) {
             uploadObjFileToDb();
+        } else if (!wantModelUpload && deleteModelFiles) {
+            deleteObjFilesInDb();
         } else {
             Toast.makeText(this, "Item Updated", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
 
-    private void uploadObjFileToDb() {
+    private void deleteObjFilesInDb() {
         storageRef.child(Constants.KEY_FOODS
-                        + "/"
-                        + foodIdFromPreviousActivity
-                        + "/3DModel.obj")
-                .putFile(objFileUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                + "/"
+                + foodIdFromPreviousActivity
+                + "/3DModel.obj")
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.d("Upload OBJ File", "Upload Successfully");
-                        uploadMtlFileToDb();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        deleteMtlFilesInDb();
                     }
                 });
     }
 
-    private void uploadMtlFileToDb() {
+    private void deleteMtlFilesInDb() {
         storageRef.child(Constants.KEY_FOODS
                         + "/"
                         + foodIdFromPreviousActivity
                         + "/3DModel.mtl")
-                .putFile(mtlFileUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.d("Upload MTL File", "Upload Successfully");
-                        uploadJpgFileToDb();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        deleteJpgFilesInDb();
                     }
                 });
     }
 
-    private void uploadJpgFileToDb() {
+    private void deleteJpgFilesInDb() {
         storageRef.child(Constants.KEY_FOODS
                         + "/"
                         + foodIdFromPreviousActivity
                         + "/3DModel.jpg")
-                .putFile(jpgFileUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.d("Upload JPG File", "Upload Successfully");
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Delete JPG File", "Delete Completed");
                         Toast.makeText(AdminEditFoodActivity.this, "Item Updated", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                 });
+    }
+
+    private void uploadObjFileToDb() {
+        if (objFileUri != null && objFileUri.getScheme() != null
+        && objFileUri.getScheme().startsWith("http")) {
+            uploadMtlFileToDb();
+        } else if (objFileUri != null) {
+            storageRef.child(Constants.KEY_FOODS
+                            + "/"
+                            + foodIdFromPreviousActivity
+                            + "/3DModel.obj")
+                    .putFile(objFileUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d("Upload OBJ File", "Upload Successfully");
+                            uploadMtlFileToDb();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("UploadOBJ", "Failed: " + e);
+                        }
+                    });
+        }
+    }
+
+    private void uploadMtlFileToDb() {
+        if (mtlFileUri != null && mtlFileUri.getScheme() != null
+                && mtlFileUri.getScheme().startsWith("http")) {
+            uploadJpgFileToDb();
+        } else if (mtlFileUri != null) {
+            storageRef.child(Constants.KEY_FOODS
+                            + "/"
+                            + foodIdFromPreviousActivity
+                            + "/3DModel.mtl")
+                    .putFile(mtlFileUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d("Upload MTL File", "Upload Successfully");
+                            uploadJpgFileToDb();
+                        }
+                    });
+        }
+    }
+
+    private void uploadJpgFileToDb() {
+        if (jpgFileUri != null && jpgFileUri.getScheme() != null
+        && jpgFileUri.getScheme().startsWith("http")) {
+            Toast.makeText(AdminEditFoodActivity.this, "Item Updated", Toast.LENGTH_SHORT).show();
+            finish();
+        } else if (jpgFileUri != null) {
+            storageRef.child(Constants.KEY_FOODS
+                            + "/"
+                            + foodIdFromPreviousActivity
+                            + "/3DModel.jpg")
+                    .putFile(jpgFileUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Log.d("Upload JPG File", "Upload Successfully");
+                            Toast.makeText(AdminEditFoodActivity.this, "Item Updated", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+        }
     }
 
     private boolean collectOptionsData() {
@@ -780,6 +905,8 @@ public class AdminEditFoodActivity extends AppCompatActivity {
         addCategory = false;
         locations = new ArrayList<>();
         subOptions = new ArrayList<>();
+        foodsRatingToBeSubmit = 0.0;
+        deleteModelFiles = false;
     }
 
     private void initActivityResultLaunchers() {
@@ -800,9 +927,11 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                         if (mimeType != null && isObjFile(objFileUri)) {
                             binding.textAdminEditFoodObjFileName.setText(getFileName(objFileUri));
                             binding.textAdminEditFoodObjFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
+                            binding.buttonAdminEditFoodDeleteObj.setVisibility(View.VISIBLE);
                         } else {
                             binding.textAdminEditFoodObjFileName.setText("Invalid file type. Please select an OBJ file");
                             binding.textAdminEditFoodObjFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.hintColor));
+                            binding.buttonAdminEditFoodDeleteObj.setVisibility(View.GONE);
                             objFileUri = null;
                         }
                     }
@@ -815,9 +944,11 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                         if (isMtlFile(mtlFileUri)) {
                             binding.textAdminEditFoodMtlFileName.setText(getFileName(mtlFileUri));
                             binding.textAdminEditFoodMtlFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
+                            binding.buttonAdminEditFoodDeleteMtl.setVisibility(View.VISIBLE);
                         } else {
                             binding.textAdminEditFoodMtlFileName.setText("Invalid file type. Please select and MTL file");
                             binding.textAdminEditFoodMtlFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.hintColor));
+                            binding.buttonAdminEditFoodDeleteMtl.setVisibility(View.GONE);
                             mtlFileUri = null;
                         }
                     }
@@ -832,9 +963,11 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                         if (mimeType != null && mimeType.equals("image/jpeg")) {
                             binding.textAdminEditFoodJpgFileName.setText(getFileName(jpgFileUri));
                             binding.textAdminEditFoodJpgFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
+                            binding.buttonAdminEditFoodDeleteJpg.setVisibility(View.VISIBLE);
                         } else {
                             binding.textAdminEditFoodJpgFileName.setText("Invalid file type. Please select a JPEG image.");
                             binding.textAdminEditFoodJpgFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.hintColor));
+                            binding.buttonAdminEditFoodDeleteJpg.setVisibility(View.GONE);
                             jpgFileUri = null;
                         }
                     }
