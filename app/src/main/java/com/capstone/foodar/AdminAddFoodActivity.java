@@ -198,6 +198,33 @@ public class AdminAddFoodActivity extends AppCompatActivity {
         });
         binding.etAdminAddFoodFoodPrice.addTextChangedListener(
                 new DecimalDigitsInputFilter(2, binding.etAdminAddFoodFoodPrice));
+        binding.buttonAdminAddFoodDeleteObj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (objFileUri != null) {
+                    objFileUri = null;
+                    binding.textAdminAddFoodObjFileName.setText("No file selected");
+                }
+            }
+        });
+        binding.buttonAdminAddFoodDeleteMtl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mtlFileUri != null) {
+                    mtlFileUri = null;
+                    binding.textAdminAddFoodMtlFileName.setText("No file selected");
+                }
+            }
+        });
+        binding.buttonAdminAddFoodDeleteJpg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (jpgFileUri != null) {
+                    jpgFileUri = null;
+                    binding.textAdminAddFoodJpgFileName.setText("No file selected");
+                }
+            }
+        });
     }
 
     private AlertDialog getAlertDialog(String categoryToBeAdded) {
@@ -634,9 +661,11 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                         if (mimeType != null && isObjFile(objFileUri)) {
                             binding.textAdminAddFoodObjFileName.setText(getFileName(objFileUri));
                             binding.textAdminAddFoodObjFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
+                            binding.buttonAdminAddFoodDeleteObj.setVisibility(View.VISIBLE);
                         } else {
                             binding.textAdminAddFoodObjFileName.setText("Invalid file type. Please select an OBJ file");
                             binding.textAdminAddFoodObjFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.hintColor));
+                            binding.buttonAdminAddFoodDeleteObj.setVisibility(View.GONE);
                             objFileUri = null;
                         }
                     }
@@ -649,9 +678,11 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                         if (isMtlFile(mtlFileUri)) {
                             binding.textAdminAddFoodMtlFileName.setText(getFileName(mtlFileUri));
                             binding.textAdminAddFoodMtlFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
+                            binding.buttonAdminAddFoodDeleteMtl.setVisibility(View.GONE);
                         } else {
                             binding.textAdminAddFoodMtlFileName.setText("Invalid file type. Please select and MTL file");
                             binding.textAdminAddFoodMtlFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.hintColor));
+                            binding.buttonAdminAddFoodDeleteMtl.setVisibility(View.GONE);
                             mtlFileUri = null;
                         }
                     }
@@ -666,9 +697,11 @@ public class AdminAddFoodActivity extends AppCompatActivity {
                         if (mimeType != null && mimeType.equals("image/jpeg")) {
                             binding.textAdminAddFoodJpgFileName.setText(getFileName(jpgFileUri));
                             binding.textAdminAddFoodJpgFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.primary_text));
+                            binding.buttonAdminAddFoodDeleteJpg.setVisibility(View.VISIBLE);
                         } else {
                             binding.textAdminAddFoodJpgFileName.setText("Invalid file type. Please select a JPEG image.");
                             binding.textAdminAddFoodJpgFileName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.hintColor));
+                            binding.buttonAdminAddFoodDeleteJpg.setVisibility(View.GONE);
                             jpgFileUri = null;
                         }
                     }
