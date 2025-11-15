@@ -92,7 +92,7 @@
                         android:layout_height="@dimen/_4sdp"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:progress="45"
+                        android:progress="0"
                         android:progressTint="@color/secondary_text"
                         app:layout_constraintBottom_toBottomOf="@+id/imageReview5Star"
                         app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
@@ -130,7 +130,7 @@
                         android:layout_height="@dimen/_4sdp"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:progress="45"
+                        android:progress="0"
                         android:progressTint="@color/secondary_text"
                         app:layout_constraintBottom_toBottomOf="@+id/imageReview4Star"
                         app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
@@ -168,7 +168,7 @@
                         android:layout_height="@dimen/_4sdp"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:progress="45"
+                        android:progress="0"
                         android:progressTint="@color/secondary_text"
                         app:layout_constraintBottom_toBottomOf="@+id/imageReview3Star"
                         app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
@@ -206,7 +206,7 @@
                         android:layout_height="@dimen/_4sdp"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:progress="45"
+                        android:progress="0"
                         android:progressTint="@color/secondary_text"
                         app:layout_constraintBottom_toBottomOf="@+id/imageReview2Star"
                         app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
@@ -244,7 +244,7 @@
                         android:layout_height="@dimen/_4sdp"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginEnd="@dimen/_8sdp"
-                        android:progress="45"
+                        android:progress="0"
                         android:progressTint="@color/secondary_text"
                         app:layout_constraintBottom_toBottomOf="@+id/imageReview1Star"
                         app:layout_constraintEnd_toStartOf="@+id/layoutReviewOverallRating"
@@ -269,7 +269,7 @@
                             android:fontFamily="@font/alata"
                             android:gravity="end"
                             android:paddingBottom="@dimen/_2sdp"
-                            android:text="4.0"
+                            android:text="0.0"
                             android:textColor="@color/primary_text"
                             android:textSize="@dimen/_28ssp"
                             android:textStyle="bold" />
@@ -280,7 +280,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_4sdp"
-                            android:rating="3.5"
+                            android:rating="0"
                             android:theme="@style/GoldenRatingBar" />
 
                         <TextView
@@ -291,7 +291,7 @@
                             android:fontFamily="@font/alata"
                             android:gravity="end"
                             android:paddingBottom="@dimen/_2sdp"
-                            android:text="52 Reviews"
+                            android:text="0 Reviews"
                             android:textColor="@color/primary_text"
                             android:textSize="@dimen/_10ssp" />
                     </LinearLayout>
