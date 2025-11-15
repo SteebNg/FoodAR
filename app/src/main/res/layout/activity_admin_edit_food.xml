@@ -489,6 +489,15 @@
                             android:textColor="@color/blueText"
                             android:textSize="@dimen/_10ssp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <ImageView
+                            android:id="@+id/buttonAdminEditFoodDeleteObj"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:src="@drawable/delete_forever_24"
+                            android:layout_gravity="end|center"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -541,6 +550,15 @@
                             android:fontFamily="@font/alata"
                             android:textSize="@dimen/_10ssp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <ImageView
+                            android:id="@+id/buttonAdminEditFoodDeleteMtl"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:src="@drawable/delete_forever_24"
+                            android:layout_gravity="end|center"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -591,6 +609,15 @@
                             android:textColor="@color/blueText"
                             android:fontFamily="@font/alata"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <ImageView
+                            android:id="@+id/buttonAdminEditFoodDeleteJpg"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:src="@drawable/delete_forever_24"
+                            android:layout_gravity="end|center"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

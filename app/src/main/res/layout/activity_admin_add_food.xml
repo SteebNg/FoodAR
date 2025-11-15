@@ -472,7 +472,7 @@
                             android:id="@+id/textAdminAddFoodObjFileName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="10"
                             android:text="No file selected"
                             android:textColor="@color/hintColor"
                             android:fontFamily="@font/alata"
@@ -490,6 +490,15 @@
                             android:textColor="@color/blueText"
                             android:textSize="@dimen/_10ssp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <ImageView
+                            android:id="@+id/buttonAdminAddFoodDeleteObj"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:src="@drawable/delete_forever_24"
+                            android:layout_gravity="end|center"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -542,6 +551,15 @@
                             android:fontFamily="@font/alata"
                             android:textSize="@dimen/_10ssp"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <ImageView
+                            android:id="@+id/buttonAdminAddFoodDeleteMtl"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:src="@drawable/delete_forever_24"
+                            android:layout_gravity="end|center"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -592,6 +610,15 @@
                             android:textColor="@color/blueText"
                             android:fontFamily="@font/alata"
                             style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                        <ImageView
+                            android:id="@+id/buttonAdminAddFoodDeleteJpg"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:textSize="@dimen/_10ssp"
+                            android:src="@drawable/delete_forever_24"
+                            android:layout_gravity="end|center"
+                            android:visibility="gone"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
