@@ -109,6 +109,7 @@ public class ReviewsActivity extends AppCompatActivity {
         binding.progressBarReview3Star.setProgress((int) (((float) ratings[2] / reviews.size()) * 100));
         binding.progressBarReview4Star.setProgress((int) (((float) ratings[3] / reviews.size()) * 100));
         binding.progressBarReview5Star.setProgress((int) (((float) ratings[4] / reviews.size()) * 100));
+        binding.ratingReviewOverallRating.setRating((float) averageRating);
     }
 
     private void getReviewsFromDb() {
@@ -119,15 +120,25 @@ public class ReviewsActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            reviews.clear();
+
+                            final int totalReviews = task.getResult().size();
+                            if (totalReviews == 0) {
+                                setReviewRecycler();
+                                return;
+                            }
+
+                            final int[] reviewProcessedCount = {0};
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Review review = new Review();
-                                review.rating = Math.toIntExact(document.getLong(Constants.KEY_FOODS_RATING));
+                                Long ratingLong = document.getLong(Constants.KEY_FOODS_RATING);
+                                review.rating = ratingLong != null ? ratingLong.doubleValue() : 0.0;
                                 review.comment = document.getString(Constants.KEY_COMMENT);
                                 review.userId = document.getString(Constants.KEY_USER_ID);
                                 review.timestamp = convertFirebaseTimestamp(Objects.requireNonNull(document.getTimestamp(Constants.KEY_TIMESTAMP)));
                                 review.userName = document.getString(Constants.KEY_USERNAME);
 
-                                getProfileImage(review);
+                                getProfileImage(review, totalReviews, reviewProcessedCount);
                             }
                         }
                     }
@@ -145,7 +156,7 @@ public class ReviewsActivity extends AppCompatActivity {
         return new Timestamp(totalMilliseconds);
     }
 
-    private void getProfileImage(Review review) {
+    private void getProfileImage(Review review, int totalReviews, final int[] counter) {
         storageRef.child(Constants.KEY_USERS_LIST
                 + "/"
                 + review.userId
@@ -157,7 +168,17 @@ public class ReviewsActivity extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         review.profileImage = uri;
                         reviews.add(review);
-                        setReviewRecycler();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        counter[0]++;
+
+                        if (counter[0] == totalReviews) {
+                            Log.d("Reviews Activity", "All profile images processed.");
+                            setReviewRecycler();
+                            calculateRating();
+                        }
                     }
                 });
     }
@@ -166,7 +187,6 @@ public class ReviewsActivity extends AppCompatActivity {
         reviewListAdapter = getReviewListAdapter();
         binding.recyclerReview.setAdapter(reviewListAdapter);
         reviewListAdapter.notifyDataSetChanged();
-        calculateRating();
     }
 
     private ReviewListAdapter getReviewListAdapter() {
@@ -190,7 +210,6 @@ public class ReviewsActivity extends AppCompatActivity {
                 checkUserOrdered();
                 setListeners();
                 getReviewsFromDb();
-                calculateRating();
                 binding.refreshReview.setRefreshing(false);
             }
         });
@@ -214,6 +233,9 @@ public class ReviewsActivity extends AppCompatActivity {
                             }
                         }
                     });
+        } else {
+            binding.layoutReviewButtonWriteReview.setVisibility(View.INVISIBLE);
+            binding.buttonReviewWriteReview.setEnabled(false);
         }
     }
 
