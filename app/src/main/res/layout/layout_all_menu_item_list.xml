@@ -59,12 +59,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/textAllMenuFoodName"
         app:layout_constraintTop_toBottomOf="@+id/textAllMenuFoodCategory"
+        app:layout_constraintEnd_toStartOf="@+id/ratingAllMenuFood"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:text="RM16.99"
         android:textSize="@dimen/_10ssp"
         android:layout_marginTop="@dimen/_16sdp"
         android:fontFamily="@font/alata"
         android:textColor="@color/primary_text"
-        android:maxLines="2"
+        android:maxLines="1"
         android:maxWidth="@dimen/_80sdp"
         android:textStyle="bold"/>
 
@@ -75,8 +77,8 @@
         style="@style/CustomRatingBar"
         android:rating="3.5"
         app:layout_constraintTop_toTopOf="@+id/textAllMenuFoodPrice"
-        app:layout_constraintStart_toEndOf="@+id/textAllMenuFoodPrice"
         app:layout_constraintBottom_toBottomOf="@+id/textAllMenuFoodPrice"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="@dimen/_8sdp"
         android:scaleX="0.7"
         android:scaleY="0.7" />
