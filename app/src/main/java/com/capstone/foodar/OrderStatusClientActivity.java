@@ -1,15 +1,19 @@
 package com.capstone.foodar;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -140,6 +144,7 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                                 currentOrder.tableNum = document.getString(Constants.KEY_TABLE_NUM);
                                 currentOrder.destination = document.getString(Constants.KEY_DESTINATION);
                                 currentOrder.timestamp = document.getTimestamp(Constants.KEY_TIMESTAMP);
+                                currentOrder.cancelReason = document.getString(Constants.KEY_ERROR_MESSAGE);
 
                                 List<Map<String, Object>> cartItems = (List<Map<String, Object>>) document.get(Constants.KEY_CARTS);
 
@@ -233,6 +238,17 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                } else if (binding.buttonClientStatusConfirmReceive.getText().toString().equals("Confirm Cancelled")) {
+                    db.collection(Constants.KEY_CURRENT_ORDERS)
+                            .document(currentOrder.currentOrderId)
+                            .delete()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(OrderStatusClientActivity.this, "Please place your order again", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            });
                 }
             }
         });
@@ -289,17 +305,19 @@ public class OrderStatusClientActivity extends AppCompatActivity {
         String orderStatusTitle = currentOrder.status;
         binding.textClientStatusStatusTitle.setText(orderStatusTitle + "...");
         switch (orderStatusTitle) {
-            case Constants.KEY_ORDER_PENDING:
+            case Constants.KEY_ORDER_PENDING: {
                 binding.textClientStatusStatusBody.setText("Waiting for order to be accepted...");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.receipt_verification).into(binding.imageClientStatusMain);
                 binding.progressClientStatus.setProgress(ORDER_PENDING);
                 break;
-            case Constants.KEY_PREPARING:
+            }
+            case Constants.KEY_PREPARING: {
                 binding.textClientStatusStatusBody.setText("In the kitchen...");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.frying).into(binding.imageClientStatusMain);
                 binding.progressClientStatus.setProgress(PREPARING);
                 break;
-            case Constants.KEY_DELIVERING:
+            }
+            case Constants.KEY_DELIVERING: {
                 binding.textClientStatusStatusBody.setText("To your location...");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.delivery_scooter).into(binding.imageClientStatusMain);
                 binding.progressClientStatus.setProgress(DELIVERING);
@@ -307,7 +325,8 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
                 binding.buttonClientStatusConfirmReceive.setText("Order Received");
                 break;
-            case Constants.KEY_SERVING:
+            }
+            case Constants.KEY_SERVING: {
                 binding.textClientStatusStatusBody.setText("Waiting for waiter to serve...");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.waiter).into(binding.imageClientStatusMain);
                 binding.progressClientStatus.setProgress(SERVING);
@@ -315,7 +334,8 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
                 binding.buttonClientStatusConfirmReceive.setText("Order Received");
                 break;
-            case Constants.KEY_COMPLETED:
+            }
+            case Constants.KEY_COMPLETED: {
                 binding.textClientStatusStatusBody.setText("Your order as arrived. Click the below button to confirm.");
                 Glide.with(OrderStatusClientActivity.this).asGif().load(R.drawable.verified).into(binding.imageClientStatusMain);
                 binding.progressClientStatus.setProgress(COMPLETED);
@@ -323,6 +343,22 @@ public class OrderStatusClientActivity extends AppCompatActivity {
                 binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
                 binding.buttonClientStatusConfirmReceive.setEnabled(true);
                 break;
+            }
+            case Constants.KEY_CANCELLED: {
+                if (currentOrder.cancelReason != null && !currentOrder.cancelReason.isEmpty()) {
+                    binding.textClientStatusStatusBody.setText("Your order was cancelled. Reason: " + currentOrder.cancelReason + "\nPlease place the order again.");
+                } else if (currentOrder.cancelReason != null) {
+                    binding.textClientStatusStatusBody.setText("Your order was cancelled. Reason: Not Specified by Chef\nPlease place the order again");
+                }
+                Glide.with(OrderStatusClientActivity.this).load(R.drawable.cancel).into(binding.imageClientStatusMain);
+                binding.progressClientStatus.setProgress(COMPLETED);
+                int colorInt = ContextCompat.getColor(getApplicationContext(), R.color.warningRed);
+                binding.progressClientStatus.setProgressTintList(ColorStateList.valueOf(colorInt));
+                binding.buttonClientStatusConfirmReceive.setText("Confirm Cancelled");
+                binding.buttonClientStatusConfirmReceive.setVisibility(View.VISIBLE);
+                binding.buttonClientStatusConfirmReceive.setEnabled(true);
+                break;
+            }
         }
     }
 

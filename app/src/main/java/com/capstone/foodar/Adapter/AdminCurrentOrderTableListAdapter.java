@@ -9,14 +9,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.capstone.foodar.Model.CurrentOrder;
 import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.R;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +24,7 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
 
     private ArrayList<CurrentOrder> orders;
     private Context context;
-    private OnButtonClickListener onButtonClickListener;
+    private OnButtonClickListener onUpdateButtonClickListener, onCancelButtonClickListener;
     private int ORDER_PENDING = 25, PREPARING = 50, DELIVERING = 75, SERVING = 75, Completed = 100;
 
     public AdminCurrentOrderTableListAdapter(ArrayList<CurrentOrder> orders, Context context) {
@@ -66,7 +64,14 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
         holder.buttonStatusProgressing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClickListener.onClick(order, holder.buttonStatusProgressing);
+                onUpdateButtonClickListener.onClick(order, holder.buttonStatusProgressing, holder.buttonCancelOrder);
+            }
+        });
+
+        holder.buttonCancelOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCancelButtonClickListener.onClick(order, holder.buttonStatusProgressing, holder.buttonCancelOrder);
             }
         });
 
@@ -120,7 +125,7 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
         TextView tableNum, paymentMethod, orderTotalPrice, orderStatus, timestamp, servingMode;
         RecyclerView orders;
         ProgressBar orderProgress;
-        Button buttonStatusProgressing;
+        Button buttonStatusProgressing, buttonCancelOrder;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -134,14 +139,19 @@ public class AdminCurrentOrderTableListAdapter extends RecyclerView.Adapter<Admi
             buttonStatusProgressing = itemView.findViewById(R.id.buttonLayoutAdminCurrentOrderTableStatusProgress);
             timestamp = itemView.findViewById(R.id.textLayoutAdminCurrentOrderTableItemTime);
             servingMode = itemView.findViewById(R.id.textLayoutAdminCurrentOrderTableServingMode);
+            buttonCancelOrder = itemView.findViewById(R.id.buttonLayoutAdminCurrentOrderTableStatusProgressCancel);
         }
     }
 
-    public void setOnButtonClickListener(OnButtonClickListener onButtonClickListener) {
-        this.onButtonClickListener = onButtonClickListener;
+    public void setOnUpdateButtonClickListener(OnButtonClickListener onButtonClickListener) {
+        onUpdateButtonClickListener = onButtonClickListener;
+    }
+
+    public void setOnCancelButtonClickListener(OnButtonClickListener onButtonClickListener) {
+        onCancelButtonClickListener = onButtonClickListener;
     }
 
     public interface OnButtonClickListener {
-        void onClick(CurrentOrder order, Button button);
+        void onClick(CurrentOrder order, Button confirmButton, Button cancelButton);
     }
 }
