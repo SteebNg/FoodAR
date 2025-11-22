@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_rectangle_rounded_corner"
+    android:padding="@dimen/_12sdp"
+    android:layout_marginStart="@dimen/_32sdp"
+    android:layout_marginEnd="@dimen/_32sdp">
+
+    <TextView
+        android:id="@+id/textDialogAdminCurrentOrderCancelTitle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reason:"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_13ssp"
+        android:fontFamily="@font/alata"
+        android:maxLines="1"
+        android:gravity="start"
+        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/_2sdp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etParentDialogAdminCurrentOrderCancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="State reason(s) for the cancellation..."
+        android:layout_marginBottom="@dimen/_12sdp"
+        app:boxStrokeColor="@color/grey"
+        app:hintTextColor="@color/hintColor"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogAdminCurrentOrderCancelTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDialogAdminCurrentOrderCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:textSize="@dimen/_10ssp"
+            android:minLines="5"
+            android:gravity="top"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/primary_text"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/buttonDialogAdminCurrentOrderTts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/etParentDialogAdminCurrentOrderCancel"
+        app:layout_constraintEnd_toEndOf="@+id/etParentDialogAdminCurrentOrderCancel"
+        android:src="@drawable/mic_24"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/etParentDialogAdminCurrentOrderCancel"
+        android:layout_marginTop="@dimen/_8sdp">
+
+        <Button
+            android:id="@+id/buttonDialogAdminCurrentOrderCancelBack"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey"
+            android:text="Back"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/_4sdp"/>
+
+        <Button
+            android:id="@+id/buttonDialogAdminCurrentOrderCancelConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/warningRed"
+            android:text="Cancel Order"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_weight="1" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

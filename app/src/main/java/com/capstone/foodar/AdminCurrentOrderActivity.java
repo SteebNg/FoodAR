@@ -177,18 +177,18 @@ public class AdminCurrentOrderActivity extends AppCompatActivity {
     private AdminCurrentOrderTableListAdapter getCurrentOrderRecycler() {
         AdminCurrentOrderTableListAdapter currentOrderAdapter = new AdminCurrentOrderTableListAdapter(orders, AdminCurrentOrderActivity.this);
 
-        currentOrderAdapter.setOnButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
+        currentOrderAdapter.setOnUpdateButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
             @Override
-            public void onClick(CurrentOrder order, Button button) {
+            public void onClick(CurrentOrder order, Button confirmButton, Button cancelButton) {
                 String orderStatus = order.status;
-                button.setEnabled(false);
+                confirmButton.setEnabled(false);
                 if (orderStatus.equals(Constants.KEY_ORDER_PENDING)) {
-                    updateCurrentOrderStatus(Constants.KEY_PREPARING, order.currentOrderId, button);
+                    updateCurrentOrderStatus(Constants.KEY_PREPARING, order.currentOrderId, confirmButton);
                 } else if (orderStatus.equals(Constants.KEY_PREPARING)) {
                     if (order.servingMethod.equals(Constants.KEY_DELIVERY_MODE)) {
-                        updateCurrentOrderStatus(Constants.KEY_DELIVERING, order.currentOrderId, button);
+                        updateCurrentOrderStatus(Constants.KEY_DELIVERING, order.currentOrderId, confirmButton);
                     } else {
-                        updateCurrentOrderStatus(Constants.KEY_SERVING, order.currentOrderId, button);
+                        updateCurrentOrderStatus(Constants.KEY_SERVING, order.currentOrderId, confirmButton);
                     }
                 }
             }

@@ -2,7 +2,10 @@ package com.capstone.foodar;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +24,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.capstone.foodar.Adapter.AdminCurrentOrderTableListAdapter;
-import com.capstone.foodar.Adapter.AdminHomeTableCurrentOrderListAdapter;
 import com.capstone.foodar.Model.CurrentOrder;
 import com.capstone.foodar.Model.FoodInCart;
 import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.PreferenceManager.PreferenceManager;
+import com.capstone.foodar.databinding.DialogAdminCurrentOrderCancelConfirmBinding;
 import com.capstone.foodar.databinding.FragmentAdminHomeCurrentOrderBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +39,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,6 +47,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -100,6 +104,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     private Query currentOrdersQuery;
     private ListenerRegistration currentOrdersListener;
     private final int ACTIVITY_PROFILE = 21;
+    private TextToSpeech textToSpeech;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -193,6 +198,11 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
 
                     int[] orderProcessed = {0};
                     for (QueryDocumentSnapshot document : value) {
+                        if (Objects.equals(document.getString(Constants.KEY_ORDER_STATUS), Constants.KEY_CANCELLED)) {
+                            orderProcessed[0]++;
+                            return;
+                        }
+
                         CurrentOrder order = new CurrentOrder();
                         order.currentOrderId = document.getId();
                         order.servingMethod = document.getString(Constants.KEY_SERVING_METHOD);
@@ -326,34 +336,99 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     private AdminCurrentOrderTableListAdapter getCurrentOrderRecycler() {
         AdminCurrentOrderTableListAdapter currentOrderAdapter = new AdminCurrentOrderTableListAdapter(orders, getContext());
 
-        currentOrderAdapter.setOnButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
+        currentOrderAdapter.setOnUpdateButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
             @Override
-            public void onClick(CurrentOrder order, Button button) {
+            public void onClick(CurrentOrder order, Button confirmButton, Button cancelButton) {
                 String orderStatus = order.status;
-                button.setEnabled(false);
+                confirmButton.setEnabled(false);
                 if (orderStatus.equals(Constants.KEY_ORDER_PENDING)) {
-                    updateCurrentOrderStatus(Constants.KEY_PREPARING, order.currentOrderId, button);
+                    updateCurrentOrderStatus(Constants.KEY_PREPARING, order.currentOrderId, confirmButton, cancelButton);
                 } else if (orderStatus.equals(Constants.KEY_PREPARING)) {
                     if (order.servingMethod.equals(Constants.KEY_DELIVERY_MODE)) {
-                        updateCurrentOrderStatus(Constants.KEY_DELIVERING, order.currentOrderId, button);
+                        updateCurrentOrderStatus(Constants.KEY_DELIVERING, order.currentOrderId, confirmButton, cancelButton);
                     } else {
-                        updateCurrentOrderStatus(Constants.KEY_SERVING, order.currentOrderId, button);
+                        updateCurrentOrderStatus(Constants.KEY_SERVING, order.currentOrderId, confirmButton, cancelButton);
                     }
                 }
+            }
+        });
+
+        currentOrderAdapter.setOnCancelButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
+            @Override
+            public void onClick(CurrentOrder order, Button confirmButton, Button cancelButton) {
+                DialogAdminCurrentOrderCancelConfirmBinding bindingCancelConfirm = DialogAdminCurrentOrderCancelConfirmBinding.inflate(getLayoutInflater());
+                textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+                        textToSpeech.setLanguage(Locale.US);
+                    }
+                });
+
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(bindingCancelConfirm.getRoot());
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setCancelable(true);
+                dialog.show();
+
+                bindingCancelConfirm.buttonDialogAdminCurrentOrderCancelBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                bindingCancelConfirm.buttonDialogAdminCurrentOrderTts.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        textToSpeech.speak(bindingCancelConfirm.etDialogAdminCurrentOrderCancel.getText().toString()
+                                , TextToSpeech.QUEUE_FLUSH, null, null);
+                    }
+                });
+
+                bindingCancelConfirm.buttonDialogAdminCurrentOrderCancelConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateCancelCurrentOrderStatus(order.currentOrderId
+                                , confirmButton, cancelButton
+                                , bindingCancelConfirm.etDialogAdminCurrentOrderCancel.getText().toString());
+                    }
+                });
             }
         });
 
         return currentOrderAdapter;
     }
 
-    private void updateCurrentOrderStatus(String status, String currentOrderId, Button button) {
+    private void updateCancelCurrentOrderStatus(String currentOrderId, Button confirmButton, Button cancelButton, String reason) {
+        db.collection(Constants.KEY_CURRENT_ORDERS)
+                .document(currentOrderId)
+                .update(Constants.KEY_ORDER_STATUS, Constants.KEY_CANCELLED)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        db.collection(Constants.KEY_CURRENT_ORDERS)
+                                .document(currentOrderId)
+                                .update(Constants.KEY_ERROR_MESSAGE, reason)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        confirmButton.setEnabled(true);
+                                        cancelButton.setEnabled(true);
+                                    }
+                                });
+                    }
+                });
+    }
+
+    private void updateCurrentOrderStatus(String status, String currentOrderId, Button confirmButton, Button cancelButton) {
         db.collection(Constants.KEY_CURRENT_ORDERS)
                 .document(currentOrderId)
                 .update(Constants.KEY_ORDER_STATUS, status)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        button.setEnabled(true);
+                        confirmButton.setEnabled(true);
+                        cancelButton.setEnabled(true);
                     }
                 });
     }
@@ -417,6 +492,10 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+        }
         super.onDestroy();
         stopListeningForCurrentOrders();
     }

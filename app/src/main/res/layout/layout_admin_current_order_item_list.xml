@@ -128,17 +128,35 @@
         android:gravity="start"
         android:layout_marginEnd="@dimen/_2sdp"/>
 
-    <Button
-        android:id="@+id/buttonLayoutAdminCurrentOrderTableStatusProgress"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/textLayoutAdminCurrentOrderTableCurrentStatusHeading"
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="@dimen/_12sdp"
-        android:layout_marginStart="@dimen/_12sdp"
-        android:backgroundTint="@color/lightGreen"
-        android:text="Done Cooking"
-        android:fontFamily="@font/alata"
-        android:textColor="@color/primary_text"
-        android:textStyle="bold"/>
+        android:layout_marginStart="@dimen/_12sdp">
+
+        <Button
+            android:id="@+id/buttonLayoutAdminCurrentOrderTableStatusProgressCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/warningRed"
+            android:text="Cancel"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/_4sdp"/>
+
+        <Button
+            android:id="@+id/buttonLayoutAdminCurrentOrderTableStatusProgress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/lightGreen"
+            android:text="Done Cooking"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
