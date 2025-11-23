@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.capstone.foodar.Model.Location;
 import com.capstone.foodar.R;
 
@@ -41,6 +43,11 @@ public class LocationSelectListAdapter extends RecyclerView.Adapter<LocationSele
 
         holder.locationName.setText(location.locationName);
         holder.locationAddress.setText(location.locationAddress);
+
+        if (location.logo != null) {
+            Glide.with(context).load(location.logo).into(holder.logo);
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,12 +63,14 @@ public class LocationSelectListAdapter extends RecyclerView.Adapter<LocationSele
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView locationName, locationAddress;
+        ImageView logo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             locationAddress = itemView.findViewById(R.id.textLayoutLocationItemAddress);
             locationName = itemView.findViewById(R.id.textLayoutLocationItemName);
+            logo = itemView.findViewById(R.id.imageLayoutLocationItem);
         }
     }
 

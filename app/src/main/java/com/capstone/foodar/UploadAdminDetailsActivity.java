@@ -152,7 +152,7 @@ public class UploadAdminDetailsActivity extends AppCompatActivity {
                 + "/"
                 + docId
                 + "/"
-                + Constants.KEY_LOGO)
+                + Constants.KEY_LOGO + ".png")
                 .putFile(logoUri)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override

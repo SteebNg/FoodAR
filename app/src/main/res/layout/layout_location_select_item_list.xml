@@ -14,7 +14,8 @@
         android:layout_marginStart="@dimen/_4sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/textLayoutLocationItemName"
@@ -37,7 +38,7 @@
         android:id="@+id/textLayoutLocationItemAddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Location Address gf f f f f f f f f f f f f f f f f f fg f f f f f f f f f f f f f f f f f f"
+        android:text="Location Address"
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/_10ssp"
         android:fontFamily="@font/alata"
