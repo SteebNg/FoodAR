@@ -26,4 +26,5 @@
     <color name="GreenishGrey">#CFE2CC</color>
     <color name="GreenishGreySecondary">#E1EDE0</color>
     <color name="progressColor">#601410</color>
+    <color name="green">#54AD7A</color>
 </resources>

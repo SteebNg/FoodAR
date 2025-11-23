@@ -113,6 +113,13 @@ public class ProfilePageActivity extends AppCompatActivity {
                 openImagePicker();
             }
         });
+        binding.textProfileMerchantUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfilePageActivity.this, UploadAdminDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void openImagePicker() {
