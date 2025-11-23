@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="@dimen/_20sdp"
+    android:background="@drawable/bg_rectangle_rounded_corner">
+
+    <ImageView
+        android:id="@+id/imageDialogAdminEditFoodDelete"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/delete_forever_24" />
+
+    <TextView
+        android:id="@+id/textDialogAdminEditFoodRemoveTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageDialogAdminEditFoodDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm Remove?"
+        android:textColor="@color/primary_text"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <TextView
+        android:id="@+id/textDialogAdminEditFoodRemoveDesc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogAdminEditFoodRemoveTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Are you sure you want to remove this food from menu?"
+        android:maxWidth="@dimen/_200sdp"
+        android:textColor="@color/secondary_text"
+        android:textSize="@dimen/_10ssp"
+        android:fontFamily="@font/alata"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/buttonDialogAdminEditFoodRemoveConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textDialogAdminEditFoodRemoveDesc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Confirm"
+        android:backgroundTint="@color/warningRed"
+        android:layout_marginTop="@dimen/_8sdp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
