@@ -3,10 +3,13 @@ package com.capstone.foodar;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -38,6 +41,7 @@ import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.Utility.DecimalDigitsInputFilter;
 import com.capstone.foodar.databinding.ActivityAdminEditFoodBinding;
+import com.capstone.foodar.databinding.DialogAdminEditFoodDeleteConfirmBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -464,6 +468,65 @@ public class AdminEditFoodActivity extends AppCompatActivity {
                 }
             }
         });
+        binding.buttonAdminEditFoodDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogAdminEditFoodDeleteConfirmBinding bindingAdminEdit = DialogAdminEditFoodDeleteConfirmBinding.inflate(getLayoutInflater());
+
+                Dialog dialog = new Dialog(AdminEditFoodActivity.this);
+                dialog.setContentView(bindingAdminEdit.getRoot());
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.setCancelable(true);
+                dialog.show();
+
+                bindingAdminEdit.buttonDialogAdminEditFoodRemoveConfirm.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        binding.buttonAdminEditFoodDelete.setEnabled(false);
+                        removeFoodFromDb();
+                    }
+                });
+            }
+        });
+    }
+
+    private void removeFoodFromDb() {
+        db.collection(Constants.KEY_FOODS).document(foodIdFromPreviousActivity)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        deleteFoodImageFromStorage();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AdminEditFoodActivity.this, "Failed to delete food", Toast.LENGTH_SHORT).show();
+                        Log.e("Delete Food From DB", "Failed to delete: " + e);
+                    }
+                });
+    }
+
+    private void deleteFoodImageFromStorage() {
+        storageRef.child(Constants.KEY_FOODS + "/" + foodIdFromPreviousActivity)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(AdminEditFoodActivity.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Delete Food Image From Storage", "Failed: " + e);
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        finish();
+                    }
+                });
     }
 
     private void isLoading(boolean loading) {
