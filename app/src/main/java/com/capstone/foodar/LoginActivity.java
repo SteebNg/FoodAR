@@ -25,11 +25,14 @@ import com.capstone.foodar.PreferenceManager.Constants;
 import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private PreferenceManager preferenceManager;
     private FirebaseUser currentUser;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +121,8 @@ public class LoginActivity extends AppCompatActivity {
                         preferenceManager.putString(Constants.KEY_EMAIL, email);
                         preferenceManager.putString(Constants.KEY_USER_ID, currentUser.getUid());
                         preferenceManager.putString(Constants.KEY_USERNAME, currentUser.getDisplayName());
+
+                        checkAdmin();
                         setResult(RESULT_OK);
                         finish();
                     } else {
@@ -132,6 +138,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void checkAdmin() {
+        db.collection(Constants.KEY_USERS_LIST).document(preferenceManager.getString(Constants.KEY_USER_ID))
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            if (documentSnapshot.getBoolean(Constants.KEY_ADMIN)) {
+                                preferenceManager.putString(Constants.KEY_LOCATION_ID, documentSnapshot.getString(Constants.KEY_LOCATION_ID));
+                            }
+                        }
+                    }
+                });
     }
 
     private void showError(String msg) {
@@ -175,6 +196,7 @@ public class LoginActivity extends AppCompatActivity {
     private void init() {
         firebaseAuth = FirebaseAuth.getInstance();
         preferenceManager = new PreferenceManager(getApplicationContext());
+        db = FirebaseFirestore.getInstance();
     }
 
     private boolean isLoggedIn() {

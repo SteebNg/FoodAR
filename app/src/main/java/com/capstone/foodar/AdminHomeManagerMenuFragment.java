@@ -305,7 +305,6 @@ public class AdminHomeManagerMenuFragment extends Fragment {
         currentFoodCategory = "All";
         foods = new ArrayList<>();
         filteredFoods = new ArrayList<>();
-        preferenceManager.putString(Constants.KEY_LOCATION_ID, "locationIdTest");
     }
 
     @Override
