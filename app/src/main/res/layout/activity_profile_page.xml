@@ -101,4 +101,18 @@
         android:layout_marginTop="@dimen/_4sdp"
         android:textSize="@dimen/_16ssp" />
 
+    <TextView
+        android:id="@+id/textProfileMerchantUpload"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Want to register as a merchant on this app?"
+        android:paddingTop="@dimen/_1sdp"
+        android:textColor="@color/blueText"
+        android:fontFamily="@font/alata"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"
+        android:textSize="@dimen/_10ssp"
+        android:layout_marginBottom="@dimen/_12sdp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.capstone.foodar;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -19,10 +20,14 @@ import com.capstone.foodar.PreferenceManager.PreferenceManager;
 import com.capstone.foodar.databinding.ActivityFoodDetailsBinding;
 import com.capstone.foodar.databinding.ActivityLocationSelectBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -34,6 +39,7 @@ public class LocationSelectActivity extends AppCompatActivity {
     private ArrayList<Location> locations;
     private LocationSelectListAdapter locationSelectListAdapter;
     private PreferenceManager preferenceManager;
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,25 +94,41 @@ public class LocationSelectActivity extends AppCompatActivity {
     }
 
     private void getLocations() {
-        db.collection(Constants.KEY_LOCATIONS)
+         db.collection(Constants.KEY_LOCATIONS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            int locationsProcessed = 0;
+                            int[] locationsProcessed = {0};
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Location location = new Location();
                                 location.locationName = document.getString(Constants.KEY_LOCATION_NAME);
                                 location.locationAddress = document.getString(Constants.KEY_LOCATION_ADDRESS);
                                 location.locationId = document.getId();
-                                locations.add(location);
-                                locationsProcessed++;
 
-                                if (locationsProcessed == task.getResult().size()) {
-                                    addLocationToRecycler();
-                                }
+                                getLogo(location, locationsProcessed, task.getResult().size());
                             }
+                        }
+                    }
+                });
+    }
+
+    private void getLogo(Location location, int[] locationProcessed, int targetLocationsNum) {
+        storageRef.child(Constants.KEY_LOCATIONS
+                + "/"
+                + location.locationId
+                + "/"
+                + Constants.KEY_LOGO + ".png")
+                .getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        location.logo = uri;
+                        locationProcessed[0]++;
+                        locations.add(location);
+                        if (locationProcessed[0] == targetLocationsNum) {
+                            addLocationToRecycler();
                         }
                     }
                 });
@@ -141,5 +163,6 @@ public class LocationSelectActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         locations = new ArrayList<>();
         preferenceManager = new PreferenceManager(getApplicationContext());
+        storageRef = FirebaseStorage.getInstance().getReference();
     }
 }
