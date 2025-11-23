@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -96,6 +97,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     }
 
     private FragmentAdminHomeCurrentOrderBinding binding;
+    private DialogAdminCurrentOrderCancelConfirmBinding bindingCancelConfirm;
     private FirebaseFirestore db;
     private StorageReference storageRef;
     private PreferenceManager preferenceManager;
@@ -104,7 +106,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
     private Query currentOrdersQuery;
     private ListenerRegistration currentOrdersListener;
     private final int ACTIVITY_PROFILE = 21;
-    private TextToSpeech textToSpeech;
+    private final int REQUEST_CODE_SPEECH_INPUT = 25;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -356,14 +358,6 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
         currentOrderAdapter.setOnCancelButtonClickListener(new AdminCurrentOrderTableListAdapter.OnButtonClickListener() {
             @Override
             public void onClick(CurrentOrder order, Button confirmButton, Button cancelButton) {
-                DialogAdminCurrentOrderCancelConfirmBinding bindingCancelConfirm = DialogAdminCurrentOrderCancelConfirmBinding.inflate(getLayoutInflater());
-                textToSpeech = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
-                    @Override
-                    public void onInit(int status) {
-                        textToSpeech.setLanguage(Locale.US);
-                    }
-                });
-
                 Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(bindingCancelConfirm.getRoot());
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -380,8 +374,16 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                 bindingCancelConfirm.buttonDialogAdminCurrentOrderTts.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        textToSpeech.speak(bindingCancelConfirm.etDialogAdminCurrentOrderCancel.getText().toString()
-                                , TextToSpeech.QUEUE_FLUSH, null, null);
+                        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+                        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text");
+
+                        try {
+                            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "Speech is not working", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -391,6 +393,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
                         updateCancelCurrentOrderStatus(order.currentOrderId
                                 , confirmButton, cancelButton
                                 , bindingCancelConfirm.etDialogAdminCurrentOrderCancel.getText().toString());
+                        dialog.dismiss();
                     }
                 });
             }
@@ -477,6 +480,7 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
         preferenceManager = new PreferenceManager(getContext());
         orders = new ArrayList<>();
         storageRef = FirebaseStorage.getInstance().getReference();
+        bindingCancelConfirm = DialogAdminCurrentOrderCancelConfirmBinding.inflate(getLayoutInflater());
 
         currentOrdersQuery = db.collection(Constants.KEY_CURRENT_ORDERS)
                 .whereEqualTo(Constants.KEY_LOCATION_ID, preferenceManager.getString(Constants.KEY_LOCATION_ID))
@@ -492,10 +496,6 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
         super.onDestroy();
         stopListeningForCurrentOrders();
     }
@@ -513,6 +513,11 @@ public class AdminHomeCurrentOrderFragment extends Fragment {
             Intent intent = new Intent(getActivity(), HomeActivity.class);
             startActivity(intent);
             requireActivity().finish();
+        } else if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == RESULT_OK && data != null) {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (result != null && !result.isEmpty()) {
+                bindingCancelConfirm.etDialogAdminCurrentOrderCancel.setText(Objects.requireNonNull(result.get(0)));
+            }
         }
     }
 }
