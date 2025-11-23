@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".UploadAdminDetailsActivity"
+    android:background="@color/bg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <ImageButton
+            android:id="@+id/buttonUploadAdminBack"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:src="@drawable/arrow_back_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/textUploadAdminHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Merchant Registration"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonUploadAdminBack"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:fontFamily="@font/alata"/>
+
+        <TextView
+            android:id="@+id/tv_sub_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please fill in your store details below."
+            android:textSize="14sp"
+            android:textColor="#757575"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textUploadAdminHeader"
+            android:fontFamily="@font/alata"/>
+
+        <ImageView
+            android:id="@+id/iv_store_logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="24dp"
+            android:src="@android:drawable/ic_menu_camera"
+            android:background="#E0E0E0"
+            android:scaleType="center"
+            android:contentDescription="Store Logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sub_header" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload Logo"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/iv_store_logo"
+            app:layout_constraintStart_toStartOf="@id/iv_store_logo"
+            app:layout_constraintEnd_toEndOf="@id/iv_store_logo"
+            android:fontFamily="@font/alata"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_store_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="Store / Brand Name"
+
+            app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+            app:layout_constraintTop_toBottomOf="@id/iv_store_logo">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_store_name"
+                android:paddingStart="@dimen/_32sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:fontFamily="@font/alata"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_owner_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Owner Name"
+            app:startIconDrawable="@android:drawable/ic_menu_my_calendar"
+            app:layout_constraintTop_toBottomOf="@id/til_store_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_owner_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_32sdp"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/alata"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/til_owner_name">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_phone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:hint="Phone Number"
+                app:startIconDrawable="@android:drawable/ic_menu_call">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:paddingStart="@dimen/_32sdp"
+                    android:fontFamily="@font/alata"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_location_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location Details"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_contact"
+            android:fontFamily="@font/alata"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_building"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Building / Street Name"
+            app:startIconDrawable="@android:drawable/ic_menu_mapmode"
+            app:layout_constraintTop_toBottomOf="@id/tv_location_header">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_building"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:paddingStart="@dimen/_32sdp"
+                android:fontFamily="@font/alata"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_address"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Full Location Address (City, State, Zip)"
+            app:layout_constraintTop_toBottomOf="@id/til_building">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:inputType="textMultiLine|textPostalAddress"
+                android:minLines="3"
+                android:fontFamily="@font/alata"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ProgressBar
+            android:id="@+id/progressAdminUpload"
+            android:layout_width="@dimen/_32sdp"
+            android:layout_height="@dimen/_32sdp"
+            app:layout_constraintTop_toTopOf="@+id/btn_submit"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_submit"
+            app:layout_constraintStart_toStartOf="@+id/btn_submit"
+            app:layout_constraintEnd_toEndOf="@+id/btn_submit"
+            android:progressTint="@color/black"
+            android:visibility="visible"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:text="Register Merchant"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/til_address"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bg_chip"
+            android:backgroundTint="@color/lightGreen"
+            android:textAllCaps="false"
+            android:fontFamily="@font/alata"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -59,6 +59,10 @@ public class Constants {
     public static final String KEY_ADMIN = "Admin";
     public static final String KEY_CANCELLED = "Cancelled";
     public static final String KEY_ERROR_MESSAGE = "ErrorMessage";
+    public static final String KEY_STORE_NAME = "StoreName";
+    public static final String KEY_PHONE_NUM = "PhoneNum";
+    public static final String KEY_STREET_NAME = "StreetName";
+    public static final String KEY_LOGO = "Logo";
 
     public static final String KEY_POSITION = "Position";
 

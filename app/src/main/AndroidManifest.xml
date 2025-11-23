@@ -27,6 +27,9 @@
         android:theme="@style/Theme.FoodAR"
         tools:targetApi="31">
         <activity
+            android:name=".UploadAdminDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordSuccessActivity"
             android:exported="false" />
         <activity
