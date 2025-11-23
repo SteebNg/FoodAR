@@ -138,7 +138,8 @@ public class UploadAdminDetailsActivity extends AppCompatActivity {
         merchantInfo.put(Constants.KEY_LOCATION_ID, docId);
         merchantInfo.put(Constants.KEY_ADMIN, true);
 
-        Task<DocumentReference> firestoreTask = db.collection(Constants.KEY_USERS_LIST).add(merchantInfo)
+        Task<Void> firestoreTask = db.collection(Constants.KEY_USERS_LIST).document(preferenceManager.getString(Constants.KEY_USER_ID))
+                .update(merchantInfo)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
